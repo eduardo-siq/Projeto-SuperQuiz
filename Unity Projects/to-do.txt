@@ -4,7 +4,7 @@
 - Marca d'agua de demo
 - Menu Sobre (links externos, icone ?)
 
-- Senha\Login simples
+- Senha\Login simples OK
 - Perguntas fáceis, apenas para demonstração (Esporte, história)
 - FAQ, esqueceu sua senha, etc...
 - Regulamento do jogo
