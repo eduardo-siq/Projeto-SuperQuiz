@@ -22,6 +22,7 @@ public class Detail {
 		detailList.Add(new Detail(0,1,0,"1"));	// azul
 		detailList.Add(new Detail(0,0,1,"2"));	// verde
 		detailList.Add(new Detail(1,0,1,"3"));	// amarelo
+		detailList.Add(new Detail(0.5f,0.5f,0.5f,"4"));	// cinza
 		return detailList;
 	}
 }
