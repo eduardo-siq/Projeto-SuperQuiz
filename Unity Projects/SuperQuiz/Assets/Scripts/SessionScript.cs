@@ -13,6 +13,7 @@ public class SessionScript : MonoBehaviour {
 	// User
 	public static int score;
 	public static int userGroup;
+	public bool getBuiltInQuestions;
 	
 	// Questions
 	//public static bool loadQuestions = true;	// If the demo script is enabled, enable this
@@ -22,9 +23,10 @@ public class SessionScript : MonoBehaviour {
 	public static List<Answer> answersList;
 	public static int numberOfQuestionsDemanded = 5;
 	public static int pointsByQuestion = 50;	// maybe redundant
-	public static float questionTime = 5;	// locally defined, maybe defined by BncQ later
+	public static float questionTime = 6f;	// locally defined, maybe defined by BncQ later
 	public static List<string> subjectName;
 	public static List<string> userGroupName;	// maybe unecessary
+	public static bool singleRun = true;
 	
 	// Point-and-Click
 	public static Texture texturePoint;
@@ -35,8 +37,10 @@ public class SessionScript : MonoBehaviour {
 	// Avatar
 	public static List<Texture> avatarItem1;
 	public static List<Texture> avatarItem2;
+	public static List<Texture> avatarItem3;
 	public static int selectedItem1;
 	public static int selectedItem2;
+	public static int selectedItem3;
 	
 	// Sound
 	public static AudioSource songAudio;
@@ -55,6 +59,11 @@ public class SessionScript : MonoBehaviour {
 	public float answersListCount;
 	public static string bncQFileName;
 	[SerializeField] string bncQFileNameEditor;
+	
+	// Score
+	public static int rightScore;
+	public static int timeoutScore;
+	public static int wrongScore;
 
 	void Awake(){
 		bncQFileName = bncQFileNameEditor;
@@ -107,8 +116,10 @@ public class SessionScript : MonoBehaviour {
 		// Avatar
 		avatarItem1 = new List <Texture>();
 		avatarItem2 = new List <Texture>();
+		avatarItem3 = new List <Texture>();
 		SessionScript.selectedItem1 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
 		SessionScript.selectedItem2 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+		SessionScript.selectedItem3 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
 		LoadAvatarAssets();
 		
 		
@@ -121,15 +132,22 @@ public class SessionScript : MonoBehaviour {
 		subtle = Resources.Load ("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
 		song1 = Resources.Load ("Sound/Memories of Green", typeof(AudioClip)) as AudioClip;
 		song2 = Resources.Load ("Sound/Damask Rose", typeof(AudioClip)) as AudioClip;
-		currentSong = 1; 
+		currentSong = 1;
+		
+		// Score
+		rightScore = 10;
+		timeoutScore = 0;
+		wrongScore = - 10;
 		
 		StartCoroutine (UpdateScene());
-		print ("load questions from HD");
-		StartCoroutine (LoadFile());
-		// if (loadQuestions){													// If the demo script is enabled, enable this
-			// print ("load questions from HD");								// If the demo script is enabled, enable this
-			// StartCoroutine (LoadFile());										// If the demo script is enabled, enable this
-		// } else {	print("demo version, does not load questions from HD");}	// If the demo script is enabled, enable this
+		if (!getBuiltInQuestions){
+			print ("load questions");
+			StartCoroutine (LoadFile());
+		}
+		if (getBuiltInQuestions){
+			print ("load built-in questions");
+			StartCoroutine (LoadBuiltInQuestions());
+		}
 	}
 	
 	IEnumerator UpdateScene (){
@@ -202,6 +220,11 @@ public class SessionScript : MonoBehaviour {
 		}
 	}
 	
+	IEnumerator LoadBuiltInQuestions (){
+		yield return null;
+		questionListPreLoad = BuiltInQuestions.GetBuildInQuestions();
+	}
+	
 	public static void GetQuestionListFromPreLoad(){
 		print ("GetQuestionListFromPreLoad");
 		Texture missingTexture = Resources.Load("Textures/Questions/missing") as Texture;
@@ -253,7 +276,7 @@ public class SessionScript : MonoBehaviour {
 			numberOfQuestionsDemanded = questionList.Count;	
 	}
 	
-	public static void LoadQuestions(){
+	public void LoadQuestions(){
 		for (int i = 0; i < questionListPreLoad.Count; i++){
 			questionList.Add(new Question(questionListPreLoad[i]));
 		}
@@ -263,7 +286,7 @@ public class SessionScript : MonoBehaviour {
 		bool b = true;
 		int i = 0;
 		do{	// Item type 1: hat
-			Texture texture = Resources.Load("Textures/avatar_1_1_" + i.ToString()) as Texture;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_1_1_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
 				avatarItem1.Add(texture);
@@ -274,7 +297,7 @@ public class SessionScript : MonoBehaviour {
 		b = true;
 		i = 0;
 		do{	// Item type 2: face
-			Texture texture = Resources.Load("Textures/avatar_1_2_" + i.ToString()) as Texture;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_1_2_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
 				avatarItem2.Add(texture);

@@ -14,8 +14,10 @@ public class AvatarScript : MonoBehaviour {
 	public GameObject portrait;
 		public RawImage item1Texture;
 		public RawImage item2Texture;
+		public RawImage item3Texture;
 	public GameObject item1Selection;
 	public GameObject item2Selection;
+	public GameObject item3Selection;
 	
 	void Start(){
 		StartCoroutine (StartScene());
@@ -29,6 +31,7 @@ public class AvatarScript : MonoBehaviour {
 			item2Texture = portrait.transform.Find("Item2").GetComponent<RawImage>();
 		item1Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem1").gameObject;
 		item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem2").gameObject;
+		item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem3").gameObject;
 		Portrait();
 	}
 	
@@ -50,6 +53,12 @@ public class AvatarScript : MonoBehaviour {
 				SessionScript.selectedItem2 = SessionScript.selectedItem2 + 1;
 				if (SessionScript.selectedItem2 >= SessionScript.avatarItem2.Count){
 					SessionScript.selectedItem2 = 0;
+				}
+				break;
+			case 3:
+				SessionScript.selectedItem3 = SessionScript.selectedItem3 + 1;
+				if (SessionScript.selectedItem3 >= SessionScript.avatarItem3.Count){
+					SessionScript.selectedItem3 = 0;
 				}
 				break;
 			default:
@@ -75,6 +84,13 @@ public class AvatarScript : MonoBehaviour {
 					
 				}
 				break;
+			case 3:
+				SessionScript.selectedItem3 = SessionScript.selectedItem3 - 1;
+				if (SessionScript.selectedItem3 < 0){
+					SessionScript.selectedItem3 = SessionScript.avatarItem3.Count - 1;
+					
+				}
+				break;
 			default:
 				break;
 		}
@@ -85,10 +101,13 @@ public class AvatarScript : MonoBehaviour {
 	public void Portrait(){
 		item1Texture.texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		item2Texture.texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		item3Texture.texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		
 		// Selection Options
 		item1Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		item2Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		item3Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem3];
+		
 	}
 	
 	public void SelectMenu(){

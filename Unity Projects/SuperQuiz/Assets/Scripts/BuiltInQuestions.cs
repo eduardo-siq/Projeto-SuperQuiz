@@ -21,14 +21,58 @@ public class BuiltInQuestions {
 		questionsPreLoad.Add(new QuestionPreLoad(
 		0,
 		0,
-		string "Qual país sediou a primeira copa do mundo?",
-		string "Uruguai",
-		string "Brasil",
-		string "França",
-		string "Alemanha",
-		string "Inglaterra",
-		string "X",
-		string "X"));
+		"Qual país é famoso por suas pirâmides?",
+		"Egito",
+		"Itália",
+		"Rússia",
+		"Japão",
+		"Índia",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		1,
+		1,
+		"Em qual país surgiu a democracia?",
+		"Grécia",
+		"",
+		"",
+		"",
+		"",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		2,
+		2,
+		"Qual é a macro-região mais populosa do Brasil?",
+		"Sudeste",
+		 "1",
+		 "0",
+		 "0",
+		 "",
+		 "X",
+		 "X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		3,
+		3,
+		"A primeira edição da Copa do Mundo foi disputada no Uruguai, em Montevidéu, no ano de 1930. Apenas treze equipes nacionais reuniram-se nessa ocasião, sendo que somente quatro países europeus atravessaram o Oceano Atlântico de navio para competir o torneio. Qual país foi o vencedor?",
+		"Uruguai",
+		"Brasil",
+		"França",
+		"Alemanha",
+		"Inglaterra",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		4,
+		4,
+		"De qual país é essa bandeira?",
+		"Reino Unido",
+		"Inglaterra",
+		"Canadá",
+		"EUA",
+		"Escócia",
+		"X",
+		"X"));
+		return questionsPreLoad;
 	}
 }
-

@@ -1357,6 +1357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23dd4d3d73c2b934bb9c6a57d7b62e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  getBuiltInQuestions: 1
   questionsAskedListCount: 0
   answersListCount: 0
   bncQFileNameEditor: BncQ_teste

@@ -18,11 +18,11 @@ public class Detail {
 	
 	public static List<Detail> GetBuiltInList(){
 		List <Detail> detailList = new List<Detail>();
-		detailList.Add(new Detail(1,0,0,"0"));	// vermelho
-		detailList.Add(new Detail(0,1,0,"1"));	// azul
-		detailList.Add(new Detail(0,0,1,"2"));	// verde
-		detailList.Add(new Detail(1,0,1,"3"));	// amarelo
-		detailList.Add(new Detail(0.5f,0.5f,0.5f,"4"));	// cinza
+		detailList.Add(new Detail(1,0,0,"0"));	// sul
+		detailList.Add(new Detail(0,0,1,"1"));	// sudeste
+		detailList.Add(new Detail(0,1,0,"2"));	// nordeste
+		detailList.Add(new Detail(1,0,1,"3"));	// centro-oeste
+		detailList.Add(new Detail(1,1,0,"4"));	// norte
 		return detailList;
 	}
 }

@@ -29,7 +29,7 @@ public class MenuScript : MonoBehaviour {
 		
 		// Checks if there are avaiable question
 		if (SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
-			GameObject.Find("Canvas/Scroll View/Viewport/Menu/Gameplay/Text").GetComponent<Text>().text = "Não há mais questões!";
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/Gameplay/Text").GetComponent<Text>().text = "não há mais questões!";
 			GameObject.Find("Canvas/Scroll View/Viewport/Menu/Gameplay").GetComponent<Button>().enabled = false;
 		}
 	}

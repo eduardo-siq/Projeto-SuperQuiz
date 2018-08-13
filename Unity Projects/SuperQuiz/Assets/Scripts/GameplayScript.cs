@@ -27,6 +27,7 @@ public class GameplayScript : MonoBehaviour {
 	public GameObject questionLong;
 	public GameObject questionLongText;
 	public GameObject questionLongAnswer;
+	public List <GameObject> questionLongAnswers;
 	public GameObject questionImage;
 	public RawImage questionImageTexture;
 	public Image clockImage;
@@ -34,6 +35,7 @@ public class GameplayScript : MonoBehaviour {
 	public GameObject nextQuestion;
 	public GameObject menu;
 	public Vector2 questionPointOffset;
+	public GameObject correctAnswer;
 	//public GameObject result;
 	
 	// Question Variables
@@ -45,6 +47,7 @@ public class GameplayScript : MonoBehaviour {
 	public Vector3 questionPointAnswer;
 	public int clickX;
 	public int clickY;
+	public bool showAnswer;
 	
 	void Start(){
 		StartCoroutine (StartScene());
@@ -78,6 +81,12 @@ public class GameplayScript : MonoBehaviour {
 		questionLong = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong").gameObject;
 		questionLongText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionText").gameObject;
 		questionLongAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers").gameObject;
+		questionLongAnswers = new List <GameObject>();
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemA").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemB").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemC").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemD").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemE").gameObject);
 		questionImage = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionImage").gameObject;
 		questionImageTexture = questionImage.GetComponent<RawImage>();
 		clockImage = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock/Image").gameObject.GetComponent<Image>();
@@ -85,9 +94,8 @@ public class GameplayScript : MonoBehaviour {
 		clockText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock/Text").gameObject.GetComponent<Text>();
 		clockText.text = "";
 		nextQuestion = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/NextQuestion").gameObject;
-		nextQuestion.SetActive(false);
 		menu = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Menu").gameObject;
-		menu.SetActive(false);
+		correctAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/CorrectAnswer").gameObject;
 		//result = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Result").gameObject;
 		//result.SetActive(false);
 		questionImage.SetActive(false);
@@ -95,6 +103,9 @@ public class GameplayScript : MonoBehaviour {
 		questionPoint.SetActive(false);
 		questionLong.SetActive(false);
 		questionWrite.SetActive(false);
+		nextQuestion.SetActive(false);
+		menu.SetActive(false);
+		showAnswer = false;
 		
 		//Point-and-click
 		questionPoint.transform.Find("Background").GetComponent<RawImage>().texture = SessionScript.texturePoint;
@@ -109,7 +120,7 @@ public class GameplayScript : MonoBehaviour {
 		Invoke ("StartNewQuestion", 0.1f);
 	}
 	
-	void Update(){
+	void Update(){		// CHANGED ANSER QUESTION METHOD -> UPDATE TIMEOUT METHOD
 		if (endScene){
 			gameplayRect.anchoredPosition = new Vector2 (gameplayRect.anchoredPosition.x, gameplayRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
@@ -121,27 +132,30 @@ public class GameplayScript : MonoBehaviour {
 			clockImage.fillAmount = currentQuestionTime/SessionScript.questionTime;
 			clockText.text = (SessionScript.questionTime - currentQuestionTime).ToString("0.");
 			if (currentQuestionTime > SessionScript.questionTime){
+					AnswerTimeout();
+					answerPermitted = false;
 				if (currentQuestion.questionType == 0){
 					answerPermitted = false;
 					SessionScript.ButtonAudio(SessionScript.negative);
 					//SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, lastQuestionTime));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
 					//Invoke ("StartNewQuestion", 1f);
-					ChooseAnswer(-1);
+					//ChooseAnswer(-1);
 				}
 				if (currentQuestion.questionType == 1){
-					AcceptAnswer();
+					//AcceptAnswer();
 				}
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Return)){
 			if (currentQuestion.questionType == 1 && writtenAnswer.text != ""){	// Fill-the-blank timeout
-				AcceptAnswer();
+				//AcceptAnswer();
 			}
 		}
 	}
 		
 	public void StartNewQuestion(){
 		answerPermitted = true;
+		showAnswer = false;
 		
 		bool clear;
 		int i = 0;
@@ -160,6 +174,7 @@ public class GameplayScript : MonoBehaviour {
 		} while (!clear);
 		
 		SessionScript.questionsAskedList.Add(currentQuestion.index);
+		correctAnswer.SetActive(false);
 		nextQuestion.SetActive(false);
 		menu.SetActive(false);
 		//result.SetActive(false);
@@ -189,7 +204,8 @@ public class GameplayScript : MonoBehaviour {
 			questionLong.SetActive(false);
 			questionPointText.SetActive(true);
 			questionPointButton.SetActive(false);
-			questionPointConfirm.SetActive(false);		
+			questionPointConfirm.SetActive(false);
+			questionPointText.transform.Find("Question/Text").GetComponent<Text>().text = currentQuestion.text;
 			float red = float.Parse(currentQuestion.answer1);
 			float blue = float.Parse(currentQuestion.answer2);
 			float green = float.Parse(currentQuestion.answer3);
@@ -204,7 +220,7 @@ public class GameplayScript : MonoBehaviour {
 			questionLongAnswer.SetActive(false);
 			questionLongText.SetActive(true);
 			questionWrite.SetActive(false);
-			questionMultipleText.transform.Find("Text").GetComponent<Text>().text = currentQuestion.text;
+			questionLongText.transform.Find("Question/Text").GetComponent<Text>().text = currentQuestion.text;
 			a0 = Random.Range(0,5);	// Randomly chooses which option would be the correct one
 			rightAnswer = a0;
 			a1 = Random.Range(0,5);
@@ -224,22 +240,22 @@ public class GameplayScript : MonoBehaviour {
 				a4 = Random.Range(0,5);
 			}
 			
-			answers[a0].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer0;
-			answers[0].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
-			answers[a1].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer1;
-			answers[1].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
-			answers[a2].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer2;
-			answers[2].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
-			answers[a3].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer3;
-			answers[3].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
-			answers[a4].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer4;
-			answers[4].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
+			questionLongAnswers[a0].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer0;
+			questionLongAnswers[0].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
+			questionLongAnswers[a1].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer1;
+			questionLongAnswers[1].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
+			questionLongAnswers[a2].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer2;
+			questionLongAnswers[2].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
+			questionLongAnswers[a3].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer3;
+			questionLongAnswers[3].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
+			questionLongAnswers[a4].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer4;
+			questionLongAnswers[4].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
 			
-			answers[0].transform.Find("Text").GetComponent<Text>().text = "A) " + answers[0].transform.Find("Text").GetComponent<Text>().text;
-			answers[1].transform.Find("Text").GetComponent<Text>().text = "B) " + answers[1].transform.Find("Text").GetComponent<Text>().text;
-			answers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + answers[2].transform.Find("Text").GetComponent<Text>().text;
-			answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
-			answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
+			questionLongAnswers[0].transform.Find("Text").GetComponent<Text>().text = "A) " + questionLongAnswers[0].transform.Find("Text").GetComponent<Text>().text;
+			questionLongAnswers[1].transform.Find("Text").GetComponent<Text>().text = "B) " + questionLongAnswers[1].transform.Find("Text").GetComponent<Text>().text;
+			questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text;
+			questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text;
+			questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text;
 			break;
 		case 4:	// Image
 			questionMultiple.SetActive(true);
@@ -331,76 +347,7 @@ public class GameplayScript : MonoBehaviour {
 		}
 	}
 	
-	public void EndQuestion(){
-		if (questionWrite.activeSelf){
-			writtenAnswer.text = "";
-		}
-		questionMultiple.SetActive(false);
-		questionWrite.SetActive(false);
-		questionPoint.SetActive(false);
-		questionLong.SetActive(false);
-		questionImage.SetActive(false);
-		menu.SetActive(true);
-		//result.SetActive(true);
-		if (SessionScript.questionsAskedList.Count < SessionScript.numberOfQuestionsDemanded){
-			nextQuestion.SetActive(true);
-		}
-		currentQuestionTime = 0;
-		clockImage.fillAmount = 0;
-		clockText.text = "";
-	}
-
-	public void ChooseAnswer(int answer){
-		return;				// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	
-		lastQuestionTime = currentQuestionTime;
-		if (currentQuestion.questionType == 1) return; //(this: 0)
-		if (!answerPermitted) return;
-		if (answer == rightAnswer){
-			answers[answer].GetComponent<Image>().color = Color.green;
-			SessionScript.ButtonAudio(SessionScript.positive);
-			SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-			SessionScript.score = SessionScript.score + 1;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
-		} else{
-			if (answer == -1){
-				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-			}else{
-				answers[answer].GetComponent<Image>().color = Color.red;
-				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, currentQuestion.subject, lastQuestionTime));
-			}
-		}
-		answerPermitted = false;
-		Invoke ("EndQuestion", 0.5f);
-		
-		//questionReady = false;
-		//SetMinigame();
-		//Invoke ("SwitchWindows", 1);
-		//Invoke ("NewBackground", 1);
-	}
-	
-	public void AcceptAnswer(){
-		return;				// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	
-		lastQuestionTime = currentQuestionTime;
-		if (!answerPermitted) return;
-		if (currentQuestion.questionType == 0) return; //(this: 1)
-		if (!answerPermitted) return;
-		if (writtenAnswer.text == currentQuestion.answer0){
-			writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
-			SessionScript.ButtonAudio(SessionScript.positive);
-			SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-			SessionScript.score = SessionScript.score + 1;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
-		}
-		if (writtenAnswer.text != currentQuestion.answer0){
-			writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
-			SessionScript.ButtonAudio(SessionScript.negative);
-			SessionScript.answersList.Add(new Answer(currentQuestion.index, false, currentQuestion.subject, lastQuestionTime));
-		}
-		answerPermitted = false;
-		Invoke ("EndQuestion", 0.5f);	
-	}
-	
-	public void AnswerQuestion(int answer){
+	public void AnswerQuestion(int answer){		// ADD TIMEOUT FOR FILL THE BLANKS (MAYBE A TimeoutQuestion METHOD INSTEAD OF A "-1" ANSWER FOR TIMEOUT
 		if (!answerPermitted){
 			return;
 		}
@@ -410,13 +357,15 @@ public class GameplayScript : MonoBehaviour {
 				if (writtenAnswer.text == currentQuestion.answer0){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
 					SessionScript.ButtonAudio(SessionScript.positive);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-					SessionScript.score = SessionScript.score + 1;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
 				}
 				if (writtenAnswer.text != currentQuestion.answer0){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+					showAnswer = true;
 				}
 				answerPermitted = false;
 				Invoke ("EndQuestion", 0.5f);	
@@ -447,12 +396,34 @@ public class GameplayScript : MonoBehaviour {
 				}
 				break;
 			case 3:		// Long
-				print ("3");
+				if (answer == rightAnswer){
+				questionLongAnswers[answer].GetComponent<Image>().color = Color.green;
+				SessionScript.ButtonAudio(SessionScript.positive);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
+				} else{
+					questionLongAnswers[answer].GetComponent<Image>().color = Color.red;
+					SessionScript.ButtonAudio(SessionScript.negative);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+					showAnswer = true;
+				}
 				answerPermitted = false;
 				Invoke ("EndQuestion", 0.5f);
 				break;
 			case 4:		// Image
-				print ("4");
+				if (answer == rightAnswer){
+				answers[answer].GetComponent<Image>().color = Color.green;
+				SessionScript.ButtonAudio(SessionScript.positive);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
+				} else{
+					answers[answer].GetComponent<Image>().color = Color.red;
+					SessionScript.ButtonAudio(SessionScript.negative);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+					showAnswer = true;
+				}
 				answerPermitted = false;
 				Invoke ("EndQuestion",  0.5f);
 				break;
@@ -460,19 +431,81 @@ public class GameplayScript : MonoBehaviour {
 				if (answer == rightAnswer){
 				answers[answer].GetComponent<Image>().color = Color.green;
 				SessionScript.ButtonAudio(SessionScript.positive);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-				SessionScript.score = SessionScript.score + 1;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
 				} else{
-					if (answer == -1){
-						SessionScript.ButtonAudio(SessionScript.negative);
-						SessionScript.answersList.Add(new Answer(currentQuestion.index, true, currentQuestion.subject, lastQuestionTime));
-					}else{
-						answers[answer].GetComponent<Image>().color = Color.red;
-						SessionScript.ButtonAudio(SessionScript.negative);
-						SessionScript.answersList.Add(new Answer(currentQuestion.index, false, currentQuestion.subject, lastQuestionTime));
-					}
+					answers[answer].GetComponent<Image>().color = Color.red;
+					SessionScript.ButtonAudio(SessionScript.negative);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+					showAnswer = true;
 				}
 				answerPermitted = false;
+				Invoke ("EndQuestion", 0.5f);
+				break;
+		}
+	}
+	
+	public void AnswerTimeout(){
+		if (!answerPermitted){
+			return;
+		}
+		switch (currentQuestion.questionType){
+			case 1:		// Fill-the-blank
+				if (!answerPermitted) return;
+				if (writtenAnswer.text == currentQuestion.answer0){
+					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
+					SessionScript.ButtonAudio(SessionScript.positive);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
+				}
+				if (writtenAnswer.text != currentQuestion.answer0 && writtenAnswer.text != ""){
+					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
+					SessionScript.ButtonAudio(SessionScript.negative);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+					showAnswer = true;
+				}
+				if (writtenAnswer.text == ""){
+					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
+					SessionScript.ButtonAudio(SessionScript.negative);
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
+					showAnswer = true;
+				}
+				answerPermitted = false;
+				Invoke ("EndQuestion", 0.5f);	
+				break;
+			case 2:		// Point-and-click
+				SessionScript.ButtonAudio(SessionScript.negative);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
+				answerPermitted = false;
+				showAnswer = true;
+				Invoke ("EndQuestion", 0.5f);
+				break;
+			case 3:		// Long
+				SessionScript.ButtonAudio(SessionScript.negative);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
+				answerPermitted = false;
+				showAnswer = true;
+				Invoke ("EndQuestion", 0.5f);
+				break;
+			case 4:		// Image
+				SessionScript.ButtonAudio(SessionScript.negative);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
+				answerPermitted = false;
+				showAnswer = true;
+				Invoke ("EndQuestion",  0.5f);
+				break;
+			default:	// Multiple answer
+				SessionScript.ButtonAudio(SessionScript.negative);
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
+				answerPermitted = false;
+				showAnswer = true;
 				Invoke ("EndQuestion", 0.5f);
 				break;
 		}
@@ -489,13 +522,63 @@ public class GameplayScript : MonoBehaviour {
 		if (wrong){
 			print ("wrong");
 			SessionScript.ButtonAudio(SessionScript.negative);
+			SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+			showAnswer = true;
 		}
 		if (!wrong){
 			print ("right");
 			SessionScript.ButtonAudio(SessionScript.positive);
+			SessionScript.score = SessionScript.score + SessionScript.rightScore;
 		}
 		answerPermitted = false;
 		Invoke ("EndQuestion", 0.5f);	
+	}
+	
+	public void EndQuestion(){
+		if (questionWrite.activeSelf){
+			writtenAnswer.text = "";
+		}
+		questionMultiple.SetActive(false);
+		questionWrite.SetActive(false);
+		questionPoint.SetActive(false);
+		questionLong.SetActive(false);
+		questionImage.SetActive(false);
+		if(showAnswer){
+			correctAnswer.SetActive(true);
+			correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "RESPOSTA: " + currentQuestion.answer0;
+			if (currentQuestion.questionType != 2){
+				correctAnswer.transform.Find("Image").gameObject.SetActive(false);
+			}
+			if (currentQuestion.questionType == 2){
+				float red = float.Parse(currentQuestion.answer1);
+				float blue = float.Parse(currentQuestion.answer2);
+				float green = float.Parse(currentQuestion.answer3);
+				correctAnswer.transform.Find("Image").gameObject.SetActive(true);
+				correctAnswer.transform.Find("Image").GetComponent<RawImage>().texture = SessionScript.missingTexture;
+				Vector3 colorInput = new Vector3 (red, blue, green);
+				questionPointDetail.texture = SessionScript.missingTexture;
+				for (int i = 0; i < SessionScript.detail.Count; i++){
+					if (colorInput == SessionScript.detail[i].colorCode){
+						correctAnswer.transform.Find("Image").GetComponent<RawImage>().texture = SessionScript.detail[i].texture;
+						print ("detail found");
+						break;	
+					}
+				}
+			}
+		}
+		if (!SessionScript.singleRun){
+			menu.SetActive(true);
+		}
+		//result.SetActive(true);
+		if (SessionScript.questionsAskedList.Count < SessionScript.numberOfQuestionsDemanded){
+			nextQuestion.SetActive(true);
+		}
+		if (SessionScript.questionsAskedList.Count == SessionScript.numberOfQuestionsDemanded){
+			menu.SetActive(true);
+		}
+		currentQuestionTime = 0;
+		clockImage.fillAmount = 0;
+		clockText.text = "";
 	}
 	
 	public void QuestionPointGetDetail(){
