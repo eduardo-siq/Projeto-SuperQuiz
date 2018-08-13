@@ -315,7 +315,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AboutScript.cs" />
     <Compile Include="Assets\Scripts\Answer.cs" />
+    <Compile Include="Assets\Scripts\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\AvatarScript.cs" />
     <Compile Include="Assets\Scripts\BncQFile.cs" />
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />

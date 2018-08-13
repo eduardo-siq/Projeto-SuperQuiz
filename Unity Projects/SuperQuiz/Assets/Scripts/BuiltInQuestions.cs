@@ -45,9 +45,9 @@ public class BuiltInQuestions {
 		2,
 		"Qual é a macro-região mais populosa do Brasil?",
 		"Sudeste",
+		 "0",
+		 "0",
 		 "1",
-		 "0",
-		 "0",
 		 "",
 		 "X",
 		 "X"));

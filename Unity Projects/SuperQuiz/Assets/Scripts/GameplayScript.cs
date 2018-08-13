@@ -9,6 +9,7 @@ public class GameplayScript : MonoBehaviour {
 	// UI
 	public RectTransform gameplayRect;
 	public GameObject avatar;
+	public Text scoreText;
 	public bool endScene;
 	public string nextScene = "";
 	
@@ -42,7 +43,7 @@ public class GameplayScript : MonoBehaviour {
 	public int rightAnswer;
 	public Question currentQuestion;
 	public float currentQuestionTime;
-	public float lastQuestionTime;
+	public float currentQuestionTimeSpent;
 	public bool answerPermitted;
 	public Vector3 questionPointAnswer;
 	public int clickX;
@@ -60,6 +61,12 @@ public class GameplayScript : MonoBehaviour {
 		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Avatar").gameObject;
 		avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
+		scoreText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Score").gameObject.GetComponent<Text>();
+		scoreText.text = SessionScript.score.ToString() + " pontos!";
+		if (SessionScript.score <= 1 && SessionScript.score >= -1){
+			scoreText.text = SessionScript.score.ToString() + " ponto!";
+		}
 		
 		// Question UI
 		questionMultiple = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple").gameObject;
@@ -137,7 +144,7 @@ public class GameplayScript : MonoBehaviour {
 				if (currentQuestion.questionType == 0){
 					answerPermitted = false;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					//SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, lastQuestionTime));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
+					//SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, currentQuestionTimeSpent));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
 					//Invoke ("StartNewQuestion", 1f);
 					//ChooseAnswer(-1);
 				}
@@ -156,7 +163,7 @@ public class GameplayScript : MonoBehaviour {
 	public void StartNewQuestion(){
 		answerPermitted = true;
 		showAnswer = false;
-		
+		currentQuestionTimeSpent = 0f;
 		bool clear;
 		int i = 0;
 		do {	// Randomly chooses next question and checks if it's repeated
@@ -351,19 +358,20 @@ public class GameplayScript : MonoBehaviour {
 		if (!answerPermitted){
 			return;
 		}
+		currentQuestionTimeSpent = currentQuestionTime;
 		switch (currentQuestion.questionType){
 			case 1:		// Fill-the-blank
 				if (!answerPermitted) return;
 				if (writtenAnswer.text == currentQuestion.answer0){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
 					SessionScript.ButtonAudio(SessionScript.positive);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
 				}
 				if (writtenAnswer.text != currentQuestion.answer0){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
 					showAnswer = true;
 				}
@@ -399,12 +407,12 @@ public class GameplayScript : MonoBehaviour {
 				if (answer == rightAnswer){
 				questionLongAnswers[answer].GetComponent<Image>().color = Color.green;
 				SessionScript.ButtonAudio(SessionScript.positive);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
 				} else{
 					questionLongAnswers[answer].GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
 					showAnswer = true;
 				}
@@ -415,12 +423,12 @@ public class GameplayScript : MonoBehaviour {
 				if (answer == rightAnswer){
 				answers[answer].GetComponent<Image>().color = Color.green;
 				SessionScript.ButtonAudio(SessionScript.positive);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
 				} else{
 					answers[answer].GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
 					showAnswer = true;
 				}
@@ -431,12 +439,12 @@ public class GameplayScript : MonoBehaviour {
 				if (answer == rightAnswer){
 				answers[answer].GetComponent<Image>().color = Color.green;
 				SessionScript.ButtonAudio(SessionScript.positive);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 
 				} else{
 					answers[answer].GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
 					showAnswer = true;
 				}
@@ -456,20 +464,20 @@ public class GameplayScript : MonoBehaviour {
 				if (writtenAnswer.text == currentQuestion.answer0){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
 					SessionScript.ButtonAudio(SessionScript.positive);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.rightScore;	// PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE // PLACEHOLDER SCORE 	
 				}
 				if (writtenAnswer.text != currentQuestion.answer0 && writtenAnswer.text != ""){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.wrongScore;
 					showAnswer = true;
 				}
 				if (writtenAnswer.text == ""){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
 					SessionScript.ButtonAudio(SessionScript.negative);
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 					SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
 					showAnswer = true;
 				}
@@ -478,7 +486,7 @@ public class GameplayScript : MonoBehaviour {
 				break;
 			case 2:		// Point-and-click
 				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
@@ -486,7 +494,7 @@ public class GameplayScript : MonoBehaviour {
 				break;
 			case 3:		// Long
 				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
@@ -494,7 +502,7 @@ public class GameplayScript : MonoBehaviour {
 				break;
 			case 4:		// Image
 				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
@@ -502,7 +510,7 @@ public class GameplayScript : MonoBehaviour {
 				break;
 			default:	// Multiple answer
 				SessionScript.ButtonAudio(SessionScript.negative);
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, lastQuestionTime));
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
 				SessionScript.score = SessionScript.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
@@ -523,12 +531,14 @@ public class GameplayScript : MonoBehaviour {
 			print ("wrong");
 			SessionScript.ButtonAudio(SessionScript.negative);
 			SessionScript.score = SessionScript.score + SessionScript.wrongScore;
+			SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 			showAnswer = true;
 		}
 		if (!wrong){
 			print ("right");
 			SessionScript.ButtonAudio(SessionScript.positive);
 			SessionScript.score = SessionScript.score + SessionScript.rightScore;
+			SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 		}
 		answerPermitted = false;
 		Invoke ("EndQuestion", 0.5f);	
@@ -579,6 +589,10 @@ public class GameplayScript : MonoBehaviour {
 		currentQuestionTime = 0;
 		clockImage.fillAmount = 0;
 		clockText.text = "";
+		scoreText.text = SessionScript.score.ToString() + " pontos!";
+		if (SessionScript.score <= 1 && SessionScript.score >= -1){
+			scoreText.text = SessionScript.score.ToString() + " ponto!";
+		}
 	}
 	
 	public void QuestionPointGetDetail(){

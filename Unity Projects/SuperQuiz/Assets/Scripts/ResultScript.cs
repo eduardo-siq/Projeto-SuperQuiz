@@ -11,10 +11,13 @@ public class ResultScript : MonoBehaviour {
 	public bool endScene;
 	public GameObject avatar;
 	public Text scoreValueText;
+	private bool quit;
 	
 	// Result variables
 	private int scoreValue = 0;
-	private bool quit;
+	
+	// Navigation
+	string nextScene = "";
 
 	
 	void Start(){
@@ -24,9 +27,10 @@ public class ResultScript : MonoBehaviour {
 	IEnumerator StartScene(){
 		yield return null;
 		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Result").GetComponent<RectTransform>();
-		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Result/Avatar").gameObject;
+		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Avatar").gameObject;
 		avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		scoreValueText = GameObject.Find("Canvas/Scroll View/Viewport/Result/ScoreValue").GetComponent<Text>();
 		scoreValue = SessionScript.score;
 		scoreValueText.text = scoreValue.ToString();
@@ -45,9 +49,17 @@ public class ResultScript : MonoBehaviour {
 	
 	public void SelectMenu(){
 		SessionScript.ButtonAudio(SessionScript.neutral);
+		nextScene = "menu";
 		Invoke ("EndScene", 0.25f);
 		Invoke ("NextScene", 0.5f);
 		
+	}
+	
+	public void SelectAnswers(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		nextScene = "answers";
+		Invoke ("EndScene", 0.25f);
+		Invoke ("NextScene", 0.5f);
 	}
 	
 	public void SelectQuit(){
@@ -63,7 +75,7 @@ public class ResultScript : MonoBehaviour {
 	}
 	
 	public void NextScene(){
-		SceneManager.LoadScene("menu", LoadSceneMode.Single);
+		SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
 	}
 	
 	void EndScene(){

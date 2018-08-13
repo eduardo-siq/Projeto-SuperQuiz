@@ -29,9 +29,10 @@ public class AvatarScript : MonoBehaviour {
 		portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
 			item1Texture = portrait.transform.Find("Item1").GetComponent<RawImage>();
 			item2Texture = portrait.transform.Find("Item2").GetComponent<RawImage>();
+			item3Texture = portrait.transform.Find("Item3").GetComponent<RawImage>();
 		item1Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem1").gameObject;
 		item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem2").gameObject;
-		item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem3").gameObject;
+		item3Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/SelectItem3").gameObject;
 		Portrait();
 	}
 	
@@ -106,7 +107,7 @@ public class AvatarScript : MonoBehaviour {
 		// Selection Options
 		item1Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		item2Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
-		item3Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem3];
+		item3Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		
 	}
 	

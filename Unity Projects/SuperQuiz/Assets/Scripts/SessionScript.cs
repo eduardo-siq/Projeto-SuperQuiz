@@ -23,7 +23,7 @@ public class SessionScript : MonoBehaviour {
 	public static List<Answer> answersList;
 	public static int numberOfQuestionsDemanded = 5;
 	public static int pointsByQuestion = 50;	// maybe redundant
-	public static float questionTime = 6f;	// locally defined, maybe defined by BncQ later
+	public static float questionTime = 30f;	// locally defined, maybe defined by BncQ later
 	public static List<string> subjectName;
 	public static List<string> userGroupName;	// maybe unecessary
 	public static bool singleRun = true;
@@ -52,6 +52,8 @@ public class SessionScript : MonoBehaviour {
 	public static AudioClip neutral;
 	public static AudioClip subtle;
 	public static int currentSong;
+	public static bool soundOn;
+	public static float soundVolume;
 	
 	// Auxiliary / Editor
 	public static Texture missingTexture;
@@ -133,6 +135,8 @@ public class SessionScript : MonoBehaviour {
 		song1 = Resources.Load ("Sound/Memories of Green", typeof(AudioClip)) as AudioClip;
 		song2 = Resources.Load ("Sound/Damask Rose", typeof(AudioClip)) as AudioClip;
 		currentSong = 1;
+		soundOn = true;
+		soundVolume = 0.5f;
 		
 		// Score
 		rightScore = 10;
@@ -165,10 +169,6 @@ public class SessionScript : MonoBehaviour {
 			if (currentSong > 2){ currentSong = 1;}
 		}
 		StartCoroutine (UpdateScene());
-	}
-	
-	public static void ButtonAudio(AudioClip audio){
-		buttonAudio.PlayOneShot(audio, 1f);
 	}
 	
 	public void GetDetailList(){
@@ -285,7 +285,7 @@ public class SessionScript : MonoBehaviour {
 	void LoadAvatarAssets(){
 		bool b = true;
 		int i = 0;
-		do{	// Item type 1: hat
+		do{	// Item type 1: hat (?)
 			Texture texture = Resources.Load("Textures/Avatar/avatar_1_1_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
@@ -296,7 +296,7 @@ public class SessionScript : MonoBehaviour {
 		}while (b);
 		b = true;
 		i = 0;
-		do{	// Item type 2: face
+		do{	// Item type 2: face (?)
 			Texture texture = Resources.Load("Textures/Avatar/avatar_1_2_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
@@ -305,10 +305,37 @@ public class SessionScript : MonoBehaviour {
 				b = false;
 			}
 		}while (b);
+		b = true;
+		i = 0;
+		do{	// Item type 3: face (?)
+			Texture texture = Resources.Load("Textures/Avatar/avatar_1_3_" + i.ToString()) as Texture;
+			i = i + 1;
+			if (texture != null){
+				avatarItem3.Add(texture);
+			}else{
+				b = false;
+			}
+		}while (b);
 	}
 	
 	public void PlaySong(AudioClip audio){
-		songAudio.PlayOneShot(audio, 0.5f);
+		songAudio.PlayOneShot(audio, 0f);
+	}
+	
+	public static void ButtonAudio(AudioClip audio){
+		buttonAudio.PlayOneShot(audio, soundVolume*2);
+	}
+	
+	public static void TurnOnOffSound(){
+		soundOn = !soundOn;
+		if (soundOn){
+			soundVolume = 0.5f;
+		}
+		if (!soundOn){
+			soundVolume = 0f;
+		}
+		songAudio.volume = soundVolume;
+		buttonAudio.volume = soundVolume;
 	}
 
 }

@@ -26,6 +26,7 @@ public class MenuScript : MonoBehaviour {
 		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/Avatar").gameObject;
 		avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		
 		// Checks if there are avaiable question
 		if (SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
@@ -71,5 +72,9 @@ public class MenuScript : MonoBehaviour {
 	
 	void EndScene(){
 		endScene = true;
+	}
+	
+	public void TurnOnOffSound(){
+		SessionScript.TurnOnOffSound();
 	}
 }
