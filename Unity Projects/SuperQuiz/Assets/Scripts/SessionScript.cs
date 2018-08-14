@@ -22,7 +22,7 @@ public class SessionScript : MonoBehaviour {
 	public static List<int> questionsAskedList;
 	public static List<Answer> answersList;
 	public static int numberOfQuestionsDemanded = 5;
-	public static int pointsByQuestion = 50;	// maybe redundant
+	//public static int pointsByQuestion = 50;	// maybe redundant
 	public static float questionTime = 30f;	// locally defined, maybe defined by BncQ later
 	public static List<string> subjectName;
 	public static List<string> userGroupName;	// maybe unecessary
@@ -132,8 +132,8 @@ public class SessionScript : MonoBehaviour {
 		negative = Resources.Load ("Sound/negative_sound", typeof(AudioClip)) as AudioClip;
 		neutral = Resources.Load ("Sound/neutral_sound", typeof(AudioClip)) as AudioClip;
 		subtle = Resources.Load ("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
-		song1 = Resources.Load ("Sound/Memories of Green", typeof(AudioClip)) as AudioClip;
-		song2 = Resources.Load ("Sound/Damask Rose", typeof(AudioClip)) as AudioClip;
+		song1 = Resources.Load ("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
+		song2 = Resources.Load ("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
 		currentSong = 1;
 		soundOn = true;
 		soundVolume = 0.5f;
@@ -319,7 +319,7 @@ public class SessionScript : MonoBehaviour {
 	}
 	
 	public void PlaySong(AudioClip audio){
-		songAudio.PlayOneShot(audio, 0f);
+		songAudio.PlayOneShot(audio, soundVolume);
 	}
 	
 	public static void ButtonAudio(AudioClip audio){
