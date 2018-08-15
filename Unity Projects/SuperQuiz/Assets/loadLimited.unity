@@ -141,6 +141,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingBar: {fileID: 0}
+  limitYear: 2018
+  limitMonth: 8
+  limitDay: 15
+  minYear: 2018
+  minMonth: 8
+  minDay: 1
 --- !u!4 &304413636
 Transform:
   m_ObjectHideFlags: 0

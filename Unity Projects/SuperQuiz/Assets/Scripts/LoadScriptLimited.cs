@@ -10,6 +10,9 @@ public class LoadScriptLimited : MonoBehaviour {
 	public float limitYear;
 	public float limitMonth;
 	public float limitDay;
+	public float minYear;
+	public float minMonth;
+	public float minDay;
 
 	void Start (){
 		bool lockGame = false;
@@ -23,6 +26,9 @@ public class LoadScriptLimited : MonoBehaviour {
 		if (currentYear > limitYear) lockGame = true;
 		if (currentMonth > limitMonth) lockGame = true;
 		if (currentDay > limitDay) lockGame = true;
+		if (currentYear < minYear) lockGame = true;
+		if (currentMonth < minMonth) lockGame = true;
+		if (currentDay < minDay) lockGame = true;
 		
 		loadingBar = GameObject.Find("Canvas/LoadingBar").GetComponent<Slider>();
 		
