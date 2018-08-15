@@ -15,10 +15,10 @@ public class LoginScript : MonoBehaviour {
 	// UI
 	public RectTransform loginRect;
 	public bool endScene;
-	public bool quit;
 	public InputField userInputField;
 	public InputField passwordInputField;
 	public int selectedInputField = 1;
+	private bool quit;
 	
 	// Login variables
 	private string user = "12";
@@ -46,6 +46,9 @@ public class LoginScript : MonoBehaviour {
 		if (endScene){
 			loginRect.anchoredPosition = new Vector2 (loginRect.anchoredPosition.x, loginRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
+		}
+		if (quit){
+			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
 		}
 	}
 
@@ -94,7 +97,7 @@ public class LoginScript : MonoBehaviour {
 	
 	public void SelectQuit(){
 		SessionScript.ButtonAudio(SessionScript.neutral);
-		quit = false;
+		quit = true;
 		print ("QUIT");
 		Invoke ("EndScene", 0.5f);
 		Invoke ("Quit", 1f);

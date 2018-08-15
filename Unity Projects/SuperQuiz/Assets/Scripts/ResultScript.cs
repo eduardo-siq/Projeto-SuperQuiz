@@ -64,7 +64,7 @@ public class ResultScript : MonoBehaviour {
 	
 	public void SelectQuit(){
 		SessionScript.ButtonAudio(SessionScript.neutral);
-		quit = false;
+		quit = true;
 		print ("QUIT");
 		Invoke ("EndScene", 0.25f);
 		Invoke ("Quit", 0.5f);

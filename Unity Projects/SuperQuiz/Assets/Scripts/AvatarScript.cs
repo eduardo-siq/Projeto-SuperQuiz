@@ -18,6 +18,7 @@ public class AvatarScript : MonoBehaviour {
 	public GameObject item1Selection;
 	public GameObject item2Selection;
 	public GameObject item3Selection;
+	private bool quit;
 	
 	void Start(){
 		StartCoroutine (StartScene());
@@ -40,6 +41,9 @@ public class AvatarScript : MonoBehaviour {
 		if (endScene){
 			avatarRect.anchoredPosition = new Vector2 (avatarRect.anchoredPosition.x, avatarRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
+		}
+		if (quit){
+			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
 		}
 	}
 	public void NextItem(int item){
