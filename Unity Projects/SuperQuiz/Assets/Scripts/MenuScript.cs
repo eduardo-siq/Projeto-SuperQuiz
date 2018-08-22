@@ -13,7 +13,6 @@ public class MenuScript : MonoBehaviour {
 	
 	// Menu variables
 	private string nextScene = "";
-	private bool quit;
 
 	
 	void Start(){
@@ -41,9 +40,6 @@ public class MenuScript : MonoBehaviour {
 			menuRect.anchoredPosition = new Vector2 (menuRect.anchoredPosition.x, menuRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
 		}
-		if (quit){
-			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
-		}
 	}
 	
 	public void Select(string option){
@@ -54,17 +50,17 @@ public class MenuScript : MonoBehaviour {
 		
 	}
 	
-	public void SelectQuit(){
-		SessionScript.ButtonAudio(SessionScript.neutral);
-		quit = true;
-		print ("QUIT");
-		Invoke ("EndScene", 0.25f);
-		Invoke ("Quit", 0.5f);
-	}
+	// public void SelectQuit(){
+		// SessionScript.ButtonAudio(SessionScript.neutral);
+		// quit = true;
+		// print ("QUIT");
+		// Invoke ("EndScene", 0.25f);
+		// Invoke ("Quit", 0.5f);
+	// }
 	
-	void Quit(){
-		Application.Quit();
-	}
+	// void Quit(){
+		// Application.Quit();
+	// }
 	
 	public void NextScene(){
 		SceneManager.LoadScene(nextScene, LoadSceneMode.Single);

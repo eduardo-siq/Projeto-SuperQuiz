@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 224627598962913722}
   - component: {fileID: 222432504571584450}
   - component: {fileID: 114576213654961120}
+  - component: {fileID: 114926220937589894}
   m_Layer: 5
   m_Name: LowerMenu
   m_TagString: Untagged
@@ -272,7 +273,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114566773929941544}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114926220937589894}
+        m_MethodName: SelectScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: menu
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114179918883514728
@@ -401,7 +413,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114926220937589894}
         m_MethodName: SelectQuit
         m_Mode: 1
         m_Arguments:
@@ -453,8 +465,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Select
+      - m_Target: {fileID: 114926220937589894}
+        m_MethodName: SelectScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -559,7 +571,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114926220937589894}
         m_MethodName: TurnOnOffSound
         m_Mode: 1
         m_Arguments:
@@ -599,6 +611,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114926220937589894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1189429431077162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 169a5146a0853c74a9d86524f33f674f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aboutScript: {fileID: 0}
+  answerScript: {fileID: 0}
+  avatarScript: {fileID: 0}
+  gameplayScript: {fileID: 0}
+  menuScript: {fileID: 0}
+  resultScript: {fileID: 0}
 --- !u!114 &114964978701694062
 MonoBehaviour:
   m_ObjectHideFlags: 1

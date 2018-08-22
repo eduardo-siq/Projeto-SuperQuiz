@@ -177,6 +177,11 @@ public class SessionScript : MonoBehaviour {
 		print ("detail.Count: " + detail.Count);
 	}
 	
+	public void StartNewScene(){
+		songAudio.volume = soundVolume;
+		buttonAudio.volume = soundVolume;
+	}
+	
 	IEnumerator LoadFile (){
 		yield return null;
 		if (File.Exists(Application.persistentDataPath + "/" + bncQFileName + ".dat")){

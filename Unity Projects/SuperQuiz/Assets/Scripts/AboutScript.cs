@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class AboutScript : MonoBehaviour  {
 	
 	// UI
-	public RectTransform resultRect;
+	public RectTransform aboutRect;
 	public bool endScene;
 	private bool quit;
 	
@@ -17,7 +17,7 @@ public class AboutScript : MonoBehaviour  {
 	
 	void Update(){
 		if (endScene){
-			resultRect.anchoredPosition = new Vector2 (resultRect.anchoredPosition.x, resultRect.anchoredPosition.y - Time.deltaTime * 1200);
+			aboutRect.anchoredPosition = new Vector2 (aboutRect.anchoredPosition.x, aboutRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
 		}
 		if (quit){
@@ -27,7 +27,7 @@ public class AboutScript : MonoBehaviour  {
 	
 	IEnumerator StartScene(){
 		yield return null;
-		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/About").GetComponent<RectTransform>();
+		aboutRect = GameObject.Find("Canvas/Scroll View/Viewport/About").GetComponent<RectTransform>();
 	}
 	
 	public void Noise(){
