@@ -41,6 +41,9 @@ public class SessionScript : MonoBehaviour {
 	public static int selectedItem1;
 	public static int selectedItem2;
 	public static int selectedItem3;
+	public static int firstTierItems;
+	public static int secondTierItems;
+	public static int thirdTierItems;
 	
 	// Sound
 	public static AudioSource songAudio;
@@ -122,6 +125,9 @@ public class SessionScript : MonoBehaviour {
 		SessionScript.selectedItem1 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
 		SessionScript.selectedItem2 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
 		SessionScript.selectedItem3 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+		firstTierItems = 5;
+		secondTierItems = 5;
+		thirdTierItems = 5;
 		LoadAvatarAssets();
 		
 		
@@ -289,9 +295,10 @@ public class SessionScript : MonoBehaviour {
 	
 	void LoadAvatarAssets(){
 		bool b = true;
-		int i = 0;
+		int i = 0;	// item index
+		int t = 0;	// item tier
 		do{	// Item type 1: hat (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_1_1_" + i.ToString()) as Texture;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_1_" + i.ToString()) as Texture;	//avatar_tier_type_index
 			i = i + 1;
 			if (texture != null){
 				avatarItem1.Add(texture);
@@ -302,7 +309,7 @@ public class SessionScript : MonoBehaviour {
 		b = true;
 		i = 0;
 		do{	// Item type 2: face (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_1_2_" + i.ToString()) as Texture;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_0_2_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
 				avatarItem2.Add(texture);
@@ -313,7 +320,7 @@ public class SessionScript : MonoBehaviour {
 		b = true;
 		i = 0;
 		do{	// Item type 3: face (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_1_3_" + i.ToString()) as Texture;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_0_3_" + i.ToString()) as Texture;
 			i = i + 1;
 			if (texture != null){
 				avatarItem3.Add(texture);

@@ -18,10 +18,20 @@ public class AvatarScript : MonoBehaviour {
 	public GameObject item1Selection;
 	public GameObject item2Selection;
 	public GameObject item3Selection;
-	private bool quit;
+	bool quit;
+	int currentTier;
+	int maxItemIndex;
 	
 	void Start(){
 		StartCoroutine (StartScene());
+		
+		maxItemIndex = SessionScript.firstTierItems;
+		if (currentTier > 0){
+			maxItemIndex = maxItemIndex + SessionScript.secondTierItems;	
+		}
+		if (currentTier > 1){
+			maxItemIndex = maxItemIndex + SessionScript.thirdTierItems;	
+		}
 	}
 	
 	IEnumerator StartScene(){
@@ -50,19 +60,19 @@ public class AvatarScript : MonoBehaviour {
 		switch (item){
 			case 1:
 				SessionScript.selectedItem1 = SessionScript.selectedItem1 + 1;
-				if (SessionScript.selectedItem1 >= SessionScript.avatarItem1.Count){
+				if (SessionScript.selectedItem1 >= maxItemIndex){
 					SessionScript.selectedItem1 = 0;
 				}
 				break;
 			case 2:
 				SessionScript.selectedItem2 = SessionScript.selectedItem2 + 1;
-				if (SessionScript.selectedItem2 >= SessionScript.avatarItem2.Count){
+				if (SessionScript.selectedItem2 >= maxItemIndex){
 					SessionScript.selectedItem2 = 0;
 				}
 				break;
 			case 3:
 				SessionScript.selectedItem3 = SessionScript.selectedItem3 + 1;
-				if (SessionScript.selectedItem3 >= SessionScript.avatarItem3.Count){
+				if (SessionScript.selectedItem3 >= maxItemIndex){
 					SessionScript.selectedItem3 = 0;
 				}
 				break;
@@ -78,21 +88,21 @@ public class AvatarScript : MonoBehaviour {
 			case 1:
 				SessionScript.selectedItem1 = SessionScript.selectedItem1 - 1;
 				if (SessionScript.selectedItem1 < 0){
-					SessionScript.selectedItem1 = SessionScript.avatarItem1.Count - 1;
+					SessionScript.selectedItem1 = maxItemIndex - 1;
 					
 				}
 				break;
 			case 2:
 				SessionScript.selectedItem2 = SessionScript.selectedItem2 - 1;
 				if (SessionScript.selectedItem2 < 0){
-					SessionScript.selectedItem2 = SessionScript.avatarItem2.Count - 1;
+					SessionScript.selectedItem2 = maxItemIndex - 1;
 					
 				}
 				break;
 			case 3:
 				SessionScript.selectedItem3 = SessionScript.selectedItem3 - 1;
 				if (SessionScript.selectedItem3 < 0){
-					SessionScript.selectedItem3 = SessionScript.avatarItem3.Count - 1;
+					SessionScript.selectedItem3 = maxItemIndex - 1;
 					
 				}
 				break;
