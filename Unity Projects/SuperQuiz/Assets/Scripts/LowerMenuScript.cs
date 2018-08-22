@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LowerMenuScript : MonoBehaviour {
 	
+	// Buttons
+	public GameObject menuButton;
+	public GameObject soundButton;
+	public GameObject infoButton;
+	public GameObject exitButton;
+	public bool lockScene;
+	
+	// Scripts
 	public AboutScript aboutScript;
 	public AnswersScript answerScript;
 	public AvatarScript avatarScript;
@@ -12,27 +21,49 @@ public class LowerMenuScript : MonoBehaviour {
 	public MenuScript menuScript;
 	public ResultScript resultScript;
 	
+	// Textures
+	public Sprite soundOnSprite;
+	public Sprite soundOffSprite;
+	
 	bool quit;
 	
 	string thisScene;
 	string nextScene;
 	
 	void Start(){
+		// Buttons
+		menuButton = this.gameObject.transform.Find("ToMenu").gameObject;
+		soundButton = this.gameObject.transform.Find("Sound").gameObject;
+		infoButton = this.gameObject.transform.Find("ToAbout").gameObject;
+		
+		// Scripts
 		thisScene = SceneManager.GetActiveScene().name;
-		StartCoroutine(GetThisScene());
+		if (thisScene == "about"){
+			aboutScript = GameObject.FindWithTag("SceneManager").GetComponent<AboutScript>();
+			infoButton.GetComponent<Button>().interactable = false;
+		}
+		if (thisScene == "answers") answerScript = GameObject.FindWithTag("SceneManager").GetComponent<AnswersScript>();
+		if (thisScene == "avatar") avatarScript = GameObject.FindWithTag("SceneManager").GetComponent<AvatarScript>();
+		if (thisScene == "gameplay"){
+			gameplayScript = GameObject.FindWithTag("SceneManager").GetComponent<GameplayScript>();
+			lockScene = true;
+			menuButton.GetComponent<Button>().interactable = false;
+			infoButton.GetComponent<Button>().interactable = false;
+		}
+		if (thisScene == "menu"){
+			menuScript = GameObject.FindWithTag("SceneManager").GetComponent<MenuScript>();
+			menuButton.GetComponent<Button>().interactable = false;
+		}
+		if (thisScene == "result") resultScript = GameObject.FindWithTag("SceneManager").GetComponent<ResultScript>();
+		
+		// Textures
+		soundOnSprite = Resources.Load("Textures/LowerMenu/Sound_On_Button", typeof(Sprite)) as Sprite;
+		soundOffSprite = Resources.Load("Textures/LowerMenu/Sound_Off_Button", typeof(Sprite)) as Sprite;
+		
+		// Methods
+		SetButtonItens();
 	}
-	
-	IEnumerator GetThisScene(){
-		yield return null;
-		if (thisScene == "about") aboutScript = GameObject.Find("About").GetComponent<AboutScript>();
-		if (thisScene == "answers") answerScript = GameObject.Find("Answers").GetComponent<AnswersScript>();
-		if (thisScene == "avatar") avatarScript = GameObject.Find("Avatar").GetComponent<AvatarScript>();
-		if (thisScene == "gameplay") gameplayScript = GameObject.Find("Gameplay").GetComponent<GameplayScript>();
-		if (thisScene == "menu") menuScript = GameObject.Find("Menu").GetComponent<MenuScript>();
-		if (thisScene == "result") resultScript = GameObject.Find("Result").GetComponent<ResultScript>();
-		print ("this scene: " + thisScene);
-	}
-	
+
 	void Update(){
 		if (quit){
 			if(SessionScript.soundOn){
@@ -40,9 +71,18 @@ public class LowerMenuScript : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void SetButtonItens(){
+		if (SessionScript.soundOn){
+			soundButton.GetComponent<Image>().sprite = soundOnSprite;
+		}
+		if (!SessionScript.soundOn){
+			soundButton.GetComponent<Image>().sprite = soundOffSprite;
+		}
+	}
 
 	public void SelectScene(string option){
-		if (thisScene == "gameplay"){
+		if (lockScene){
 			SessionScript.ButtonAudio(SessionScript.subtle);
 			return;
 		}
@@ -50,6 +90,7 @@ public class LowerMenuScript : MonoBehaviour {
 			SessionScript.ButtonAudio(SessionScript.subtle);
 			return;
 		}
+		lockScene = true;
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		nextScene = option;
 		Invoke ("EndScene", 0.25f);
@@ -83,5 +124,6 @@ public class LowerMenuScript : MonoBehaviour {
 	
 	public void TurnOnOffSound(){
 		SessionScript.TurnOnOffSound();
+		SetButtonItens();
 	}
 }

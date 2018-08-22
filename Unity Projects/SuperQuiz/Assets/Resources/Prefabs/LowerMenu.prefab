@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 114179918883514728}
   - component: {fileID: 114550429259890488}
   m_Layer: 5
-  m_Name: About
+  m_Name: ToAbout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +306,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 648150d5a4962d14eb359c9458cc961c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c6e19d93974b15c40bb3369a0571f036, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -333,7 +333,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 91801dbf33e2a1a4898a09d7279140bd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d7494c17becffe4e99fe1707e9bcdfa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -497,7 +497,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 7b43ece9e021feb47928f12cae4fb373, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bd8e356fae2bde645bfce43f2f93163b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -548,7 +548,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -603,7 +603,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 34b223abe9aee5b45b72bdfe7a0a5886, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e053a561f669ca14dacc178522414a1d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -622,12 +622,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169a5146a0853c74a9d86524f33f674f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuButton: {fileID: 0}
+  soundButton: {fileID: 0}
+  infoButton: {fileID: 0}
+  exitButton: {fileID: 0}
+  lockScene: 0
   aboutScript: {fileID: 0}
   answerScript: {fileID: 0}
   avatarScript: {fileID: 0}
   gameplayScript: {fileID: 0}
   menuScript: {fileID: 0}
   resultScript: {fileID: 0}
+  soundOnSprite: {fileID: 0}
+  soundOffSprite: {fileID: 0}
 --- !u!114 &114964978701694062
 MonoBehaviour:
   m_ObjectHideFlags: 1
