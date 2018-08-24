@@ -1591,7 +1591,7 @@ Prefab:
     - target: {fileID: 224376445981320864, guid: ac1df41713311514b8c33244a1bdd558,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 225
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 224376445981320864, guid: ac1df41713311514b8c33244a1bdd558,
         type: 2}
@@ -1806,7 +1806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.58431375, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

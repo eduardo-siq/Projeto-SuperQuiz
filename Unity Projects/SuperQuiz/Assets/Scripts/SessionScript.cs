@@ -34,6 +34,7 @@ public class SessionScript : MonoBehaviour {
 	public static Texture2D pointAndClickSource;
 	public static Sprite spritePoint;
 	public static List<Detail> detail;
+	public static bool useQuestionPointOffset = true;
 	
 	// Avatar
 	public static List<Texture> avatarItem1;

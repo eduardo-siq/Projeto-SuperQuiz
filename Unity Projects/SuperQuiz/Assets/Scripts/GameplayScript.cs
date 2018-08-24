@@ -117,11 +117,13 @@ public class GameplayScript : MonoBehaviour {
 		//Point-and-click
 		questionPoint.transform.Find("Background").GetComponent<RawImage>().texture = SessionScript.texturePoint;
 		questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.spritePoint;
-		RectTransform playabeArea = GameObject.Find("Canvas/Background").GetComponent<RectTransform>();
-		float x = Screen.width/2 - playabeArea.sizeDelta.x/2;
-		float y = Screen.height/2 - playabeArea.sizeDelta.y/2;
-		questionPointOffset = new Vector2 (x,y);
-		print ("questionPointOffset " + questionPointOffset);
+		if (SessionScript.useQuestionPointOffset){	// source: 256 X 512 pixels
+			float x = 256f / Screen.width;
+			float y = 512f / Screen.height;
+			questionPointOffset = new Vector2 (x,y);
+		} else{
+			questionPointOffset = new Vector2 (0,0);
+		}
 		
 		// TEST TEST TES TEST
 		Invoke ("StartNewQuestion", 0.1f);
@@ -380,9 +382,8 @@ public class GameplayScript : MonoBehaviour {
 				break;
 			case 2:		// Point-and-click
 				Vector3 click = Input.mousePosition;
-				click.x = click.x - questionPointOffset.x;
-				click.y = click.y - questionPointOffset.y;
-				print ("click " + click.x + ", " + click.y);
+				click.x = click.x * questionPointOffset.x;
+				click.y = click.y * questionPointOffset.y;
 				clickX = Mathf.RoundToInt(click.x);
 				clickY = Mathf.RoundToInt(click.y);
 				bool black = false;
@@ -392,7 +393,6 @@ public class GameplayScript : MonoBehaviour {
 					if (colorInput.y >= - 0.05f && colorInput.y < 0.05f){
 						if (colorInput.z >= - 0.05f && colorInput.z < 0.05f){
 							black = true;
-							print ("black");
 							SessionScript.ButtonAudio(SessionScript.subtle);
 						}
 					}
@@ -519,7 +519,7 @@ public class GameplayScript : MonoBehaviour {
 		}
 	}
 	
-	public void QuestionPointCheckPixel(){
+	public void QuestionPointCheckPixel(){	// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	// OBSOLETE	
 		bool wrong = false;
 		Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX,clickY);
 		Vector3 colorInput = new Vector3 (pixelColor.r, pixelColor.b, pixelColor.g);
