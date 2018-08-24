@@ -5,12 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LoginScript : MonoBehaviour {
-	
-	// ADD QUIT BUTTON ! !
-	// ADD QUIT BUTTON ! !
-	// ADD QUIT BUTTON ! !
-	// ADD QUIT BUTTON ! !
-	// ADD QUIT BUTTON ! !
 
 	// UI
 	public RectTransform loginRect;
@@ -60,7 +54,7 @@ public class LoginScript : MonoBehaviour {
 		passwordInput = input;
 	}
 	
-	public void LoginButton(){
+	public void LoginButton(){	// DUMMY LOGIN
 		if (userInput == user && passwordInput == password){
 			SessionScript.ButtonAudio(SessionScript.positive);
 			SessionScript.userGroup = 0;
@@ -88,7 +82,12 @@ public class LoginScript : MonoBehaviour {
 	}
 	
 	public void NextScene(){
-		SceneManager.LoadScene("menu", LoadSceneMode.Single);
+		if (SessionScript.firstLogIn){	// Dummy first login
+			SceneManager.LoadScene("avatar", LoadSceneMode.Single);
+		}
+		if (!SessionScript.firstLogIn){
+			SceneManager.LoadScene("menu", LoadSceneMode.Single);
+		}
 	}
 	
 	void EndScene(){

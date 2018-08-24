@@ -330,6 +330,7 @@
     <Compile Include="Assets\Scripts\LoginScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
+    <Compile Include="Assets\Scripts\PopUpScript.cs" />
     <Compile Include="Assets\Scripts\QuestionClass.cs" />
     <Compile Include="Assets\Scripts\QuestionClassPreLoad.cs" />
     <Compile Include="Assets\Scripts\ResultScript.cs" />

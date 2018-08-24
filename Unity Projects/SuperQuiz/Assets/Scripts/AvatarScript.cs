@@ -32,6 +32,12 @@ public class AvatarScript : MonoBehaviour {
 		if (currentTier > 1){
 			maxItemIndex = maxItemIndex + SessionScript.thirdTierItems;	
 		}
+		
+		if (SessionScript.firstLogIn){
+			GameObject newPopUp = PopUpScript.InstantiatePopUp("Bem-vindo ao SuperQuiz! Customize seu avatar!", "OK");
+			SessionScript.RaffleInitialAvatar();
+			SessionScript.firstLogIn = false;
+		}
 	}
 	
 	IEnumerator StartScene(){
@@ -123,6 +129,12 @@ public class AvatarScript : MonoBehaviour {
 		item2Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
 		item3Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		
+	}
+	
+	public void SelectRaffle(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		SessionScript.RaffleAvatar(maxItemIndex);
+		Portrait();
 	}
 	
 	public void SelectMenu(){

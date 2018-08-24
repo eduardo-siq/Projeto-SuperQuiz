@@ -10,9 +10,10 @@ public class SessionScript : MonoBehaviour {
 
 	public static SessionScript instance = null;
 	
-	// User
+	// User & Game
 	public static int score;
 	public static int userGroup;
+	public static bool firstLogIn;
 	public bool getBuiltInQuestions;
 	
 	// Questions
@@ -86,6 +87,7 @@ public class SessionScript : MonoBehaviour {
 		// Users
 		score = 0;
 		userGroup = -1; // default for no/unqualified user
+		firstLogIn = true;
 		
 		// Auxiliary
 		missingTexture = Resources.Load("Textures/Questions/missing") as Texture;
@@ -295,39 +297,56 @@ public class SessionScript : MonoBehaviour {
 	
 	void LoadAvatarAssets(){
 		bool b = true;
+		int t = 0;	// item type
+		int r = 0;	// item tier
 		int i = 0;	// item index
-		int t = 0;	// item tier
 		do{	// Item type 1: hat (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_1_" + i.ToString()) as Texture;	//avatar_tier_type_index
-			i = i + 1;
+			Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString()) as Texture;	//avatar_type_tier_index
 			if (texture != null){
-				avatarItem1.Add(texture);
+				if (t == 0){
+					avatarItem1.Add(texture);
+					print ("loaded avatar textures! #: " + avatarItem1.Count + "/ " + t + " " + r + " " + i);
+				}
+				if (t == 1){
+					avatarItem2.Add(texture);
+					print ("loaded avatar textures! #: " + avatarItem2.Count + "/ " + t + " " + r + " " + i);
+				}
+				if (t == 2){
+					avatarItem3.Add(texture);
+					print ("loaded avatar textures! #: " + avatarItem3.Count + "/ " + t + " " + r + " " + i);
+				}
+				i = i + 1;
 			}else{
-				b = false;
+				i = 0;
+				r = r + 1;
+				print ("change tier: " + r);
+				if (r > 2){
+					i = 0;
+					r = 0;
+					t = t + 1;
+					print ("change type: " + t);
+				}
+				if (t > 2){
+					b = false;
+				}
 			}
 		}while (b);
-		b = true;
-		i = 0;
-		do{	// Item type 2: face (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_0_2_" + i.ToString()) as Texture;
-			i = i + 1;
-			if (texture != null){
-				avatarItem2.Add(texture);
-			}else{
-				b = false;
-			}
-		}while (b);
-		b = true;
-		i = 0;
-		do{	// Item type 3: face (?)
-			Texture texture = Resources.Load("Textures/Avatar/avatar_0_3_" + i.ToString()) as Texture;
-			i = i + 1;
-			if (texture != null){
-				avatarItem3.Add(texture);
-			}else{
-				b = false;
-			}
-		}while (b);
+	}
+	
+	public static void RaffleInitialAvatar(){
+		if (avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
+			selectedItem1 = Random.Range(0, firstTierItems);
+			selectedItem2 = Random.Range(0, firstTierItems);
+			selectedItem3 = Random.Range(0, firstTierItems);
+		}
+	}
+	
+	public static void RaffleAvatar (int maxItemIndex){
+		if (avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
+			selectedItem1 = Random.Range(0, maxItemIndex);
+			selectedItem2 = Random.Range(0, maxItemIndex);
+			selectedItem3 = Random.Range(0, maxItemIndex);
+		}
 	}
 	
 	public void PlaySong(AudioClip audio){
