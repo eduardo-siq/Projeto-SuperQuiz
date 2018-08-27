@@ -324,6 +324,7 @@
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />
     <Compile Include="Assets\Scripts\DetailClass.cs" />
     <Compile Include="Assets\Scripts\GameplayScript.cs" />
+    <Compile Include="Assets\Scripts\GlowScript.cs" />
     <Compile Include="Assets\Scripts\LoadScript.cs" />
     <Compile Include="Assets\Scripts\LoadScriptLimited.cs" />
     <Compile Include="Assets\Scripts\LoginLockedScript.cs" />
