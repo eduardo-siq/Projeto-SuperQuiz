@@ -34,7 +34,7 @@ public class AvatarScript : MonoBehaviour {
 		}
 		
 		if (SessionScript.firstLogIn){
-			GameObject newPopUp = PopUpScript.InstantiatePopUp("Bem-vindo ao SuperQuiz! Customize seu avatar!", "OK");
+			GameObject newPopUp = PopUpScript.InstantiatePopUp("Bem-vindo ao SuperQuiz! Customize seu avatar!", "OK", "0");
 			SessionScript.RaffleInitialAvatar();
 			SessionScript.firstLogIn = false;
 		}

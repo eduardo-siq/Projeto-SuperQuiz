@@ -46,9 +46,34 @@ public class PopUpScript : MonoBehaviour  {
 		PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
 		newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
 		newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+		newPopUp.transform.Find("PopUpWindow/Image").gameObject.SetActive(false);
 		return newPopUp;
 	}
 	
+	public static GameObject InstantiatePopUp(string newMainText, string newButtonText, string newTexture){	// MAYBE RETURN TO TYPE VOID
+		GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
+		PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
+		newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
+		newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+		newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = Resources.Load ("Textures/PopUp/" + newTexture) as Texture;
+		if (newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture == null){
+			newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = Resources.Load("Textures/PopUp/missingTexture") as Texture;
+		}
+		return newPopUp;
+	}
+	
+	public static GameObject InstantiatePopUp(string newMainText, string newButtonText, Texture newTexture){	// MAYBE RETURN TO TYPE VOID
+		GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
+		PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
+		newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
+		newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+		newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = newTexture;
+		if (newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture == null){
+			newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = Resources.Load("Textures/PopUp/missingTexture") as Texture;
+		}
+		return newPopUp;
+	}
+
 	public void PressButton(){
 		SessionScript.ButtonAudio(SessionScript.positive);
 		Invoke ("ClosePopUp", 0.25f);

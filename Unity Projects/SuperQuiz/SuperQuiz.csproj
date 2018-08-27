@@ -335,6 +335,7 @@
     <Compile Include="Assets\Scripts\QuestionClassPreLoad.cs" />
     <Compile Include="Assets\Scripts\ResultScript.cs" />
     <Compile Include="Assets\Scripts\SessionScript.cs" />
+    <Compile Include="Assets\Scripts\TestButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\path.txt" />

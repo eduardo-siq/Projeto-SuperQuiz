@@ -10,24 +10,24 @@ public class AnswersScript : MonoBehaviour  {
 	public RectTransform resultRect;
 	public bool endScene;
 	public GameObject avatar;
+	public GameObject answerLinesViewport;
+	public GameObject answerLinePrefab;
+	public Scrollbar answerLineScrollbar;
+	public Texture answerLineTexture1;
+	public Texture answerLineTexture2;
 	public Text scoreValueText;
 	private bool quit;
-	
-	// Answers
-	public Text q0;
-	public Text q1;
-	public Text q2;
-	public Text q3;
-	public Text q4;
 	
 	string right = "acertou";
 	string wrong = "errou";
 	
 	void Start(){
 		StartCoroutine (StartScene());
+		// answerLineScrollbar = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Scrollbar Vertical").GetComponent<Scrollbar>();
 	}
 	
 	void Update(){
+		// answerLineScrollbar.size = 0;
 		if (endScene){
 			resultRect.anchoredPosition = new Vector2 (resultRect.anchoredPosition.x, resultRect.anchoredPosition.y - Time.deltaTime * 1200);
 			return;
@@ -40,73 +40,45 @@ public class AnswersScript : MonoBehaviour  {
 	IEnumerator StartScene(){
 		yield return null;
 		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Answers").GetComponent<RectTransform>();
-		q0 = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Q0/Text").gameObject.GetComponent<Text>();
-		q1 = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Q1/Text").gameObject.GetComponent<Text>();
-		q2 = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Q2/Text").gameObject.GetComponent<Text>();
-		q3 = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Q3/Text").gameObject.GetComponent<Text>();
-		q4 = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Q4/Text").gameObject.GetComponent<Text>();
-		
+		answerLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Viewport/Content").gameObject;
+		answerLinePrefab = Resources.Load("Prefabs/AnswerLine") as GameObject;
+		answerLineTexture1 = Resources.Load("Textures/botão_answer_list") as Texture;
+		answerLineTexture2 = Resources.Load("Textures/botão_answer_list2") as Texture;
+
+		AnswersList();
+	}
+	
+	void AnswersList(){
 		string thisAnswer = "";
-		
-		print ("Answers count: " + SessionScript.answersList.Count);
-		if (SessionScript.answersList.Count > 0){
-			if (SessionScript.answersList[0].right){
+		int index = 0;
+		bool variation1 = true;
+		answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMax = new Vector2 (0, 1);
+		answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMin = new Vector2 (0, 1);
+		for (int i = 0; i < SessionScript.answersList.Count ; i++){
+			index = i + 1;
+			if (SessionScript.answersList[i].right){
 				thisAnswer = right;
 			}
-			if (!SessionScript.answersList[0].right){
+			if (!SessionScript.answersList[i].right){
 				thisAnswer = wrong;
 			}
-			
-			q0.text = "Questão 1: " + thisAnswer + " (" + SessionScript.answersList[0].time.ToString("0.#") + "s)";
-		} else {q0.text = "Ainda não respondeu!";}
-		if (SessionScript.answersList.Count > 1){
-			if (SessionScript.answersList[1].right){
-				thisAnswer = right;
+			GameObject newAnswerLine = Instantiate(answerLinePrefab);
+			newAnswerLine.transform.SetParent(answerLinesViewport.transform, true);
+			newAnswerLine.transform.Find("Text").GetComponent<Text>().text = "Questão " + index.ToString() + ": " + thisAnswer + " (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
+			newAnswerLine.GetComponent<RectTransform>().anchoredPosition = new Vector3 (0f, 0f - 30 * i, 0f);
+			if (variation1){
+				newAnswerLine.GetComponent<RawImage>().texture = answerLineTexture1;
+			} else {
+				newAnswerLine.GetComponent<RawImage>().texture = answerLineTexture2;
 			}
-			if (!SessionScript.answersList[1].right){
-				thisAnswer = wrong;
-			}
-			
-			q1.text = "Questão 1: " + thisAnswer + " (" + SessionScript.answersList[1].time.ToString("0.#") + "s)";
-		} else {q1.text = "Ainda não respondeu!";}
-		if (SessionScript.answersList.Count > 2){
-			if (SessionScript.answersList[2].right){
-				thisAnswer = right;
-			}
-			if (!SessionScript.answersList[2].right){
-				thisAnswer = wrong;
-			}
-			
-			q2.text = "Questão 1: " + thisAnswer + " (" + SessionScript.answersList[2].time.ToString("0.#") + "s)";
-		} else {q2.text = "Ainda não respondeu!";}
-		if (SessionScript.answersList.Count > 3){
-			if (SessionScript.answersList[3].right){
-				thisAnswer = right;
-			}
-			if (!SessionScript.answersList[3].right){
-				thisAnswer = wrong;
-			}
-			
-			q3.text = "Questão 1: " + thisAnswer + " (" + SessionScript.answersList[3].time.ToString("0.#") + "s)";
-		} else {q3.text = "Ainda não respondeu!";}
-		if (SessionScript.answersList.Count > 4){
-			if (SessionScript.answersList[4].right){
-				thisAnswer = right;
-			}
-			if (!SessionScript.answersList[4].right){
-				thisAnswer = wrong;
-			}
-			
-			q4.text = "Questão 1: " + thisAnswer + " (" + SessionScript.answersList[4].time.ToString("0.#") + "s)";
-		} else {q4.text = "Ainda não respondeu!";}
-		
-		if (SessionScript.answersList.Count == 0){
-			q0.text = "Ainda não respondeu!";
-			q1.text = "Ainda não respondeu!";
-			q2.text = "Ainda não respondeu!";
-			q3.text = "Ainda não respondeu!";
-			q4.text = "Ainda não respondeu!";
+			variation1 = !variation1;
+			float sizeY = 30 * i;
+			if (sizeY < 200) sizeY = 200f;
+			answerLinesViewport.GetComponent<RectTransform>().sizeDelta = new Vector2 (200f, sizeY);
+			newAnswerLine.transform.localScale = new Vector3 (1,1,1);
 		}
+		answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().value = 1;
+		// answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().size = 0;
 	}
 	
 	public void SelectAnswers(){
