@@ -316,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AboutScript.cs" />
+    <Compile Include="Assets\Scripts\AnimSucessScript.cs" />
     <Compile Include="Assets\Scripts\Answer.cs" />
     <Compile Include="Assets\Scripts\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\AvatarScript.cs" />

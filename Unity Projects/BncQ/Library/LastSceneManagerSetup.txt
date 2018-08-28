@@ -1,4 +1,4 @@
 sceneSetups:
-- path: E:/RocketPropelledGames/Projeto - Treinamento/Projeto-SuperQuiz/Unity Projects/SuperQuiz/Assets/answers.unity
+- path: Assets/BncQ.unity
   isLoaded: 1
   isActive: 1
