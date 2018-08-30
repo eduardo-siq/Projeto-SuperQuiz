@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/gameplay.unity
+- path: Assets/avatar.unity
   isLoaded: 1
   isActive: 1

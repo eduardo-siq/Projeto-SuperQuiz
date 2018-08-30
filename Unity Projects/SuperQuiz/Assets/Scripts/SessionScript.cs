@@ -17,7 +17,7 @@ public class SessionScript : MonoBehaviour {
 	public bool getBuiltInQuestions;
 	
 	// Questions
-	//public static bool loadQuestions = true;	// If the demo script is enabled, enable this
+	//public static bool loadQuestions = true;	// If the demo script is enabled, enable this 		// DEPRECATED
 	public static List <QuestionPreLoad> questionListPreLoad;
 	public static List <Question> questionList;
 	public static List<int> questionsAskedList;
@@ -37,15 +37,27 @@ public class SessionScript : MonoBehaviour {
 	public static bool useQuestionPointOffset = true;
 	
 	// Avatar
+	public static List<Texture> avatarItem0;
 	public static List<Texture> avatarItem1;
 	public static List<Texture> avatarItem2;
 	public static List<Texture> avatarItem3;
+	public static List<Texture> avatarItem0b;
+	public static List<Texture> avatarItem1b;
+	public static List<Texture> avatarItem2b;
+	public static List<Texture> avatarItem3b;
+	public static Avatar playerAvatar;
+	public static int selectedItem0;
 	public static int selectedItem1;
 	public static int selectedItem2;
 	public static int selectedItem3;
-	public static int firstTierItems;
-	public static int secondTierItems;
-	public static int thirdTierItems;
+	public static int zeroTierMaxIndex;
+	public static int firstTierMaxIndex;
+	public static int secondTierMaxIndex;
+	public static int thirdTierMaxIndex;
+	public static Vector3 item0TierIndex;
+	public static Vector3 item1TierIndex;
+	public static Vector3 item2TierIndex;
+	public static Vector3 item3TierIndex;
 	
 	// Sound
 	public static AudioSource songAudio;
@@ -122,15 +134,25 @@ public class SessionScript : MonoBehaviour {
 		GetDetailList();
 		
 		// Avatar
+		avatarItem0 = new List <Texture>();
 		avatarItem1 = new List <Texture>();
 		avatarItem2 = new List <Texture>();
 		avatarItem3 = new List <Texture>();
-		SessionScript.selectedItem1 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
-		SessionScript.selectedItem2 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
-		SessionScript.selectedItem3 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
-		firstTierItems = 5;
-		secondTierItems = 5;
-		thirdTierItems = 5;
+		avatarItem0b = new List <Texture>();
+		avatarItem1b = new List <Texture>();
+		avatarItem2b = new List <Texture>();
+		avatarItem3b = new List <Texture>();
+		playerAvatar = new Avatar();
+		selectedItem1 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+		selectedItem2 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+		selectedItem3 = 0;	// REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+		firstTierMaxIndex = 5;
+		secondTierMaxIndex = 5;
+		thirdTierMaxIndex = 5;
+		item0TierIndex = new Vector3(0,0,0);
+		item1TierIndex = new Vector3(0,0,0);
+		item2TierIndex = new Vector3(0,0,0);
+		item3TierIndex = new Vector3(0,0,0);
 		LoadAvatarAssets();
 		
 		
@@ -304,20 +326,31 @@ public class SessionScript : MonoBehaviour {
 		do{	// Item type 1: hat (?)
 			Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString()) as Texture;	//avatar_type_tier_index
 			if (texture != null){
+				Texture textureB = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString() + "b") as Texture;	//avatar_type_tier_index
+				if (textureB == null) print ("error textureB " + t + " " + r + " " + i); //REMOVE LATER
 				if (t == 0){
-					avatarItem1.Add(texture);
-					print ("loaded avatar textures! #: " + avatarItem1.Count + "/ " + t + " " + r + " " + i);
+					avatarItem0.Add(texture);
+					avatarItem0b.Add(textureB);
+					print ("loaded avatar textures! #: " + avatarItem0.Count + "/ " + t + " " + r + " " + i);
 				}
 				if (t == 1){
-					avatarItem2.Add(texture);
-					print ("loaded avatar textures! #: " + avatarItem2.Count + "/ " + t + " " + r + " " + i);
+					avatarItem1.Add(texture);
+					avatarItem1b.Add(textureB);
+					print ("loaded avatar textures! #: " + avatarItem1.Count + "/ " + t + " " + r + " " + i);
 				}
 				if (t == 2){
+					avatarItem2.Add(texture);
+					avatarItem2b.Add(textureB);
+					print ("loaded avatar textures! #: " + avatarItem2.Count + "/ " + t + " " + r + " " + i);
+				}
+				if (t == 3){
 					avatarItem3.Add(texture);
+					avatarItem3b.Add(textureB);
 					print ("loaded avatar textures! #: " + avatarItem3.Count + "/ " + t + " " + r + " " + i);
 				}
 				i = i + 1;
 			}else{
+				ItemTierIndex(i,r,t);
 				i = 0;
 				r = r + 1;
 				print ("change tier: " + r);
@@ -327,26 +360,77 @@ public class SessionScript : MonoBehaviour {
 					t = t + 1;
 					print ("change type: " + t);
 				}
-				if (t > 2){
+				if (t > 3){
 					b = false;
 				}
 			}
 		}while (b);
 	}
 	
-	public static void RaffleInitialAvatar(){
-		if (avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
-			selectedItem1 = Random.Range(0, firstTierItems);
-			selectedItem2 = Random.Range(0, firstTierItems);
-			selectedItem3 = Random.Range(0, firstTierItems);
+	void ItemTierIndex(int i, int r, int t){
+		if (t == 0){
+			if (r == 0){
+				item0TierIndex.x = i;
+			}
+			if (r == 1){
+				item0TierIndex.y = i + item0TierIndex.x;
+			}
+			if (r == 2){
+				item0TierIndex.z = i + item0TierIndex.y;
+			}
 		}
+		if (t == 1){
+			if (r == 0){
+				item1TierIndex.x = i;
+			}
+			if (r == 1){
+				item1TierIndex.y = i + item1TierIndex.x;
+			}
+			if (r == 2){
+				item1TierIndex.z = i + item1TierIndex.y;
+			}
+		}
+		if (t == 2){
+			if (r == 0){
+				item2TierIndex.x = i;
+			}
+			if (r == 1){
+				item2TierIndex.y = i + item2TierIndex.x;
+			}
+			if (r == 2){
+				item2TierIndex.z = i + item2TierIndex.y;
+			}
+		}
+		if (t == 3){
+			if (r == 0){
+				item3TierIndex.x = i;
+			}
+			if (r == 1){
+				item3TierIndex.y = i + item3TierIndex.x;
+			}
+			if (r == 2){
+				item3TierIndex.z = i + item3TierIndex.y;
+			}
+		}
+		print ("item 0 tier index " + item0TierIndex);
+		print ("item 1 tier index " + item1TierIndex);
+		print ("item 2 tier index " + item2TierIndex);
+		print ("item 3 tier index " + item3TierIndex);
 	}
 	
-	public static void RaffleAvatar (int maxItemIndex){
-		if (avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
-			selectedItem1 = Random.Range(0, maxItemIndex);
-			selectedItem2 = Random.Range(0, maxItemIndex);
-			selectedItem3 = Random.Range(0, maxItemIndex);
+	public static void RaffleInitialAvatar(){
+		playerAvatar.item0 = Mathf.RoundToInt(Random.Range(0, item0TierIndex.x));
+		playerAvatar.item1 = Mathf.RoundToInt(Random.Range(0, item1TierIndex.x));
+		playerAvatar.item2 = Mathf.RoundToInt(Random.Range(0, item2TierIndex.x));
+		playerAvatar.item3 = Mathf.RoundToInt(Random.Range(0, item3TierIndex.x));
+	}
+	
+	public static void RaffleAvatar (int maxItem0Index, int maxItem1Index, int maxItem2Index, int maxItem3Index){
+		if (avatarItem0.Count > 0 && avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
+			selectedItem1 = Random.Range(0, maxItem0Index);
+			selectedItem1 = Random.Range(0, maxItem1Index);
+			selectedItem2 = Random.Range(0, maxItem2Index);
+			selectedItem3 = Random.Range(0, maxItem3Index);
 		}
 	}
 	
