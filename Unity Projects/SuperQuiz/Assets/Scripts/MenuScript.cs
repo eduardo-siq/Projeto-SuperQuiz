@@ -14,9 +14,9 @@ public class MenuScript : MonoBehaviour {
 	// Menu variables
 	private string nextScene = "";
 
-	
-	void Start(){
-		StartCoroutine (StartScene());
+
+    void Start(){
+        StartCoroutine (StartScene());
 	}
 	
 	IEnumerator StartScene(){

@@ -93,9 +93,11 @@ public class LowerMenuScript : MonoBehaviour {
 		lockScene = true;
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		nextScene = option;
-		Invoke ("EndScene", 0.25f);
-		Invoke ("NextScene", 0.5f);
-	}
+		Invoke ("EndScene", 1.2f);
+		Invoke ("NextScene", 1.2f);
+
+        TransitionScript.StartAnim();
+    }
 	
 	public void SelectQuit(){
 		SessionScript.ButtonAudio(SessionScript.neutral);
@@ -103,7 +105,8 @@ public class LowerMenuScript : MonoBehaviour {
 		print ("QUIT");
 		Invoke ("EndScene", 0.25f);
 		Invoke ("Quit", 0.5f);
-	}
+        
+    }
 	
 	void Quit(){
 		Application.Quit();
