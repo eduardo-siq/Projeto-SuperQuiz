@@ -57,8 +57,8 @@ public class LowerMenuScript : MonoBehaviour {
 		if (thisScene == "result") resultScript = GameObject.FindWithTag("SceneManager").GetComponent<ResultScript>();
 		
 		// Textures
-		soundOnSprite = Resources.Load("Textures/LowerMenu/Sound_On_Button", typeof(Sprite)) as Sprite;
-		soundOffSprite = Resources.Load("Textures/LowerMenu/Sound_Off_Button", typeof(Sprite)) as Sprite;
+		soundOnSprite = Resources.Load("Textures/LowerMenu/MusicaBotao", typeof(Sprite)) as Sprite;
+		soundOffSprite = Resources.Load("Textures/LowerMenu/MusicaOffBotao", typeof(Sprite)) as Sprite;
 		
 		// Methods
 		SetButtonItens();
