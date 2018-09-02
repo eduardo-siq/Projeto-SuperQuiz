@@ -12,8 +12,9 @@ public class TestButton : MonoBehaviour  {
 		sub.Add(true);
 		for (int i = 0; i < 15; i++){
 			SessionScript.answersList.Add(new Answer(i, true, false, sub, 1f));
-		}
-		print ("SessionScript.answersList: " + SessionScript.answersList.Count);
-	}
-	
+        }
+        print ("SessionScript.answersList: " + SessionScript.answersList.Count);
+        GameObject.Find("Answers").gameObject.GetComponent<AnswersScript>().AnswersList();
+    }
+   
 }
