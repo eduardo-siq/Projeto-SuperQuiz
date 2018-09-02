@@ -95,8 +95,8 @@ public class LowerMenuScript : MonoBehaviour {
 		nextScene = option;
 		Invoke ("EndScene", 1.2f);
 		Invoke ("NextScene", 1.2f);
-
-        TransitionScript.StartAnim();
+		TransitionScript.PlayAnimation();
+        TransitionScript.StartAnimation();
     }
 	
 	public void SelectQuit(){

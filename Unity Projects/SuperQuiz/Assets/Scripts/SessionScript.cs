@@ -327,7 +327,9 @@ public class SessionScript : MonoBehaviour {
 			Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString()) as Texture;	//avatar_type_tier_index
 			if (texture != null){
 				Texture textureB = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString() + "b") as Texture;	//avatar_type_tier_index
-				if (textureB == null) print ("error textureB " + t + " " + r + " " + i); //REMOVE LATER
+				if (textureB == null){
+					textureB = Resources.Load("Textures/Avatar/avatar_blank") as Texture;
+				}
 				if (t == 0){
 					avatarItem0.Add(texture);
 					avatarItem0b.Add(textureB);

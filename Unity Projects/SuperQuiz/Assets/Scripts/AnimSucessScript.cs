@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AnimSucessScript : MonoBehaviour  {
+	
+	GameObject animationObj;
 
 	float amountCircle = 0;
 	float amountSymbol = 0;
@@ -13,22 +15,22 @@ public class AnimSucessScript : MonoBehaviour  {
 	bool symbol = false;
 
 	void Start(){
-		print ("START ANIM");
-		animationCircle = this.gameObject.transform.Find ("Circle").GetComponent<Image>();
-		animationSymbol = this.gameObject.transform.Find ("Symbol").GetComponent<Image>();
+		animationObj = this.gameObject.transform.Find ("Sucess").gameObject;
+		animationCircle = animationObj.transform.Find("Circle").GetComponent<Image>();
+		animationSymbol = animationObj.transform.Find("Symbol").GetComponent<Image>();
 		animationCircle.fillAmount = amountCircle;
 		animationSymbol.fillAmount = amountSymbol;
-		Invoke ("Circle", 0.1f);
-		Invoke ("Symbol", 0.75f);
+		animationObj.SetActive(false);
 	}
-
+	
 	void Update(){
 		if (circle){
-			amountCircle = amountCircle + Time.deltaTime * 1.25f;
+			amountCircle = amountCircle + Time.deltaTime * 2f;
 			animationCircle.fillAmount = amountCircle;
 		}
 		if (amountCircle >= 1){
 			circle = false;
+			symbol = true;
 		}
 		if (symbol){
 			amountSymbol = amountSymbol + Time.deltaTime * 1.25f;
@@ -36,15 +38,23 @@ public class AnimSucessScript : MonoBehaviour  {
 		}
 		if (amountSymbol >= 1){
 			symbol = false;
+			Invoke ("Reset", 2f);
 		}
 	}
 	
-	void Circle(){
+	public void PlayAnimation(){
+		animationObj.SetActive(true);
 		circle = true;
 	}
 	
-	void Symbol(){
-		symbol = true;
-	}	
+	void Reset(){
+		amountCircle = 0;
+		amountSymbol = 0;
+		circle = false;
+		symbol = false;
+		animationCircle.fillAmount = 0;
+		animationSymbol.fillAmount = 0;
+		animationObj.SetActive(false);
+	}
 }
 
