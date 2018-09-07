@@ -31,25 +31,24 @@ public class SessionScript : MonoBehaviour
     public static bool singleRun = true;
 
     // Point-and-Click
-    public static Texture texturePoint;
     public static Texture2D pointAndClickSource;
     public static Sprite spritePoint;
     public static List<Detail> detail;
     public static bool useQuestionPointOffset = true;
 
     // Avatar
-    public static List<Texture> avatarItem0;
-    public static List<Texture> avatarItem1;
-    public static List<Texture> avatarItem2;
-    public static List<Texture> avatarItem3;
-    public static List<Texture> avatarItem0b;
-    public static List<Texture> avatarItem1b;
-    public static List<Texture> avatarItem2b;
-    public static List<Texture> avatarItem3b;
-    public static List<Texture> avatarHairMasc;
-    public static List<Texture> avatarHairFem;
-    public static List<Texture> avatarBase;
-    public static Texture avatarBlank;
+    public static List<Sprite> avatarItem0;
+    public static List<Sprite> avatarItem1;
+    public static List<Sprite> avatarItem2;
+    public static List<Sprite> avatarItem3;
+    public static List<Sprite> avatarItem0b;
+    public static List<Sprite> avatarItem1b;
+    public static List<Sprite> avatarItem2b;
+    public static List<Sprite> avatarItem3b;
+	public static List<Sprite> avatarHairFem;
+    public static List<Sprite> avatarHairMasc;
+    public static List<Sprite> avatarBase;
+    public static Sprite avatarBlank;
     public static Avatar playerAvatar;
     public static int selectedItem0;
     public static int selectedItem1;
@@ -63,6 +62,10 @@ public class SessionScript : MonoBehaviour
     public static Vector3 item1TierIndex;
     public static Vector3 item2TierIndex;
     public static Vector3 item3TierIndex;
+    public static int customizationStage;   // 0: gender, 1: complexion & hair, 2: itens
+    public static int currentTier;
+    public static int thresholdTier1 = 20;
+    public static int thresholdTier2 = 40;
 
     // Sound
     public static AudioSource songAudio;
@@ -81,7 +84,7 @@ public class SessionScript : MonoBehaviour
     public static float soundVolume;
 
     // Auxiliary / Editor
-    public static Texture missingTexture;
+    public static Sprite missingTexture;
     public float questionsAskedListCount;
     public float answersListCount;
     public static string bncQFileName;
@@ -117,8 +120,7 @@ public class SessionScript : MonoBehaviour
         firstLogIn = true;
 
         // Auxiliary
-        missingTexture = Resources.Load("Textures/Questions/missing") as Texture;
-
+        missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 
         // Questions
         questionListPreLoad = new List<QuestionPreLoad>();
@@ -129,12 +131,12 @@ public class SessionScript : MonoBehaviour
         userGroupName = new List<string>();
 
         // Point-and-Click
-        texturePoint = Resources.Load("Textures/PointAndClick/pointAndClick") as Texture;
-        if (texturePoint == null)
-        {
-            print("missing texture");
-            texturePoint = missingTexture;
-        }
+        // texturePoint = Resources.Load("Textures/PointAndClick/pointAndClick", typeof(Sprite)) as Sprite;	// OBSOLETE
+        // if (texturePoint == null)																		// OBSOLETE
+        // {																								// OBSOLETE
+            // print("missing texture");																	// OBSOLETE
+            // texturePoint = missingTexture;																// OBSOLETE
+        // }																								// OBSOLETE
         pointAndClickSource = Resources.Load("Textures/PointAndClick/pointAndClickSource") as Texture2D;
         if (pointAndClickSource == null)
         {
@@ -145,22 +147,31 @@ public class SessionScript : MonoBehaviour
         if (spritePoint == null)
         {
             print("missing sprite");
-            spritePoint = Resources.Load("Textures/PointAndClick/missingSprite") as Sprite;
+            spritePoint = Resources.Load("Textures/PointAndClick/missingSprite", typeof(Sprite)) as Sprite;
         }
         detail = new List<Detail>();
         GetDetailList();
+		print ("detail[0].colorCode " + detail[0].colorCode);
+		print ("detail[1].colorCode " + detail[1].colorCode);
+		print ("detail[2].colorCode " + detail[2].colorCode);
 
         // Avatar
-        avatarItem0 = new List<Texture>();
-        avatarItem1 = new List<Texture>();
-        avatarItem2 = new List<Texture>();
-        avatarItem3 = new List<Texture>();
-        avatarItem0b = new List<Texture>();
-        avatarItem1b = new List<Texture>();
-        avatarItem2b = new List<Texture>();
-        avatarItem3b = new List<Texture>();
-        avatarBlank = Resources.Load("Textures/Avatar/avatar_blank") as Texture;
-        playerAvatar = new Avatar();
+        avatarItem0 = new List<Sprite>();
+        avatarItem1 = new List<Sprite>();
+        avatarItem2 = new List<Sprite>();
+        avatarItem3 = new List<Sprite>();
+        avatarItem0b = new List<Sprite>();
+        avatarItem1b = new List<Sprite>();
+        avatarItem2b = new List<Sprite>();
+        avatarItem3b = new List<Sprite>();
+        avatarHairFem = new List<Sprite>();
+        avatarHairMasc = new List<Sprite>();
+        avatarBase = new List<Sprite>();
+        avatarBlank = Resources.Load("Textures/Avatar/avatar_blank", typeof(Sprite)) as Sprite;
+        if (firstLogIn)
+        {
+            playerAvatar = new Avatar();
+        }
         selectedItem1 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
         selectedItem2 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
         selectedItem3 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
@@ -206,6 +217,7 @@ public class SessionScript : MonoBehaviour
             print("load built-in questions");
             StartCoroutine(LoadBuiltInQuestions());
         }
+
     }
 
     IEnumerator UpdateScene()
@@ -301,8 +313,8 @@ public class SessionScript : MonoBehaviour
     public static void GetQuestionListFromPreLoad()
     {
         print("GetQuestionListFromPreLoad");
-        Texture missingTexture = Resources.Load("Textures/Questions/missing") as Texture;
-        Texture texture;
+        Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
+        Sprite texture;
         if (userGroup == -1) return;
         print("GetQuestionListFromPreLoad OK");
         print("questionListPreLoad.Count " + questionListPreLoad.Count);
@@ -316,7 +328,7 @@ public class SessionScript : MonoBehaviour
                 if (questionList[i].questionType == 4)
                 {
                     print("loading texture");
-                    texture = Resources.Load("Textures/Questions/" + i.ToString()) as Texture;
+                    texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
                     if (texture != null)
                     {
                         questionList[i].questionImage = texture;
@@ -340,7 +352,7 @@ public class SessionScript : MonoBehaviour
                         if (questionList[i].questionType == 4)
                         {
                             print("loading texture");
-                            texture = Resources.Load("Textures/Questions/" + i.ToString()) as Texture;
+                            texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
                             if (texture != null)
                             {
                                 questionList[i].questionImage = texture;
@@ -380,10 +392,10 @@ public class SessionScript : MonoBehaviour
         int i = 0;  // item index
         do
         {   // Item type 1: hat (?)
-            Texture texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString()) as Texture;    //avatar_type_tier_index
+            Sprite texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString(), typeof(Sprite)) as Sprite;    //avatar_type_tier_index
             if (texture != null)
             {
-                Texture textureB = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString() + "b") as Texture; //avatar_type_tier_index
+                Sprite textureB = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString() + "b", typeof(Sprite)) as Sprite; //avatar_type_tier_index
                 if (textureB == null)
                 {
                     textureB = avatarBlank;
@@ -436,7 +448,7 @@ public class SessionScript : MonoBehaviour
         i = 0;
         do
         {
-            Texture texture = Resources.Load("Textures/Avatar/avatar_hf_" + i.ToString()) as Texture;
+            Sprite texture = Resources.Load("Textures/Avatar/avatar_hf_" + i.ToString(), typeof(Sprite)) as Sprite;
             if (texture != null)
             {
                 avatarHairFem.Add(texture);
@@ -445,11 +457,12 @@ public class SessionScript : MonoBehaviour
             {
                 loadHairFem = false;
             }
+            i = i + 1;
         } while (loadHairFem);
         i = 0;
         do
         {
-            Texture texture = Resources.Load("Textures/Avatar/avatar_hm_" + i.ToString()) as Texture;
+            Sprite texture = Resources.Load("Textures/Avatar/avatar_hm_" + i.ToString(), typeof(Sprite)) as Sprite;
             if (texture != null)
             {
                 avatarHairMasc.Add(texture);
@@ -458,11 +471,12 @@ public class SessionScript : MonoBehaviour
             {
                 loadHairMasc = false;
             }
+            i = i + 1;
         } while (loadHairMasc);
         i = 0;
         do
         {
-            Texture texture = Resources.Load("Texture/Avatar/avatar_base_" + i.ToString()) as Texture;
+            Sprite texture = Resources.Load("Textures/Avatar/avatar_base_" + i.ToString(), typeof(Sprite)) as Sprite;
             if (texture != null)
             {
                 avatarBase.Add(texture);
@@ -471,6 +485,7 @@ public class SessionScript : MonoBehaviour
             {
                 loadBase = false;
             }
+            i = i + 1;
         } while (loadBase);
     }
 
@@ -542,8 +557,9 @@ public class SessionScript : MonoBehaviour
         print("item 3 tier index " + item3TierIndex);
     }
 
-    public static void RaffleInitialAvatar()
+    public static void RaffleInitialAvatar()	// OBSOLETE
     {
+        playerAvatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
         playerAvatar.item0 = Mathf.RoundToInt(Random.Range(0, item0TierIndex.x));
         playerAvatar.item1 = Mathf.RoundToInt(Random.Range(0, item1TierIndex.x));
         playerAvatar.item2 = Mathf.RoundToInt(Random.Range(0, item2TierIndex.x));
@@ -552,6 +568,7 @@ public class SessionScript : MonoBehaviour
 
     public static void RaffleAvatar(int maxItem0Index, int maxItem1Index, int maxItem2Index, int maxItem3Index)
     {
+        playerAvatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
         if (avatarItem0.Count > 0 && avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0)
         {
             selectedItem1 = Random.Range(0, maxItem0Index);

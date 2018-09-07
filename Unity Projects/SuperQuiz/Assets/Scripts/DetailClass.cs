@@ -6,11 +6,14 @@ using UnityEngine.UI;
 public class Detail {
 	
 	public Vector3 colorCode;
-	public Texture texture;
+	public Sprite texture;
 	
 	public Detail (float r, float b, float g, string t){
 		colorCode = new Vector3 (r, b, g);
-		texture = Resources.Load("Textures/PointAndClick/detail" + t) as Texture;
+		texture = Resources.Load("Textures/PointAndClick/detail" + t, typeof(Sprite)) as Sprite;
+		if (texture != null){
+			Debug.Log ("detail" + t + " loaded");
+		}
 		if (texture == null){
 			Debug.Log ("detail" + t + " file not found");
 		}

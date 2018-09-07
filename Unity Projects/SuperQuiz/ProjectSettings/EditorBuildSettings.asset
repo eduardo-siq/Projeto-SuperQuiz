@@ -14,13 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/load.unity
     guid: faf9db636a31a2d438c67db9662a96f6
-  - enabled: 1
+  - enabled: 0
     path: Assets/loadLimited.unity
     guid: ea21327cac92d164abed6e234ccd8592
   - enabled: 1
     path: Assets/login.unity
     guid: 74d326c49a627c646a71cebee23e7dde
-  - enabled: 1
+  - enabled: 0
     path: Assets/loginLocked.unity
     guid: fab58d67ed88ac0468c117cb4fec929e
   - enabled: 1

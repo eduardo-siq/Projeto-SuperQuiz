@@ -14,8 +14,8 @@ public class AnswersScript : MonoBehaviour
     public GameObject answerLinesViewport;
     public GameObject answerLinePrefab;
     public Scrollbar answerLineScrollbar;
-    public Texture answerLineTexture1;
-    public Texture answerLineTexture2;
+    public Sprite answerLineTexture1;
+    public Sprite answerLineTexture2;
     public Text scoreValueText;
     private bool quit;
 
@@ -46,8 +46,8 @@ public class AnswersScript : MonoBehaviour
         resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Answers").GetComponent<RectTransform>();
         answerLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Viewport/Content").gameObject;
         answerLinePrefab = Resources.Load("Prefabs/AnswerLine") as GameObject;
-        answerLineTexture1 = Resources.Load("Textures/botão_answer_list") as Texture;
-        answerLineTexture2 = Resources.Load("Textures/botão_answer_list2") as Texture;
+        answerLineTexture1 = Resources.Load("Textures/UI/button_answer_list", typeof(Sprite)) as Sprite;
+        answerLineTexture2 = Resources.Load("Textures/UI/button_answer_list2", typeof(Sprite)) as Sprite;
 
         AnswersList();
     }
@@ -76,11 +76,11 @@ public class AnswersScript : MonoBehaviour
             newAnswerLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f - 30 * i, 0f);
             if (variation1)
             {
-                newAnswerLine.GetComponent<RawImage>().texture = answerLineTexture1;
+                newAnswerLine.GetComponent<Image>().sprite = answerLineTexture1;
             }
             else
             {
-                newAnswerLine.GetComponent<RawImage>().texture = answerLineTexture2;
+                newAnswerLine.GetComponent<Image>().sprite = answerLineTexture2;
             }
             variation1 = !variation1;
             float sizeY = 30 * i;
@@ -102,11 +102,6 @@ public class AnswersScript : MonoBehaviour
     public void NextScene()
     {
         SceneManager.LoadScene("result", LoadSceneMode.Single);
-    }
-
-    public void SlideList()
-    {
-        SessionScript.ButtonAudioLow(SessionScript.blop);
     }
 
     void EndScene()

@@ -10,26 +10,29 @@ public class AvatarScript : MonoBehaviour
     // UI
     public RectTransform avatarRect;
     public bool endScene;
-    public GameObject nextStage;
+    public GameObject selectStage;
+    public bool allowNext = true; 	// OBSOLETE
+	public GameObject lowerMenu;
+	public GameObject options;
 
     // Avatar variables
     public GameObject portrait;
-    public RawImage baseTexture;    
-    public RawImage hairTexture;
-    public RawImage item0Texture;   // óculos
-    public RawImage item1Texture;   // camisa
-    public RawImage item2Texture;   // calça
-    public RawImage item3Texture;   // sapato
-    public RawImage item0TextureB;  // óculos_B
-    public RawImage item1TextureB;  // camisa_B
-    public RawImage item2TextureB;  // calça_B
-    public RawImage item3TextureB;  // sapato_B
+    public Image baseTexture;
+    public Image hairTexture;
+    public Image item0Texture;   // óculos
+    public Image item1Texture;   // camisa
+    public Image item2Texture;   // calça
+    public Image item3Texture;   // sapato
+    public Image item0TextureB;  // óculos_B
+    public Image item1TextureB;  // camisa_B
+    public Image item2TextureB;  // calça_B
+    public Image item3TextureB;  // sapato_B
     public GameObject item0Selection;
     public GameObject item1Selection;
     public GameObject item2Selection;
     public GameObject item3Selection;
     bool quit;
-    int currentTier = 0;    // BETTER MOVE TO SESSION SCRIPT
+    // int currentTier = 0;    // OBSOLETE
     int item0MaxIndex;
     int item1MaxIndex;
     int item2MaxIndex;
@@ -40,14 +43,57 @@ public class AvatarScript : MonoBehaviour
     public GameObject complextion;
     public GameObject hair;
     public GameObject items;
-    public bool allStagesCompleted;
-    public int stage = 3;   // 0: gender, 1: complexion, 2: hair, 3: itens	// BETTER MOVE TO SESSION SCRIPT
+    public bool allStagesCompleted;	// MOVE TO SESSION SCRIPT
+    // public int stage = 0;   // 0: gender, 1: complexion & hair, 2: itens	// OBSOLETE
 
     void Start()
     {
         StartCoroutine(StartScene());
+    }
 
-        if (currentTier == 0)
+    IEnumerator StartScene()
+    {
+        yield return null;
+        selectStage = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState").gameObject;
+        avatarRect = GameObject.Find("Canvas/Scroll View/Viewport/Avatar").GetComponent<RectTransform>();
+        portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
+		lowerMenu = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/LowerMenu").gameObject;
+		options = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Options").gameObject;
+        baseTexture = portrait.transform.Find("Base").GetComponent<Image>();
+        hairTexture = portrait.transform.Find("Hair").GetComponent<Image>();
+        item0Texture = portrait.transform.Find("Item0").GetComponent<Image>();
+        item1Texture = portrait.transform.Find("Item1").GetComponent<Image>();
+        item2Texture = portrait.transform.Find("Item2").GetComponent<Image>();
+        item3Texture = portrait.transform.Find("Item3").GetComponent<Image>();
+        item0TextureB = portrait.transform.Find("Item0B").GetComponent<Image>();
+        item1TextureB = portrait.transform.Find("Item1B").GetComponent<Image>();
+        item2TextureB = portrait.transform.Find("Item2B").GetComponent<Image>();
+        item3TextureB = portrait.transform.Find("Item3B").GetComponent<Image>();
+        item0Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem0").gameObject;
+        item1Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem1").gameObject;
+        item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem2").gameObject;
+        item3Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem3").gameObject;
+        // Creation process
+        gender = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Gender").gameObject;
+        complextion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Complexion").gameObject;
+        hair = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Hair").gameObject;
+        items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
+		if (SessionScript.customizationStage == 2){
+			allStagesCompleted = true;
+		}
+        CustomizationStage();
+        Portrait();
+        allowNext = false;
+		
+		if (SessionScript.score >= SessionScript.thresholdTier1)
+        {
+            SessionScript.currentTier = 1;
+        }
+        if (SessionScript.score >= SessionScript.thresholdTier2)
+        {
+            SessionScript.currentTier = 2;
+        }
+        if (SessionScript.currentTier == 0)
         {
             print("TIER 0");
             item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.x);
@@ -55,7 +101,7 @@ public class AvatarScript : MonoBehaviour
             item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.x);
             item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.x);
         }
-        if (currentTier == 1)
+        if (SessionScript.currentTier == 1)
         {
             print("TIER 1");
             item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.y);
@@ -63,7 +109,7 @@ public class AvatarScript : MonoBehaviour
             item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.y);
             item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.y);
         }
-        if (currentTier == 2)
+        if (SessionScript.currentTier == 2)
         {
             print("TIER 2");
             item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.z);
@@ -74,39 +120,9 @@ public class AvatarScript : MonoBehaviour
         if (SessionScript.firstLogIn)
         {
             TransitionScript.SkipAnimation();
-            GameObject newPopUp = PopUpScript.InstantiatePopUp("Bem-vindo ao SuperQuiz! Customize seu avatar!", "OK", "0");
             SessionScript.RaffleInitialAvatar();
             SessionScript.firstLogIn = false;
         }
-    }
-
-    IEnumerator StartScene()
-    {
-        yield return null;
-        nextStage = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/NextStage").gameObject;
-        avatarRect = GameObject.Find("Canvas/Scroll View/Viewport/Avatar").GetComponent<RectTransform>();
-        portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
-        baseTexture = portrait.transform.Find("Base").GetComponent<RawImage>();
-        hairTexture = portrait.transform.Find("Hair").GetComponent<RawImage>();
-        item0Texture = portrait.transform.Find("Item0").GetComponent<RawImage>();
-        item1Texture = portrait.transform.Find("Item1").GetComponent<RawImage>();
-        item2Texture = portrait.transform.Find("Item2").GetComponent<RawImage>();
-        item3Texture = portrait.transform.Find("Item3").GetComponent<RawImage>();
-        item0TextureB = portrait.transform.Find("Item0B").GetComponent<RawImage>();
-        item1TextureB = portrait.transform.Find("Item1B").GetComponent<RawImage>();
-        item2TextureB = portrait.transform.Find("Item2B").GetComponent<RawImage>();
-        item3TextureB = portrait.transform.Find("Item3B").GetComponent<RawImage>();
-        item0Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem0").gameObject;
-        item1Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem1").gameObject;
-        item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem2").gameObject;
-        item3Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem3").gameObject;
-        // Creation process
-        gender = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Gender").gameObject;
-        complextion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Complexion").gameObject;
-        hair = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Hair").gameObject;
-        items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
-        CustomizationStage();
-        Portrait();
     }
 
     void Update()
@@ -172,33 +188,33 @@ public class AvatarScript : MonoBehaviour
                 SessionScript.playerAvatar.item0 = SessionScript.playerAvatar.item0 - 1;
                 if (SessionScript.playerAvatar.item0 < 0)
                 {
-                    SessionScript.playerAvatar.item0 = item0MaxIndex - 1;
-
+                    SessionScript.playerAvatar.item0 = item0MaxIndex;
                 }
+				print (SessionScript.playerAvatar.item0);
                 break;
             case 1:
                 SessionScript.playerAvatar.item1 = SessionScript.playerAvatar.item1 - 1;
                 if (SessionScript.playerAvatar.item1 < 0)
                 {
-                    SessionScript.playerAvatar.item1 = item1MaxIndex - 1;
-
+                    SessionScript.playerAvatar.item1 = item1MaxIndex;
                 }
+				print (SessionScript.playerAvatar.item1);
                 break;
             case 2:
                 SessionScript.playerAvatar.item2 = SessionScript.playerAvatar.item2 - 1;
                 if (SessionScript.playerAvatar.item2 < 0)
                 {
-                    SessionScript.playerAvatar.item2 = item2MaxIndex - 1;
-
+                    SessionScript.playerAvatar.item2 = item2MaxIndex;
                 }
+				print (SessionScript.playerAvatar.item2);
                 break;
             case 3:
                 SessionScript.playerAvatar.item3 = SessionScript.playerAvatar.item3 - 1;
                 if (SessionScript.playerAvatar.item3 < 0)
                 {
-                    SessionScript.playerAvatar.item3 = item3MaxIndex - 1;
-
+                    SessionScript.playerAvatar.item3 = item3MaxIndex;
                 }
+				print (SessionScript.playerAvatar.item3);
                 break;
             default:
                 break;
@@ -259,40 +275,50 @@ public class AvatarScript : MonoBehaviour
 
     public void CustomizationStage()
     {
-        if (stage == 0)
+        if (SessionScript.customizationStage == 0)
         {
+            //allowNext = false;
             PopUpScript.InstantiatePopUp("Vamos criar seu avatar nesse jogo! Comece escolhendo seu gênero.", "OK");
             portrait.SetActive(false);
             gender.SetActive(true);
             complextion.SetActive(false);
             hair.SetActive(false);
             items.SetActive(false);
-            nextStage.SetActive(true);
+            selectStage.SetActive(false);
+			lowerMenu.SetActive(false);
+			options.SetActive(false);
         }
-        if (stage == 1)
+        if (SessionScript.customizationStage == 1)
         {
+            //allowNext = false;
             PopUpScript.InstantiatePopUp("Agora, escolha a aparência.", "OK");
             portrait.SetActive(true);
             gender.SetActive(false);
             complextion.SetActive(true);
             hair.SetActive(true);
             items.SetActive(false);
-            nextStage.SetActive(true);
+            selectStage.SetActive(true);
+			lowerMenu.SetActive(false);
+			options.SetActive(false);
+			RaffleBlankAvatar();
         }
-        if (stage == 2)
+        if (SessionScript.customizationStage == 2)
         {
-            if (allStagesCompleted)
+            if (!allStagesCompleted)
             {
+				RaffleAvatarItems();
                 PopUpScript.InstantiatePopUp("Por último, escolha seus acessórios.", "OK");
             }
-            SessionScript.RaffleAvatar(item0MaxIndex, item1MaxIndex, item2MaxIndex, item3MaxIndex);
             portrait.SetActive(true);
             gender.SetActive(false);
             complextion.SetActive(false);
             hair.SetActive(false);
             items.SetActive(true);
-            nextStage.SetActive(false);
+            selectStage.SetActive(false);
+			lowerMenu.SetActive(true);
+			options.SetActive(true);
             allStagesCompleted = true;
+            Portrait();
         }
     }
 
@@ -305,29 +331,38 @@ public class AvatarScript : MonoBehaviour
 
     public void Portrait()
     {
-        baseTexture.texture = SessionScript.avatarBase[SessionScript.playerAvatar.skin];
+        if (SessionScript.customizationStage == 0)
+        {
+            RaffleBlankAvatar();
+            return;
+        }
+        baseTexture.sprite = SessionScript.avatarBase[SessionScript.playerAvatar.skin];
         if (SessionScript.playerAvatar.gender == 0)
         {
-            hairTexture.texture = SessionScript.avatarHairFem[SessionScript.playerAvatar.hair];
+            hairTexture.sprite = SessionScript.avatarHairFem[SessionScript.playerAvatar.hair];
         }
         if (SessionScript.playerAvatar.gender == 1)
         {
-            hairTexture.texture = SessionScript.avatarHairMasc[SessionScript.playerAvatar.hair];
+            hairTexture.sprite = SessionScript.avatarHairMasc[SessionScript.playerAvatar.hair];
         }
-        item0Texture.texture = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
-        item1Texture.texture = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
-        item2Texture.texture = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
-        item3Texture.texture = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
-        item0TextureB.texture = SessionScript.avatarItem0b[SessionScript.playerAvatar.item0];
-        item1TextureB.texture = SessionScript.avatarItem1b[SessionScript.playerAvatar.item1];
-        item2TextureB.texture = SessionScript.avatarItem2b[SessionScript.playerAvatar.item2];
-        item3TextureB.texture = SessionScript.avatarItem3b[SessionScript.playerAvatar.item3];
+        if (SessionScript.customizationStage != 2)
+        {
+            return;
+        }
+        item0Texture.sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
+        item1Texture.sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
+        item2Texture.sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
+        item3Texture.sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
+        item0TextureB.sprite = SessionScript.avatarItem0b[SessionScript.playerAvatar.item0];
+        item1TextureB.sprite = SessionScript.avatarItem1b[SessionScript.playerAvatar.item1];
+        item2TextureB.sprite = SessionScript.avatarItem2b[SessionScript.playerAvatar.item2];
+        item3TextureB.sprite = SessionScript.avatarItem3b[SessionScript.playerAvatar.item3];
 
         // Selection Options
-        item0Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
-        item1Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
-        item2Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
-        item3Selection.transform.Find("Item").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
+        item0Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
+        item1Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
+        item2Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
+        item3Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
 
         // AJUSTE MANUAL COTURNO
         // if coturno + calça ; algo acontece
@@ -341,31 +376,101 @@ public class AvatarScript : MonoBehaviour
         Invoke("Portrait", 0.5f);
     }
 
-    public void NakedAvatar()
+    public void BlankAvatar()
     {
-        item0Texture.texture = SessionScript.avatarItem0[SessionScript.avatarBlank];
-        item1Texture.texture = SessionScript.avatarItem1[SessionScript.avatarBlank];
-        item2Texture.texture = SessionScript.avatarItem2[SessionScript.avatarBlank];
-        item3Texture.texture = SessionScript.avatarItem3[SessionScript.avatarBlank];
-        item0TextureB.texture = SessionScript.avatarItem0b[SessionScript.avatarBlank];
-        item1TextureB.texture = SessionScript.avatarItem1b[SessionScript.avatarBlank];
-        item2TextureB.texture = SessionScript.avatarItem2b[SessionScript.avatarBlank];
-        item3TextureB.texture = SessionScript.avatarItem3b[SessionScript.avatarBlank];
+        baseTexture.sprite = SessionScript.avatarBlank;
+        hairTexture.sprite = SessionScript.avatarBlank;
+        item0Texture.sprite = SessionScript.avatarBlank;
+        item1Texture.sprite = SessionScript.avatarBlank;
+        item2Texture.sprite = SessionScript.avatarBlank;
+        item3Texture.sprite = SessionScript.avatarBlank;
+        item0TextureB.sprite = SessionScript.avatarBlank;
+        item1TextureB.sprite = SessionScript.avatarBlank;
+        item2TextureB.sprite = SessionScript.avatarBlank;
+        item3TextureB.sprite = SessionScript.avatarBlank;
     }
+	
+	public void RaffleAvatarItems(){
+		SessionScript.playerAvatar.item0 = Mathf.RoundToInt(Random.Range(0, SessionScript.item0TierIndex.x));
+		SessionScript.playerAvatar.item1 = Mathf.RoundToInt(Random.Range(0, SessionScript.item1TierIndex.x));
+		SessionScript.playerAvatar.item2 = Mathf.RoundToInt(Random.Range(0, SessionScript.item2TierIndex.x));
+		SessionScript.playerAvatar.item3 = Mathf.RoundToInt(Random.Range(0, SessionScript.item3TierIndex.x));
+		Portrait();
+	}
+	
+	public void RaffleBlankAvatar(){
+		int randomComplexion = Random.Range(1, SessionScript.avatarBase.Count);
+		int randomHair = 0;
+		baseTexture.sprite = SessionScript.avatarBase[randomComplexion];
+		if (SessionScript.playerAvatar.gender == 0){
+			randomHair = Random.Range(0, SessionScript.avatarHairFem.Count);
+            hairTexture.sprite = SessionScript.avatarHairFem[randomHair];
+        }
+        if (SessionScript.playerAvatar.gender == 1){
+			randomHair = Random.Range(0, SessionScript.avatarHairMasc.Count);
+            hairTexture.sprite = SessionScript.avatarHairMasc[randomHair];
+        }
+		SessionScript.playerAvatar.skin = randomComplexion;
+		SessionScript.playerAvatar.hair = randomHair;
+        item0Texture.sprite = SessionScript.avatarBlank;
+        item1Texture.sprite = SessionScript.avatarBlank;
+        item2Texture.sprite = SessionScript.avatarBlank;
+        item3Texture.sprite = SessionScript.avatarBlank;
+        item0TextureB.sprite = SessionScript.avatarBlank;
+        item1TextureB.sprite = SessionScript.avatarBlank;
+        item2TextureB.sprite = SessionScript.avatarBlank;
+        item3TextureB.sprite = SessionScript.avatarBlank;
+	}
 
     public void SelectResetAvatar()
     {
         SessionScript.ButtonAudio(SessionScript.neutral);
         SelectRaffle();
         allStagesCompleted = false;
-        stage = 0;
+        SessionScript.customizationStage = 0;
         CustomizationStage();
     }
 
-    public void NextStage()
+    public void SelectGender(int index)
+    {
+        SessionScript.ButtonAudio(SessionScript.neutral);
+        SessionScript.playerAvatar.gender = index;
+        allowNext = true;
+		SessionScript.customizationStage = SessionScript.customizationStage + 1;
+        if (SessionScript.customizationStage > 2) SessionScript.customizationStage = 2;
+        CustomizationStage();
+    }
+
+    public void SelectComplexion(int index)
+    {
+        if (index == 0) return; // Never allow index 0
+        SessionScript.ButtonAudio(SessionScript.neutral);
+        SessionScript.playerAvatar.skin = index;
+        allowNext = true;
+        Portrait();
+    }
+
+    public void SelectNextStage()
+    {
+        if (allowNext)
+        {
+            SessionScript.ButtonAudio(SessionScript.positive);
+            SessionScript.customizationStage = SessionScript.customizationStage + 1;
+            if (SessionScript.customizationStage > 2) SessionScript.customizationStage = 2;
+            CustomizationStage();
+        }
+        else
+        {
+            if (SessionScript.customizationStage == 0) PopUpScript.InstantiatePopUp("Selecione seu gênero.", "OK");
+            if (SessionScript.customizationStage == 1) PopUpScript.InstantiatePopUp("Selecione sua aparência.", "OK");
+        }
+    }
+
+    public void SelectPreviousStage()
     {
         SessionScript.ButtonAudio(SessionScript.positive);
-        stage = stage + 1;
+        SessionScript.customizationStage = SessionScript.customizationStage - 1;
+        if (SessionScript.customizationStage < 0) SessionScript.customizationStage = 0;
         CustomizationStage();
     }
 

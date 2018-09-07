@@ -21,7 +21,7 @@ public class PopUpScript : MonoBehaviour
         popUpRect.anchoredPosition = new Vector2(0, 0);
         windowRect.anchoredPosition = new Vector2(0, 500);
         shadowImage.color = new Color(0f, 0f, 0f, 0.0f);
-        SessionScript.ButtonAudio(SessionScript.popUp);
+        SessionScript.ButtonAudioLow(SessionScript.popUp);
     }
 
     void Update()
@@ -50,20 +50,20 @@ public class PopUpScript : MonoBehaviour
     }
 
     public static void InstantiatePopUp(string newMainText, string newButtonText)
-    {   // MAYBE RETURN TO TYPE VOID
+    {
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
-        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = ""; //newButtonText;
         newPopUp.transform.Find("PopUpWindow/Image").gameObject.SetActive(false);
     }
 
     public static void InstantiatePopUp(string newMainText, string newButtonText, string newTexture)
-    {   // MAYBE RETURN TO TYPE VOID
+    {
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
-        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = "";	//newButtonText;
         newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = Resources.Load("Textures/PopUp/" + newTexture) as Texture;
         if (newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture == null)
         {
@@ -72,11 +72,11 @@ public class PopUpScript : MonoBehaviour
     }
 
     public static void InstantiatePopUp(string newMainText, string newButtonText, Texture newTexture)
-    {   // MAYBE RETURN TO TYPE VOID
+    {
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
-        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = newButtonText;
+        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = "";	//newButtonText;
         newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture = newTexture;
         if (newPopUp.transform.Find("PopUpWindow/Image").GetComponent<RawImage>().texture == null)
         {
@@ -84,16 +84,27 @@ public class PopUpScript : MonoBehaviour
         }
     }
 
+    public static void InstantiatePopUp(string newMainText, string newButtonText, Avatar newAvatar)
+    {
+        GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
+        PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
+        newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
+        newPopUp.transform.Find("PopUpWindow/Button/Text").GetComponent<Text>().text = "";	//newButtonText;
+        newPopUp.transform.Find("PopUpWindow/Image").gameObject.SetActive(false);
+        GameObject avatarPortrait = Instantiate(Resources.Load("Prefabs/AvatarPortrait") as GameObject);
+        avatarPortrait.GetComponent<AvatarPortrait>().SpecificAvatar(newAvatar);
+    }
+
     public void PressButton()
     {
-        SessionScript.ButtonAudio(SessionScript.subtle);
+        SessionScript.ButtonAudioLow(SessionScript.subtle);
         Invoke("ClosePopUp", 0.25f);
         Invoke("DestroyPopUp", 1.25f);
     }
 
     void ClosePopUp()
     {
-        SessionScript.ButtonAudio(SessionScript.popUpOut);
+        SessionScript.ButtonAudioLow(SessionScript.popUpOut);
         close = true;
         open = false;
     }
