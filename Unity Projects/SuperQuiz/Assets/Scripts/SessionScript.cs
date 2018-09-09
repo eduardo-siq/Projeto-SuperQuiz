@@ -45,7 +45,7 @@ public class SessionScript : MonoBehaviour
     public static List<Sprite> avatarItem1b;
     public static List<Sprite> avatarItem2b;
     public static List<Sprite> avatarItem3b;
-	public static List<Sprite> avatarHairFem;
+    public static List<Sprite> avatarHairFem;
     public static List<Sprite> avatarHairMasc;
     public static List<Sprite> avatarBase;
     public static Sprite avatarBlank;
@@ -88,6 +88,7 @@ public class SessionScript : MonoBehaviour
     public float questionsAskedListCount;
     public float answersListCount;
     public static string bncQFileName;
+    public static bool startAnimationNextScene;
     [SerializeField] string bncQFileNameEditor;
 
     // Score
@@ -134,8 +135,8 @@ public class SessionScript : MonoBehaviour
         // texturePoint = Resources.Load("Textures/PointAndClick/pointAndClick", typeof(Sprite)) as Sprite;	// OBSOLETE
         // if (texturePoint == null)																		// OBSOLETE
         // {																								// OBSOLETE
-            // print("missing texture");																	// OBSOLETE
-            // texturePoint = missingTexture;																// OBSOLETE
+        // print("missing texture");																	// OBSOLETE
+        // texturePoint = missingTexture;																// OBSOLETE
         // }																								// OBSOLETE
         pointAndClickSource = Resources.Load("Textures/PointAndClick/pointAndClickSource") as Texture2D;
         if (pointAndClickSource == null)
@@ -151,9 +152,9 @@ public class SessionScript : MonoBehaviour
         }
         detail = new List<Detail>();
         GetDetailList();
-		print ("detail[0].colorCode " + detail[0].colorCode);
-		print ("detail[1].colorCode " + detail[1].colorCode);
-		print ("detail[2].colorCode " + detail[2].colorCode);
+        print("detail[0].colorCode " + detail[0].colorCode);
+        print("detail[1].colorCode " + detail[1].colorCode);
+        print("detail[2].colorCode " + detail[2].colorCode);
 
         // Avatar
         avatarItem0 = new List<Sprite>();

@@ -11,6 +11,13 @@ public class TransitionScript : MonoBehaviour
 
     public RectTransform rect;
 
+    // public void Awake(){
+    // if (SessionScript.startAnimationNextScene){
+    // this.gameObject.transform.Find("TransitionCircle").GetComponent<RectTransform>().localScale = new Vector3 (10f, 10f, 10f);
+    // }
+
+    // }
+
 
     public void Start()
     {
@@ -18,6 +25,10 @@ public class TransitionScript : MonoBehaviour
         // this.gameObject.transform.SetParent(GameObject.Find("Canvas/Scroll View").transform);
 
         RaffleVariation();
+        if (SessionScript.startAnimationNextScene)
+        {
+            this.gameObject.transform.Find("TransitionCircle").GetComponent<RectTransform>().localScale = new Vector3(10f, 10f, 10f);
+        }
     }
 
     public void RaffleVariation()
@@ -49,17 +60,26 @@ public class TransitionScript : MonoBehaviour
 
     public static void SkipAnimation()
     {
-        instance.transitionAnim.SetBool("skip", true);
+        // instance.transitionAnim.SetBool("skip", true);
     }
 
     public static void PlayAnimation()
     {
-        instance.transitionAnim.SetBool("skip", false);
+        // instance.transitionAnim.SetBool("skip", false);
     }
 
 
     public static void StartAnimation()
     {
+        instance.RaffleVariation();
+        instance.transitionAnim.SetTrigger("start");
+        SessionScript.startAnimationNextScene = false;
+    }
+
+
+    public static void EndAnimation()
+    {
+        SessionScript.startAnimationNextScene = true;
         instance.RaffleVariation();
         instance.transitionAnim.SetTrigger("end");
     }

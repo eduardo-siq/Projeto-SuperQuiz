@@ -18,6 +18,7 @@ public class MenuScript : MonoBehaviour
 
     void Start()
     {
+        TransitionScript.StartAnimation();
         StartCoroutine(StartScene());
     }
 
