@@ -626,7 +626,7 @@ MonoBehaviour:
   soundButton: {fileID: 0}
   infoButton: {fileID: 0}
   exitButton: {fileID: 0}
-  lockScene: 0
+  lockScene: 1
   aboutScript: {fileID: 0}
   answerScript: {fileID: 0}
   avatarScript: {fileID: 0}
