@@ -26,8 +26,7 @@ public class Avatar
         name = "noName";
     }
 
-    public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName)
-    {
+    public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName){
         skin = newSkin;
         hair = newHair;
         gender = newGender;
@@ -38,8 +37,7 @@ public class Avatar
         name = newName;
     }
 
-    public static Avatar RandomAvatar()
-    {
+    public static Avatar RandomAvatar(){
         Avatar randomAvatar = new Avatar();
         randomAvatar.gender = Random.Range(0, 2);
         randomAvatar.skin = Random.Range(1, SessionScript.avatarBase.Count);

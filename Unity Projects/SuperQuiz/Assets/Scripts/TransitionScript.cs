@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransitionScript : MonoBehaviour
-{
+public class TransitionScript : MonoBehaviour{
 
     public Animator transitionAnim;
 
@@ -11,25 +10,30 @@ public class TransitionScript : MonoBehaviour
 
     public RectTransform rect;
 
-    // public void Awake(){
-    // if (SessionScript.startAnimationNextScene){
-    // this.gameObject.transform.Find("TransitionCircle").GetComponent<RectTransform>().localScale = new Vector3 (10f, 10f, 10f);
-    // }
+	// void Awake(){
+		// if (instance == null){
+			// print ("SINGLETON TRANSITION");
+			// instance = this;
+			// DontDestroyOnLoad(this.gameObject);
+		// }
+		// else{
+			// if (instance != this){
+			// Destroy(gameObject);
+			// }
+		// }
+	// }
 
-    // }
 
+	public void Start(){
+		instance = this;
+		//this.gameObject.transform.SetParent(GameObject.Find("Canvas/Scroll View").transform);
 
-    public void Start()
-    {
-        instance = this;
-        // this.gameObject.transform.SetParent(GameObject.Find("Canvas/Scroll View").transform);
-
-        RaffleVariation();
-        if (SessionScript.startAnimationNextScene)
-        {
-            this.gameObject.transform.Find("TransitionCircle").GetComponent<RectTransform>().localScale = new Vector3(10f, 10f, 10f);
-        }
-    }
+		RaffleVariation();
+		print ("SessionScript.startAnimationNextScene " + SessionScript.startAnimationNextScene);
+		if (SessionScript.startAnimationNextScene){
+			StartAnimation();
+		}
+	}
 
     public void RaffleVariation()
     {
@@ -72,7 +76,7 @@ public class TransitionScript : MonoBehaviour
     public static void StartAnimation()
     {
         instance.RaffleVariation();
-        instance.transitionAnim.SetTrigger("start");
+        instance.transitionAnim.SetTrigger("in");
         SessionScript.startAnimationNextScene = false;
     }
 
@@ -81,7 +85,7 @@ public class TransitionScript : MonoBehaviour
     {
         SessionScript.startAnimationNextScene = true;
         instance.RaffleVariation();
-        instance.transitionAnim.SetTrigger("end");
+        instance.transitionAnim.SetTrigger("out");
     }
 }
 

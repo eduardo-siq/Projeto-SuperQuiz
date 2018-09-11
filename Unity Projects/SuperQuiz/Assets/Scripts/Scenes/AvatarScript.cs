@@ -48,7 +48,6 @@ public class AvatarScript : MonoBehaviour
 
     void Start()
     {
-        TransitionScript.StartAnimation();
         StartCoroutine(StartScene());
     }
 

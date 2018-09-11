@@ -16,9 +16,7 @@ public class MenuScript : MonoBehaviour
     private string nextScene = "";
 
 
-    void Start()
-    {
-        TransitionScript.StartAnimation();
+    void Start(){
         StartCoroutine(StartScene());
     }
 
