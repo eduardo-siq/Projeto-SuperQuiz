@@ -92,11 +92,13 @@ public class AnswersScript : MonoBehaviour
         // answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().size = 0;
     }
 
-    public void SelectResult()
-    {
+    public void SelectResult(){
         SessionScript.ButtonAudio(SessionScript.neutral);
-        Invoke("EndScene", 0.25f);
-        Invoke("NextScene", 0.5f);
+        Invoke("EndScene", 1.2f);
+        Invoke("NextScene", 1.2f);
+        // TransitionScript.PlayAnimation();
+        // TransitionScript.StartAnimation();
+        TransitionScript.EndAnimation();
     }
 
     public void NextScene()
@@ -104,8 +106,7 @@ public class AnswersScript : MonoBehaviour
         SceneManager.LoadScene("result", LoadSceneMode.Single);
     }
 
-    void EndScene()
-    {
+    void EndScene(){	// OBSOLETE?
         endScene = true;
     }
 }

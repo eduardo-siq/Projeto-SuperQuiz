@@ -46,8 +46,7 @@ public class AvatarScript : MonoBehaviour
     public bool allStagesCompleted; // MOVE TO SESSION SCRIPT
                                     // public int stage = 0;   // 0: gender, 1: complexion & hair, 2: itens	// OBSOLETE
 
-    void Start()
-    {
+    void Start(){
         StartCoroutine(StartScene());
     }
 
@@ -78,11 +77,23 @@ public class AvatarScript : MonoBehaviour
         complextion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Complexion").gameObject;
         hair = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Hair").gameObject;
         items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
-        if (SessionScript.customizationStage == 2)
-        {
+        if (SessionScript.customizationStage == 2){
             allStagesCompleted = true;
         }
-        CustomizationStage();
+		if (SessionScript.customizationStage == 0){
+			Invoke("CustomizationStage", 0.75f);
+			portrait.SetActive(false);
+			gender.SetActive(true);
+			complextion.SetActive(false);
+			hair.SetActive(false);
+			items.SetActive(false);
+			selectStage.SetActive(false);
+			lowerMenu.SetActive(false);
+			options.SetActive(false);
+		}
+		if (SessionScript.customizationStage != 0){
+			CustomizationStage();
+		}
         Portrait();
         allowNext = false;
 
@@ -126,8 +137,7 @@ public class AvatarScript : MonoBehaviour
         }
     }
 
-    void Update()
-    {
+    void Update(){
         // if (endScene){
         // avatarRect.anchoredPosition = new Vector2 (avatarRect.anchoredPosition.x, avatarRect.anchoredPosition.y - Time.deltaTime * 1200);
         // return;
@@ -137,6 +147,12 @@ public class AvatarScript : MonoBehaviour
             SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
         }
     }
+	
+	void InitialPopUp(){
+		
+	}
+	
+	
 
     public void NextItem(int item)
     {

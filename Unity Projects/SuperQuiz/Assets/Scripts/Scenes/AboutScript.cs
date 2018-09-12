@@ -40,11 +40,13 @@ public class AboutScript : MonoBehaviour
         SessionScript.ButtonAudio(SessionScript.negative);
     }
 
-    public void SelectMenu()
-    {
+    public void SelectMenu(){
         SessionScript.ButtonAudio(SessionScript.neutral);
-        Invoke("EndScene", 0.25f);
-        Invoke("NextScene", 0.5f);
+        Invoke("EndScene", 1.2f);
+        Invoke("NextScene", 1.2f);
+        // TransitionScript.PlayAnimation();
+        // TransitionScript.StartAnimation();
+        TransitionScript.EndAnimation();
     }
 
     public void NextScene()
@@ -52,8 +54,7 @@ public class AboutScript : MonoBehaviour
         SceneManager.LoadScene("menu", LoadSceneMode.Single);
     }
 
-    void EndScene()
-    {
+    void EndScene(){	// OBSOLETE?
         endScene = true;
     }
 }

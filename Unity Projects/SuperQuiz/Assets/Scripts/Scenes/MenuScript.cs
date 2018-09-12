@@ -36,10 +36,10 @@ public class MenuScript : MonoBehaviour
         // avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 
         // Checks if there are avaiable question
-        if (SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded)
-        {
-            GameObject.Find("Canvas/Scroll View/Viewport/Menu/Gameplay/Text").GetComponent<Text>().text = "";	//"não há mais questões!";
-            GameObject.Find("Canvas/Scroll View/Viewport/Menu/Gameplay").GetComponent<Button>().enabled = false;
+        if(SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
+            GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay/Text").GetComponent<Text>().text = "";	//"não há mais questões!";
+			// GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Button>().enabled = false;
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Image>().sprite = Resources.Load("Textures/UI/PlayDisabled", typeof (Sprite)) as Sprite;
         }
     }
 
@@ -52,14 +52,21 @@ public class MenuScript : MonoBehaviour
         // }
     }
 
-    public void Select(string option)
-    {
+    public void Select(string option){
+		if (option == "gameplay"){
+			if(SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
+				SessionScript.ButtonAudio(SessionScript.subtle);
+				 PopUpScript.InstantiatePopUp("Todos as questões foram respondidas!", "OK");
+				return;
+			}
+		}
         nextScene = option;
         SessionScript.ButtonAudio(SessionScript.neutral);
-		TransitionScript.PlayAnimation();
-		TransitionScript.StartAnimation();
-        Invoke("EndScene", 1.2f);
+		Invoke("EndScene", 1.2f);
         Invoke("NextScene", 1.2f);
+        // TransitionScript.PlayAnimation();
+        // TransitionScript.StartAnimation();
+        TransitionScript.EndAnimation();
 
     }
 

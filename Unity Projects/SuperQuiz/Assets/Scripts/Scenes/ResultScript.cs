@@ -61,12 +61,14 @@ public class ResultScript : MonoBehaviour
 
     }
 
-    public void SelectAnswers()
-    {
+    public void SelectAnswers() {
         SessionScript.ButtonAudio(SessionScript.neutral);
         nextScene = "answers";
-        Invoke("EndScene", 0.25f);
-        Invoke("NextScene", 0.5f);
+        Invoke("EndScene", 1.2f);
+        Invoke("NextScene", 1.2f);
+        // TransitionScript.PlayAnimation();
+        // TransitionScript.StartAnimation();
+        TransitionScript.EndAnimation();
     }
 
     public void SelectQuit()
@@ -88,8 +90,7 @@ public class ResultScript : MonoBehaviour
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
     }
 
-    void EndScene()
-    {
+    void EndScene(){	// OBSOLETE?
         endScene = true;
     }
 }
