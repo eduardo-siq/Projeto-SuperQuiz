@@ -2701,7 +2701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &487439532
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4831,7 +4831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1106824486
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6100,7 +6100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1507102695
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6972,7 +6972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1718878616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7282,7 +7282,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: de78310a8a58c1f41a20c38a047a0adf, type: 3}
+  m_Texture: {fileID: 2800000, guid: b800fc18db6349f4bbfc74a580c4a51c, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -7438,7 +7438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1911326983
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7901,7 +7901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2099974689
 RectTransform:
   m_ObjectHideFlags: 0
