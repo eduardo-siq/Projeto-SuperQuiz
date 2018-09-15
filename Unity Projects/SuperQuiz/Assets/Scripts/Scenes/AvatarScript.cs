@@ -17,6 +17,8 @@ public class AvatarScript : MonoBehaviour
 
     // Avatar variables
     public GameObject portrait;
+	public GameObject portraitBackgroundComplexion;
+	public GameObject portraitBackgroundItems;
     public Image baseTexture;
     public Image hairTexture;
     public Image item0Texture;   // óculos
@@ -50,12 +52,13 @@ public class AvatarScript : MonoBehaviour
         StartCoroutine(StartScene());
     }
 
-    IEnumerator StartScene()
-    {
+    IEnumerator StartScene(){
         yield return null;
         selectStage = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState").gameObject;
         avatarRect = GameObject.Find("Canvas/Scroll View/Viewport/Avatar").GetComponent<RectTransform>();
         portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
+		portraitBackgroundComplexion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PortraitBackgroundComplexion").gameObject;
+		portraitBackgroundItems = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PortraitBackgroundItems").gameObject;
         lowerMenu = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/LowerMenu").gameObject;
         options = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Options").gameObject;
         baseTexture = portrait.transform.Find("Base").GetComponent<Image>();
@@ -80,18 +83,37 @@ public class AvatarScript : MonoBehaviour
         if (SessionScript.customizationStage == 2){
             allStagesCompleted = true;
         }
-		if (SessionScript.customizationStage == 0){
-			Invoke("CustomizationStage", 0.75f);
-			portrait.SetActive(false);
-			gender.SetActive(true);
-			complextion.SetActive(false);
-			hair.SetActive(false);
+		// if (SessionScript.customizationStage == 0){	// Gender selection disabled
+			// Invoke("CustomizationStage", 0.75f);
+			// portrait.SetActive(false);
+			// gender.SetActive(true);
+			// complextion.SetActive(false);
+			// hair.SetActive(false);
+			// items.SetActive(false);
+			// selectStage.SetActive(false);
+			// lowerMenu.SetActive(false);
+			// options.SetActive(false);
+		// }
+		// if (SessionScript.customizationStage != 0){
+			// CustomizationStage();
+		// }
+		if (SessionScript.customizationStage == 1){
+			//allowNext = false;
+			Invoke("InitialPopUp", 0.75f);
+			portrait.SetActive(true);
+			portrait.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, -46f);
+			portraitBackgroundComplexion.SetActive(true);
+			portraitBackgroundItems.SetActive(false);
+			gender.SetActive(false);
+			complextion.SetActive(true);
+			hair.SetActive(true);
 			items.SetActive(false);
-			selectStage.SetActive(false);
+			selectStage.SetActive(true);
 			lowerMenu.SetActive(false);
 			options.SetActive(false);
+			RaffleBlankAvatar();
 		}
-		if (SessionScript.customizationStage != 0){
+		if (SessionScript.customizationStage != 1){
 			CustomizationStage();
 		}
         Portrait();
@@ -149,7 +171,7 @@ public class AvatarScript : MonoBehaviour
     }
 	
 	void InitialPopUp(){
-		
+		PopUpScript.InstantiatePopUp("Escolha a aparência.", "OK");
 	}
 	
 	
@@ -290,57 +312,58 @@ public class AvatarScript : MonoBehaviour
         Portrait();
     }
 
-    public void CustomizationStage()
-    {
-        if (SessionScript.customizationStage == 0)
-        {
-            //allowNext = false;
-            PopUpScript.InstantiatePopUp("Vamos criar seu avatar nesse jogo! Comece escolhendo seu gênero.", "OK");
-            portrait.SetActive(false);
-            gender.SetActive(true);
-            complextion.SetActive(false);
-            hair.SetActive(false);
-            items.SetActive(false);
-            selectStage.SetActive(false);
-            lowerMenu.SetActive(false);
-            options.SetActive(false);
-        }
-        if (SessionScript.customizationStage == 1)
-        {
-            //allowNext = false;
-            PopUpScript.InstantiatePopUp("Agora, escolha a aparência.", "OK");
-            portrait.SetActive(true);
-            gender.SetActive(false);
-            complextion.SetActive(true);
-            hair.SetActive(true);
-            items.SetActive(false);
-            selectStage.SetActive(true);
-            lowerMenu.SetActive(false);
-            options.SetActive(false);
-            RaffleBlankAvatar();
-        }
-        if (SessionScript.customizationStage == 2)
-        {
-            if (!allStagesCompleted)
-            {
-                RaffleAvatarItems();
-                PopUpScript.InstantiatePopUp("Por último, escolha seus acessórios.", "OK");
-            }
-            portrait.SetActive(true);
-            gender.SetActive(false);
-            complextion.SetActive(false);
-            hair.SetActive(false);
-            items.SetActive(true);
-            selectStage.SetActive(false);
-            lowerMenu.SetActive(true);
-            options.SetActive(true);
-            allStagesCompleted = true;
-            Portrait();
-        }
-    }
+	public void CustomizationStage(){
+		if (SessionScript.customizationStage == 0){
+			//allowNext = false;
+			// PopUpScript.InstantiatePopUp("Vamos criar seu avatar nesse jogo! Comece escolhendo seu gênero.", "OK");
+			// portrait.SetActive(false);
+			// gender.SetActive(true);
+			// complextion.SetActive(false);
+			// hair.SetActive(false);
+			// items.SetActive(false);
+			// selectStage.SetActive(false);
+			// lowerMenu.SetActive(false);
+			// options.SetActive(false);
+			SessionScript.customizationStage = 1;	// Gender selection disabled
+		}
+		if (SessionScript.customizationStage == 1){
+			//allowNext = false;
+			PopUpScript.InstantiatePopUp("Escolha a aparência.", "OK");
+			portrait.SetActive(true);
+			portrait.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, -46f);
+			portraitBackgroundComplexion.SetActive(true);
+			portraitBackgroundItems.SetActive(false);
+			gender.SetActive(false);
+			complextion.SetActive(true);
+			hair.SetActive(true);
+			items.SetActive(false);
+			selectStage.SetActive(true);
+			lowerMenu.SetActive(false);
+			options.SetActive(false);
+			RaffleBlankAvatar();
+		}
+		if (SessionScript.customizationStage == 2){
+			if (!allStagesCompleted){
+				RaffleAvatarItems();
+				PopUpScript.InstantiatePopUp("Por último, escolha seus acessórios.", "OK");
+			}
+			portrait.SetActive(true);
+			portrait.GetComponent<RectTransform>().anchoredPosition = new Vector2 (-43.5f, -5f);
+			portraitBackgroundComplexion.SetActive(false);
+			portraitBackgroundItems.SetActive(true);
+			gender.SetActive(false);
+			complextion.SetActive(false);
+			hair.SetActive(false);
+			items.SetActive(true);
+			selectStage.SetActive(false);
+			lowerMenu.SetActive(true);
+			options.SetActive(true);
+			allStagesCompleted = true;
+			Portrait();
+		}
+	}
 
-    public void SelectBase(int index)
-    {
+    public void SelectBase(int index){
         SessionScript.playerAvatar.skin = index;
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
@@ -376,22 +399,21 @@ public class AvatarScript : MonoBehaviour
         item3TextureB.sprite = SessionScript.avatarItem3b[SessionScript.playerAvatar.item3];
 
         // Selection Options
-        item0Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
-        item1Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
-        item2Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
-        item3Selection.transform.Find("Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
+        item0Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
+        item1Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
+        item2Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
+        item3Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
 
         // AJUSTE MANUAL COTURNO
         // if coturno + calça ; algo acontece
 
     }
 
-    public void SelectRaffle()
-    {   // OBSOLETE
-        SessionScript.ButtonAudio(SessionScript.neutral);
-        SessionScript.RaffleAvatar(item0MaxIndex, item1MaxIndex, item2MaxIndex, item3MaxIndex);
-        Invoke("Portrait", 0.5f);
-    }
+	public void SelectRaffle(){   // OBSOLETE
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		SessionScript.RaffleAvatar(item0MaxIndex, item1MaxIndex, item2MaxIndex, item3MaxIndex);
+		Invoke("Portrait", 0.5f);
+	}
 
     public void BlankAvatar()
     {
@@ -471,17 +493,14 @@ public class AvatarScript : MonoBehaviour
         Portrait();
     }
 
-    public void SelectNextStage()
-    {
-        if (allowNext)
-        {
+    public void SelectNextStage(){
+		allowNext = true;	// Two stages only
+        if (allowNext){
             SessionScript.ButtonAudio(SessionScript.positive);
             SessionScript.customizationStage = SessionScript.customizationStage + 1;
             if (SessionScript.customizationStage > 2) SessionScript.customizationStage = 2;
             CustomizationStage();
-        }
-        else
-        {
+        }else{
             if (SessionScript.customizationStage == 0) PopUpScript.InstantiatePopUp("Selecione seu gênero.", "OK");
             if (SessionScript.customizationStage == 1) PopUpScript.InstantiatePopUp("Selecione sua aparência.", "OK");
         }

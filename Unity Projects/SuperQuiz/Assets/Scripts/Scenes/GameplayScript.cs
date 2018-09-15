@@ -145,8 +145,7 @@ public class GameplayScript : MonoBehaviour
         Invoke("StartNewQuestion", 0.1f);
     }
 
-    void Update()
-    {       // CHANGED ANSER QUESTION METHOD -> UPDATE TIMEOUT METHOD
+    void Update(){       // CHANGED ANSER QUESTION METHOD -> UPDATE TIMEOUT METHOD
             // if (endScene){
             // gameplayRect.anchoredPosition = new Vector2 (gameplayRect.anchoredPosition.x, gameplayRect.anchoredPosition.y - Time.deltaTime * 1200);
             // return;
@@ -194,8 +193,7 @@ public class GameplayScript : MonoBehaviour
         currentQuestionTimeSpent = 0f;
         bool clear;
         int i = 0;
-        do
-        {   // Randomly chooses next question and checks if it's repeated
+        do{   // Randomly chooses next question and checks if it's repeated
             clear = true;
             currentQuestion = SessionScript.questionList[Random.Range(0, SessionScript.questionList.Count)];
             if (SessionScript.questionsAskedList.Count != 0)
@@ -225,8 +223,7 @@ public class GameplayScript : MonoBehaviour
         int a2;
         int a3;
         int a4;
-        switch (currentQuestion.questionType)
-        {
+        switch (currentQuestion.questionType){
             case 1: // Fill-the-blank
                 questionImage.SetActive(false);
                 questionWrite.SetActive(true);

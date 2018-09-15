@@ -49,8 +49,7 @@ public class PopUpScript : MonoBehaviour
         }
     }
 
-    public static void InstantiatePopUp(string newMainText, string newButtonText)
-    {
+    public static void InstantiatePopUp(string newMainText, string newButtonText){
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
@@ -58,8 +57,7 @@ public class PopUpScript : MonoBehaviour
         newPopUp.transform.Find("PopUpWindow/Image").gameObject.SetActive(false);
     }
 
-    public static void InstantiatePopUp(string newMainText, string newButtonText, string newTexture)
-    {
+    public static void InstantiatePopUp(string newMainText, string newButtonText, string newTexture){
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
@@ -71,8 +69,7 @@ public class PopUpScript : MonoBehaviour
         }
     }
 
-    public static void InstantiatePopUp(string newMainText, string newButtonText, Texture newTexture)
-    {
+    public static void InstantiatePopUp(string newMainText, string newButtonText, Texture newTexture){
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
@@ -84,8 +81,7 @@ public class PopUpScript : MonoBehaviour
         }
     }
 
-    public static void InstantiatePopUp(string newMainText, string newButtonText, Avatar newAvatar)
-    {
+    public static void InstantiatePopUp(string newMainText, string newButtonText, Avatar newAvatar){
         GameObject newPopUp = Instantiate(Resources.Load("Prefabs/PopUp") as GameObject);
         PopUpScript popUpScript = newPopUp.GetComponent<PopUpScript>();
         newPopUp.transform.Find("PopUpWindow/Text").GetComponent<Text>().text = newMainText;
@@ -95,24 +91,22 @@ public class PopUpScript : MonoBehaviour
         avatarPortrait.GetComponent<AvatarPortrait>().SpecificAvatar(newAvatar);
     }
 
-    public void PressButton()
-    {
+    public void PressButton(){
         SessionScript.ButtonAudioLow(SessionScript.subtle);
         Invoke("ClosePopUp", 0.25f);
         Invoke("DestroyPopUp", 1.25f);
     }
 
-    void ClosePopUp()
-    {
+    void ClosePopUp(){
         SessionScript.ButtonAudioLow(SessionScript.popUpOut);
         close = true;
         open = false;
     }
 
-    void DestroyPopUp()
-    {
+    void DestroyPopUp(){
         print("Delete!");
         Destroy(this.gameObject);
     }
+
 }
 

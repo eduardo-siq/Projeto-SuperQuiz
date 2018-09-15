@@ -184,6 +184,7 @@ public class SessionScript : MonoBehaviour
         item2TierIndex = new Vector3(0, 0, 0);
         item3TierIndex = new Vector3(0, 0, 0);
         LoadAvatarAssets();
+		customizationStage = 1;
 
 
         //Sound
