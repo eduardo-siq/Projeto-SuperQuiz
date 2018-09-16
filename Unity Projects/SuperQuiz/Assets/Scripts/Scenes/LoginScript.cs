@@ -83,7 +83,7 @@ public class LoginScript : MonoBehaviour{
 
 	public void NextScene(){
 		if (SessionScript.firstLogIn){   // Dummy first login
-			SceneManager.LoadScene("avatar", LoadSceneMode.Single);
+			SceneManager.LoadScene("tutorial", LoadSceneMode.Single);
 		}
 		if (!SessionScript.firstLogIn){
 			SceneManager.LoadScene("menu", LoadSceneMode.Single);
