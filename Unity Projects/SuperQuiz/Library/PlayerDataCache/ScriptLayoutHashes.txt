@@ -1,4 +1,4 @@
-Android
+WebGL
 SceneListBegin?
 Assets/load.unity
 Assets/login.unity
@@ -8,6 +8,7 @@ Assets/avatar.unity
 Assets/result.unity
 Assets/answers.unity
 Assets/about.unity
+Assets/tutorial.unity
 SceneListEnd?
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 dbc29a6f2739d277c10da432d73adb6d UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
@@ -129,8 +130,9 @@ d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 a6eb9551109a23c8d49f6dbf9c603d64 Assembly-CSharp.dll:.AnimErrorScript
-857e679be28b5b24ec1b0a6842312aab Assembly-CSharp.dll:.AvatarScript
+59682c8ce3efb357fa9f6458e4cc6abf Assembly-CSharp.dll:.AvatarScript
 32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
+06f58d5bf57184f62c384846da44d87b Assembly-CSharp.dll:.TutorialScript
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
