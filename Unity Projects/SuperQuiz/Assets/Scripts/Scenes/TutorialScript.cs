@@ -12,10 +12,26 @@ public class TutorialScript : MonoBehaviour{
 	string instructionText1;
 	string instructionText2;
 	string instructionText3;
+	string instructionText4;
+	string instructionText5;
+	string instructionText6;
+	string instructionText7;
+	string instructionText8;
+	string instructionText9;
+	string instructionText10;
+	string instructionText11;
 	Sprite instructionImage0;
 	Sprite instructionImage1;
 	Sprite instructionImage2;
 	Sprite instructionImage3;
+	Sprite instructionImage4;
+	Sprite instructionImage5;
+	Sprite instructionImage6;
+	Sprite instructionImage7;
+	Sprite instructionImage8;
+	Sprite instructionImage9;
+	Sprite instructionImage10;
+	Sprite instructionImage11;
 
 	// UI
 	public RectTransform tutorialRect;
@@ -46,14 +62,30 @@ public class TutorialScript : MonoBehaviour{
 		yield return null;
 		tutorialRect = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial").GetComponent<RectTransform>();
 		instruction = 0;
-		instructionText0 = "TEXT0";
-		instructionText1 = "TEXT1";
-		instructionText2 = "TEXT2";
-		instructionText3 = "TEXT3";
+		instructionText0 = "Bem vindo ao SuperQuiz !";
+		instructionText1 = "Neste tutorial você aprenderá as funções básicas do jogo";
+		instructionText2 = "Esse é o menu principal";
+		instructionText3 = "Através dele acessamos diferentes áreas do jogo";
+		instructionText4 = "O botão PLAY inicia uma nova partida";
+		instructionText5 = "Através dele você poderá responder sua bateria de questões";
+		instructionText6 = "O botão AVATAR te leva até a tela de customizaçao";
+		instructionText7 = "Nela você pode criar e editar seu personagem";
+		instructionText8 = "O botão RANKING te leva até a tela de extratos";
+		instructionText9 = "Aqui você poderá ver seu desempenho nas ultimas partidas";
+		instructionText10 = "E o jogador que está liderando o ranking de pontuações";
+		instructionText11 = "Pronto. Agora você já pode aproveitar o SuperQuiz!";
 		instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
 		instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
 		instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
 		instructionImage3 = Resources.Load("Textures/Tutorial/tutorial_3", typeof(Sprite)) as Sprite;
+		instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
+		instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
+		instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
+		instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
+		instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
+		instructionImage9 = Resources.Load("Textures/Tutorial/tutorial_9", typeof(Sprite)) as Sprite;
+		instructionImage10 = Resources.Load("Textures/Tutorial/tutorial_10", typeof(Sprite)) as Sprite;
+		instructionImage11 = Resources.Load("Textures/Tutorial/tutorial_11", typeof(Sprite)) as Sprite;
 		instructionWindow = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/InstructionWindow").gameObject;
 		changeInstruction = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ChangeInstruction").gameObject;
 		toMenu = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenu").gameObject;
@@ -97,12 +129,76 @@ public class TutorialScript : MonoBehaviour{
 				instructionWindowText.text = instructionText3;
 				instructionWindowImage.sprite = instructionImage3;
 				break;
-			default:
-				instructionWindow.SetActive(false);
-				changeInstruction.SetActive(false);
-				toMenu.SetActive(false);
-				toMenuEnd.SetActive(true);
+			case 4:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText4;
+				instructionWindowImage.sprite = instructionImage4;
 				break;
+			case 5:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText5;
+				instructionWindowImage.sprite = instructionImage5;
+				break;
+			case 6:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText6;
+				instructionWindowImage.sprite = instructionImage6;
+				break;
+			case 7:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText7;
+				instructionWindowImage.sprite = instructionImage7;
+				break;
+			case 8:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText8;
+				instructionWindowImage.sprite = instructionImage8;
+				break;
+			case 9:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText9;
+				instructionWindowImage.sprite = instructionImage9;
+				break;
+			case 10:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText10;
+				instructionWindowImage.sprite = instructionImage10;
+				break;
+			case 11:
+			instructionWindow.SetActive(true);
+			changeInstruction.SetActive(true);
+			toMenu.SetActive(true);
+			toMenuEnd.SetActive(false);
+			instructionWindowText.text = instructionText11;
+			instructionWindowImage.sprite = instructionImage11;
+			break;
+		default:
+			instructionWindow.SetActive(false);
+			changeInstruction.SetActive(false);
+			toMenu.SetActive(false);
+			toMenuEnd.SetActive(true);
+			break;
 		}
 	}
 	

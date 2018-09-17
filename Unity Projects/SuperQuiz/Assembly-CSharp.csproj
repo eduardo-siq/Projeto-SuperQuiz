@@ -75,6 +75,7 @@
      <Compile Include="Assets\Scripts\Scenes\LoginScript.cs" />
      <Compile Include="Assets\Scripts\Scenes\MenuScript.cs" />
      <Compile Include="Assets\Scripts\Scenes\ResultScript.cs" />
+     <Compile Include="Assets\Scripts\Scenes\TutorialScript.cs" />
      <Compile Include="Assets\Scripts\SessionScript.cs" />
      <Compile Include="Assets\Scripts\Simple.cs" />
      <Compile Include="Assets\Scripts\TestButton.cs" />
