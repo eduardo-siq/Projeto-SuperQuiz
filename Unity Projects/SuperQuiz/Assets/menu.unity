@@ -501,7 +501,6 @@ RectTransform:
   m_Children:
   - {fileID: 694216558}
   - {fileID: 1035854005}
-  - {fileID: 2004606654}
   - {fileID: 793454834}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -547,6 +546,7 @@ RectTransform:
   - {fileID: 133074009}
   - {fileID: 1023989309}
   - {fileID: 1559123436}
+  - {fileID: 2004606654}
   m_Father: {fileID: 1035854005}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -817,7 +817,7 @@ RectTransform:
   m_LocalScale: {x: 0.25516546, y: 0.7690346, z: 1}
   m_Children: []
   m_Father: {fileID: 485107804}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.4698768, y: 0.43025407}
   m_AnchorMax: {x: 0.4698768, y: 0.43025407}
@@ -2303,7 +2303,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 485107804}
+    m_TransformParent: {fileID: 643173174}
     m_Modifications:
     - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
         type: 2}
@@ -2343,7 +2343,7 @@ Prefab:
     - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
         type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
         type: 2}
@@ -2394,6 +2394,21 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c4c754badff041b408988a56986c8625, type: 2}
