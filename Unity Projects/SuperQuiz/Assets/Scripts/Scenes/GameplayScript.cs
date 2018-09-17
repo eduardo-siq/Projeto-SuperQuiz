@@ -307,6 +307,7 @@ public class GameplayScript : MonoBehaviour
                 questionImage.SetActive(true);
                 questionImageTexture.sprite = currentQuestion.questionImage;
                 questionMultipleText.transform.Find("Text").GetComponent<Text>().text = currentQuestion.text;
+				questionMultipleText.transform.Find("Text").GetComponent<Text>().alignment = TextAnchor.UpperCenter;
                 a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
                 rightAnswer = a0;
                 a1 = Random.Range(0, 5);
@@ -354,6 +355,7 @@ public class GameplayScript : MonoBehaviour
                 questionWrite.SetActive(false);
                 questionImage.SetActive(false);
                 questionMultipleText.transform.Find("Text").GetComponent<Text>().text = currentQuestion.text;
+				questionMultipleText.transform.Find("Text").GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
                 a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
                 rightAnswer = a0;
                 a1 = Random.Range(0, 5);
