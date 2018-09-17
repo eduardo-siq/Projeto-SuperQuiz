@@ -172,6 +172,7 @@ public class SessionScript : MonoBehaviour
         if (firstLogIn)
         {
             playerAvatar = new Avatar();
+			playerAvatar.skin = -1;
         }
         selectedItem1 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
         selectedItem2 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE

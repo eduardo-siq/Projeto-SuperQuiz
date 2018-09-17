@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuScript : MonoBehaviour
-{
+public class MenuScript : MonoBehaviour{
 
     // UI
     public RectTransform menuRect;
@@ -20,15 +19,14 @@ public class MenuScript : MonoBehaviour
         StartCoroutine(StartScene());
     }
 
-    IEnumerator StartScene()
-    {
+    IEnumerator StartScene(){
         yield return null;
         menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
         avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
-		if (SessionScript.playerAvatar == null){
-			avatar.GetComponent<AvatarPortrait>().RandomAvatar();
-		}
-		if (SessionScript.playerAvatar != null){
+		if (SessionScript.playerAvatar.skin == -1){
+			avatar.SetActive(false);
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/NoPortrait").gameObject.SetActive(true);
+		}else{
 			avatar.GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.playerAvatar);
 		}
         // avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
@@ -44,8 +42,7 @@ public class MenuScript : MonoBehaviour
     }
 
 
-    void Update()
-    {
+    void Update(){
         // if (endScene){
         // menuRect.anchoredPosition = new Vector2 (menuRect.anchoredPosition.x, menuRect.anchoredPosition.y - Time.deltaTime * 1200);
         // return;

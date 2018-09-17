@@ -116,8 +116,6 @@ public class AvatarScript : MonoBehaviour
 		if (SessionScript.customizationStage != 1){
 			CustomizationStage();
 		}
-        Portrait();
-        allowNext = false;
 
         if (SessionScript.score >= SessionScript.thresholdTier1)
         {
@@ -157,6 +155,9 @@ public class AvatarScript : MonoBehaviour
             SessionScript.RaffleInitialAvatar();
             SessionScript.firstLogIn = false;
         }
+		
+		Portrait();
+        allowNext = false;
     }
 
     void Update(){
@@ -219,10 +220,8 @@ public class AvatarScript : MonoBehaviour
         Portrait();
     }
 
-    public void PreviousItem(int item)
-    {
-        switch (item)
-        {
+    public void PreviousItem(int item){
+        switch (item){
             case 0:
                 SessionScript.playerAvatar.item0 = SessionScript.playerAvatar.item0 - 1;
                 if (SessionScript.playerAvatar.item0 < 0)

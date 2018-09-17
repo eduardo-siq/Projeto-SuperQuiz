@@ -62,18 +62,13 @@ public class TutorialScript : MonoBehaviour{
 		yield return null;
 		tutorialRect = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial").GetComponent<RectTransform>();
 		instruction = 0;
-		instructionText0 = "Bem vindo ao SuperQuiz !";
-		instructionText1 = "Neste tutorial você aprenderá as funções básicas do jogo";
-		instructionText2 = "Esse é o menu principal";
-		instructionText3 = "Através dele acessamos diferentes áreas do jogo";
-		instructionText4 = "O botão PLAY inicia uma nova partida";
-		instructionText5 = "Através dele você poderá responder sua bateria de questões";
-		instructionText6 = "O botão AVATAR te leva até a tela de customizaçao";
-		instructionText7 = "Nela você pode criar e editar seu personagem";
-		instructionText8 = "O botão RANKING te leva até a tela de extratos";
-		instructionText9 = "Aqui você poderá ver seu desempenho nas ultimas partidas";
-		instructionText10 = "E o jogador que está liderando o ranking de pontuações";
-		instructionText11 = "Pronto. Agora você já pode aproveitar o SuperQuiz!";
+		instructionText0 = "Bem vindo ao SuperQuiz!";
+		instructionText1 = "Este é um jogo de perguntas e respostas, e permite que você crie e customize seu personagem";
+		instructionText2 = "No menu principal, acessamos diferentes áreas do jogo";
+		instructionText3 = "Aqui você inicia uma nova partida";
+		instructionText4 = "Aqui você cria e edita seu personagem";
+		instructionText5 = "Use as setas para selecionar seus acessórios";
+		instructionText6 = "Pronto. Agora você já pode jogar o SuperQuiz!";
 		instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
 		instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
 		instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
@@ -81,11 +76,6 @@ public class TutorialScript : MonoBehaviour{
 		instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
 		instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
 		instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
-		instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
-		instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
-		instructionImage9 = Resources.Load("Textures/Tutorial/tutorial_9", typeof(Sprite)) as Sprite;
-		instructionImage10 = Resources.Load("Textures/Tutorial/tutorial_10", typeof(Sprite)) as Sprite;
-		instructionImage11 = Resources.Load("Textures/Tutorial/tutorial_11", typeof(Sprite)) as Sprite;
 		instructionWindow = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/InstructionWindow").gameObject;
 		changeInstruction = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ChangeInstruction").gameObject;
 		toMenu = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenu").gameObject;
@@ -153,46 +143,46 @@ public class TutorialScript : MonoBehaviour{
 				instructionWindowText.text = instructionText6;
 				instructionWindowImage.sprite = instructionImage6;
 				break;
-			case 7:
-				instructionWindow.SetActive(true);
-				changeInstruction.SetActive(true);
-				toMenu.SetActive(true);
-				toMenuEnd.SetActive(false);
-				instructionWindowText.text = instructionText7;
-				instructionWindowImage.sprite = instructionImage7;
-				break;
-			case 8:
-				instructionWindow.SetActive(true);
-				changeInstruction.SetActive(true);
-				toMenu.SetActive(true);
-				toMenuEnd.SetActive(false);
-				instructionWindowText.text = instructionText8;
-				instructionWindowImage.sprite = instructionImage8;
-				break;
-			case 9:
-				instructionWindow.SetActive(true);
-				changeInstruction.SetActive(true);
-				toMenu.SetActive(true);
-				toMenuEnd.SetActive(false);
-				instructionWindowText.text = instructionText9;
-				instructionWindowImage.sprite = instructionImage9;
-				break;
-			case 10:
-				instructionWindow.SetActive(true);
-				changeInstruction.SetActive(true);
-				toMenu.SetActive(true);
-				toMenuEnd.SetActive(false);
-				instructionWindowText.text = instructionText10;
-				instructionWindowImage.sprite = instructionImage10;
-				break;
-			case 11:
-			instructionWindow.SetActive(true);
-			changeInstruction.SetActive(true);
-			toMenu.SetActive(true);
-			toMenuEnd.SetActive(false);
-			instructionWindowText.text = instructionText11;
-			instructionWindowImage.sprite = instructionImage11;
-			break;
+			// case 7:
+				// instructionWindow.SetActive(true);
+				// changeInstruction.SetActive(true);
+				// toMenu.SetActive(true);
+				// toMenuEnd.SetActive(false);
+				// instructionWindowText.text = instructionText7;
+				// instructionWindowImage.sprite = instructionImage7;
+				// break;
+			// case 8:
+				// instructionWindow.SetActive(true);
+				// changeInstruction.SetActive(true);
+				// toMenu.SetActive(true);
+				// toMenuEnd.SetActive(false);
+				// instructionWindowText.text = instructionText8;
+				// instructionWindowImage.sprite = instructionImage8;
+				// break;
+			// case 9:
+				// instructionWindow.SetActive(true);
+				// changeInstruction.SetActive(true);
+				// toMenu.SetActive(true);
+				// toMenuEnd.SetActive(false);
+				// instructionWindowText.text = instructionText9;
+				// instructionWindowImage.sprite = instructionImage9;
+				// break;
+			// case 10:
+				// instructionWindow.SetActive(true);
+				// changeInstruction.SetActive(true);
+				// toMenu.SetActive(true);
+				// toMenuEnd.SetActive(false);
+				// instructionWindowText.text = instructionText10;
+				// instructionWindowImage.sprite = instructionImage10;
+				// break;
+			// case 11:
+				// instructionWindow.SetActive(true);
+				// changeInstruction.SetActive(true);
+				// toMenu.SetActive(true);
+				// toMenuEnd.SetActive(false);
+				// instructionWindowText.text = instructionText11;
+				// instructionWindowImage.sprite = instructionImage11;
+				// break;
 		default:
 			instructionWindow.SetActive(false);
 			changeInstruction.SetActive(false);
