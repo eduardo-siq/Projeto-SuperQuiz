@@ -83,7 +83,7 @@ public class AnswersScript : MonoBehaviour
                 newAnswerLine.GetComponent<Image>().sprite = answerLineTexture2;
             }
             variation1 = !variation1;
-            float sizeY = 30 * i;
+            float sizeY = 30 * (i + 1);
             if (sizeY < 200) sizeY = 200f;
             answerLinesViewport.GetComponent<RectTransform>().sizeDelta = new Vector2(200f, sizeY);
             newAnswerLine.transform.localScale = new Vector3(1, 1, 1);

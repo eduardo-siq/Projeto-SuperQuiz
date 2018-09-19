@@ -73,6 +73,61 @@ public class BuiltInQuestions {
 		"Escócia",
 		"X",
 		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		5,
+		0,
+		"A Muralha da China foi construída como defesa contra invasores de que país?",
+		"Mongólia",
+		"Tibete",
+		"Japão",
+		"Índia",
+		"Coréia",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		6,
+		4,
+		"Quem é o autor dessa obra?",
+		"Michelangelo",
+		"Leonardo da Vinci",
+		"Botticelli",
+		"El Greco",
+		"Caravaggio",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		7,
+		1,
+		"A pólvora foi inventada em qual país?",
+		"China",
+		"",
+		"",
+		"",
+		"",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		8,
+		0,
+		"Quem é o principal vilão da trilogia original de Guerra nas Estrelas?",
+		"Darth Vader",
+		"Jabba, o Hutt",
+		"Vice-rei Gunray",
+		"Governador Tarkin",
+		"Boba Fett",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		9,
+		3,
+		"O Renascimento foi um movimento cultural e artístico que começou no final da Idade Média. Ele foi caracterizado pelo redescobrimento das tradições artíticas gregas e romadas, e participaram desse movimento figuras como Michelangelo e Leonardo da Vinci. Onde esse movimento se iníciou?",
+		"Península Itálica",
+		"Oriente Médio",
+		"Península Ibérica",
+		"Ilhas Britânicas",
+		"Europa Central",
+		"X",
+		"X"));
 		return questionsPreLoad;
 	}
 }

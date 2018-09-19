@@ -40,7 +40,7 @@ public class GameplayScript : MonoBehaviour
     public Image clockImage;
     public Text clockText;
     public GameObject nextQuestion;
-    public GameObject menu;
+    public GameObject toMenuText;
     public Vector2 questionPointOffset;
     public GameObject correctAnswer;
     //public GameObject result;
@@ -114,7 +114,7 @@ public class GameplayScript : MonoBehaviour
         clockText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock/Text").gameObject.GetComponent<Text>();
         clockText.text = "";
         nextQuestion = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/NextQuestion").gameObject;
-        menu = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/ToMenu").gameObject;
+        toMenuText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/ToMenu").gameObject;
         correctAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/CorrectAnswer").gameObject;
         //result = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Result").gameObject;
         //result.SetActive(false);
@@ -124,7 +124,7 @@ public class GameplayScript : MonoBehaviour
         questionLong.SetActive(false);
         questionWrite.SetActive(false);
         nextQuestion.SetActive(false);
-        menu.SetActive(false);
+        toMenuText.SetActive(false);
         showAnswer = false;
 
         //Point-and-click
@@ -213,7 +213,7 @@ public class GameplayScript : MonoBehaviour
         SessionScript.questionsAskedList.Add(currentQuestion.index);
         correctAnswer.SetActive(false);
         nextQuestion.SetActive(false);
-        menu.SetActive(false);
+        toMenuText.SetActive(false);
         //result.SetActive(false);
         clockText.text = SessionScript.questionTime.ToString();
         QuestionCounter();
@@ -666,17 +666,17 @@ public class GameplayScript : MonoBehaviour
 			}
 		}
 		if (!SessionScript.singleRun){
-			menu.SetActive(true);
+			//menu.SetActive(true);
 		}
 		if (SessionScript.questionsAskedList.Count < SessionScript.numberOfQuestionsDemanded){
 			nextQuestion.SetActive(true);
 		}
 		if (SessionScript.questionsAskedList.Count == SessionScript.numberOfQuestionsDemanded){
 			nextScene = "menu";
-			Invoke ("EndScene", 2.25f);
-			Invoke ("NextScene", 2.25f);
-			TransitionScript.PlayAnimation();
-			TransitionScript.StartAnimation();
+			toMenuText.SetActive(true);
+			Invoke ("EndScene", 4f);
+			Invoke ("NextScene", 4f);
+			Invoke("StartEndTransition", 2.8f);	// mesma diferença de timming das outras cenas
 		}
 		currentQuestionTime = 0;
 		clockImage.fillAmount = 0;
@@ -691,6 +691,10 @@ public class GameplayScript : MonoBehaviour
 		if (SessionScript.score >= SessionScript.thresholdTier2){
 			SessionScript.currentTier = 2;
 		}
+	}
+	
+	void StartEndTransition(){
+		TransitionScript.EndAnimation();
 	}
 	
 	public void CloseCorrection(){

@@ -23,7 +23,7 @@ public class SessionScript : MonoBehaviour
     public static List<Question> questionList;
     public static List<int> questionsAskedList;
     public static List<Answer> answersList;
-    public static int numberOfQuestionsDemanded = 5;
+    public static int numberOfQuestionsDemanded = 10;
     //public static int pointsByQuestion = 50;	// maybe redundant
     public static float questionTime = 30f; // locally defined, maybe defined by BncQ later
     public static List<string> subjectName;

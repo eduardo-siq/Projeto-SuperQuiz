@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class AvatarScript : MonoBehaviour
-{
+public class AvatarScript : MonoBehaviour{
 
     // UI
     public RectTransform avatarRect;
@@ -149,12 +148,12 @@ public class AvatarScript : MonoBehaviour
             item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.z);
             item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.z);
         }
-        if (SessionScript.firstLogIn)
-        {
-            TransitionScript.SkipAnimation();
-            SessionScript.RaffleInitialAvatar();
-            SessionScript.firstLogIn = false;
-        }
+        // if (SessionScript.firstLogIn)
+        // {
+            // TransitionScript.SkipAnimation();
+            // SessionScript.RaffleInitialAvatar();
+            // SessionScript.firstLogIn = false;
+        // }
 		
 		Portrait();
         allowNext = false;

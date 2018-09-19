@@ -25,6 +25,7 @@ public class TransitionScript : MonoBehaviour{
 
 
 	public void Start(){
+		return;
 		instance = this;
 		//this.gameObject.transform.SetParent(GameObject.Find("Canvas/Scroll View").transform);
 
@@ -35,8 +36,8 @@ public class TransitionScript : MonoBehaviour{
 		}
 	}
 
-    public void RaffleVariation()
-    {
+    public void RaffleVariation(){
+		return;
         int random = Random.Range(0, 5);
         switch (random)
         {
@@ -62,27 +63,27 @@ public class TransitionScript : MonoBehaviour{
         }
     }
 
-    public static void SkipAnimation()
-    {
+    public static void SkipAnimation(){
+		return;
         // instance.transitionAnim.SetBool("skip", true);
     }
 
-    public static void PlayAnimation()
-    {
+    public static void PlayAnimation(){
+		return;
         // instance.transitionAnim.SetBool("skip", false);
     }
 
 
-    public static void StartAnimation()
-    {
+    public static void StartAnimation(){
+		return;
         instance.RaffleVariation();
         instance.transitionAnim.SetTrigger("in");
         SessionScript.startAnimationNextScene = false;
     }
 
 
-    public static void EndAnimation()
-    {
+    public static void EndAnimation(){
+		return;
         SessionScript.startAnimationNextScene = true;
         instance.RaffleVariation();
         instance.transitionAnim.SetTrigger("out");

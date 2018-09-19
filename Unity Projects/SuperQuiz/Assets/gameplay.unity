@@ -253,7 +253,7 @@ MonoBehaviour:
   clockImage: {fileID: 0}
   clockText: {fileID: 0}
   nextQuestion: {fileID: 0}
-  menu: {fileID: 0}
+  toMenuText: {fileID: 0}
   questionPointOffset: {x: 0, y: 0}
   correctAnswer: {fileID: 0}
   rightAnswer: 0
@@ -2930,7 +2930,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1295172078}
+  m_TargetGraphic: {fileID: 649940210}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4926,7 +4926,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1295172078}
+  m_TargetGraphic: {fileID: 1285270663}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -5273,7 +5273,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1295172078}
+  m_TargetGraphic: {fileID: 1348509130}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -8104,7 +8104,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1295172078}
+  m_TargetGraphic: {fileID: 1948680070}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -8917,11 +8917,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 920ea60c505f10a40b5feae7f2ceb071, type: 3}
-    m_FontSize: 17
+    m_Font: {fileID: 12800000, guid: de174ac6a00e5d3428619c324d2321b0, type: 3}
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -8929,7 +8929,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 0.6
-  m_Text: "Acabaram \n\nas\n\nQuest\xF5es!"
+  m_Text: FIM !
 --- !u!222 &2141511709
 CanvasRenderer:
   m_ObjectHideFlags: 0
