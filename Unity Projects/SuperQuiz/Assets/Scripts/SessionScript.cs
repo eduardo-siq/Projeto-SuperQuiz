@@ -49,6 +49,7 @@ public class SessionScript : MonoBehaviour
     public static List<Sprite> avatarHairMasc;
     public static List<Sprite> avatarBase;
     public static Sprite avatarBlank;
+	public static Sprite noAvatar;
     public static Avatar playerAvatar;
     public static int selectedItem0;
     public static int selectedItem1;
@@ -90,31 +91,27 @@ public class SessionScript : MonoBehaviour
     public static string bncQFileName;
     public static bool startAnimationNextScene;
     [SerializeField] string bncQFileNameEditor;
+	public static List<Player> playerList;
 
     // Score
     public static int rightScore;
     public static int timeoutScore;
     public static int wrongScore;
 
-    void Awake()
-    {
+    void Awake(){
         bncQFileName = bncQFileNameEditor;
-        if (instance == null)
-        {
+        if (instance == null){
             instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        else
-        {
-            if (instance != this)
-            {
+        else{
+            if (instance != this){
                 Destroy(gameObject);
             }
         }
     }
 
-    void Start()
-    {
+    void Start(){
         // Users
         score = 0;
         userGroup = -1; // default for no/unqualified user
@@ -122,6 +119,9 @@ public class SessionScript : MonoBehaviour
 
         // Auxiliary
         missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
+		playerList = new List<Player>();
+		InstantiateDummyPlayers();
+		SortPlayerListByScore();
 
         // Questions
         questionListPreLoad = new List<QuestionPreLoad>();
@@ -169,8 +169,8 @@ public class SessionScript : MonoBehaviour
         avatarHairMasc = new List<Sprite>();
         avatarBase = new List<Sprite>();
         avatarBlank = Resources.Load("Textures/Avatar/avatar_blank", typeof(Sprite)) as Sprite;
-        if (firstLogIn)
-        {
+		noAvatar = Resources.Load("Textures/Avatar/avatar_noAvatar", typeof(Sprite)) as Sprite;
+        if (firstLogIn){
             playerAvatar = new Avatar();
 			playerAvatar.skin = -1;
         }
@@ -210,21 +210,18 @@ public class SessionScript : MonoBehaviour
         wrongScore = -10;
 
         StartCoroutine(UpdateScene());
-        if (!getBuiltInQuestions)
-        {
+        if (!getBuiltInQuestions){
             print("load questions");
             StartCoroutine(LoadFile());
         }
-        if (getBuiltInQuestions)
-        {
+        if (getBuiltInQuestions){
             print("load built-in questions");
             StartCoroutine(LoadBuiltInQuestions());
         }
 
     }
 
-    IEnumerator UpdateScene()
-    {
+    IEnumerator UpdateScene(){
         yield return null;
         questionsAskedListCount = questionsAskedList.Count;
         answersListCount = answersList.Count;   // MAYBE IRRELEVANT
@@ -244,8 +241,7 @@ public class SessionScript : MonoBehaviour
         StartCoroutine(UpdateScene());
     }
 
-    public void GetDetailList()
-    {
+    public void GetDetailList(){
         print("GetDetailList");
         detail = Detail.GetBuiltInList();
         print("detail.Count: " + detail.Count);
@@ -569,17 +565,64 @@ public class SessionScript : MonoBehaviour
         playerAvatar.item3 = Mathf.RoundToInt(Random.Range(0, item3TierIndex.x));
     }
 
-    public static void RaffleAvatar(int maxItem0Index, int maxItem1Index, int maxItem2Index, int maxItem3Index)
-    {
+    public static void RaffleAvatar(int maxItem0Index, int maxItem1Index, int maxItem2Index, int maxItem3Index){
         playerAvatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
-        if (avatarItem0.Count > 0 && avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0)
-        {
+        if (avatarItem0.Count > 0 && avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
             selectedItem1 = Random.Range(0, maxItem0Index);
             selectedItem1 = Random.Range(0, maxItem1Index);
             selectedItem2 = Random.Range(0, maxItem2Index);
             selectedItem3 = Random.Range(0, maxItem3Index);
         }
     }
+	
+	public static void InstantiateDummyPlayers(){
+		int numberOfPlayers = 15;
+		for (int i = 0; i < numberOfPlayers; i++){
+			Player newPlayer = new Player(Player.RandomPlayer());
+			newPlayer.id = i;
+			newPlayer.score = Random.Range(-5,10) * 10;
+			playerList.Add(newPlayer);
+		}
+	}
+	
+	public static void SortPlayerListByScore(){
+		print ("SortPlayerListByScore");
+		List <Player> auxPlayerList = playerList;
+		playerList = new List <Player>();
+		int higherScore = -999;
+		int loop = 0;
+		bool done = false;
+		do {
+			loop = loop + 1;
+			higherScore = -999;
+			for (int i = 0; i < auxPlayerList.Count; i++){
+				if (auxPlayerList[i].score >= higherScore){
+					higherScore = auxPlayerList[i].score;
+					print ("higherScore: " + higherScore);
+				}
+			}
+			for (int i = 0; i < auxPlayerList.Count; i++){
+				print ("check each player");
+				if (auxPlayerList[i].score == higherScore){
+					print ("Add PlayerList!");
+					playerList.Add(new Player(auxPlayerList[i]));
+					auxPlayerList[i].score = -999;
+					print (playerList[playerList.Count - 1].name);
+					break;
+				}
+			}
+			print ("auxPlayerList: " + auxPlayerList.Count + "/ playerList " + playerList.Count);
+			if (auxPlayerList.Count == playerList.Count){
+				done = true;
+			}
+			if (loop >= 100){
+				print ("INFINITE LOOP!");
+				done = true;
+			}
+			print ("end this loop");
+		} while (!done);
+		
+	}
 
     public void PlaySong(AudioClip audio)
     {

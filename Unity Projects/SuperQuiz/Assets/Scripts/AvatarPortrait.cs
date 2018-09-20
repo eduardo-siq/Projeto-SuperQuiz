@@ -37,21 +37,40 @@ public class AvatarPortrait : MonoBehaviour{
 		if (thisAvatar == null){
 			thisAvatar = Avatar.RandomAvatar();
 		}
-		baseTexture.sprite = SessionScript.avatarBase[thisAvatar.skin];
-		if (thisAvatar.gender == 0){
-			hairTexture.sprite = SessionScript.avatarHairFem[thisAvatar.hair];
+		if (thisAvatar.skin != -1){
+			baseTexture.sprite = SessionScript.avatarBase[thisAvatar.skin];
+			if (thisAvatar.gender == 0){
+				hairTexture.sprite = SessionScript.avatarHairFem[thisAvatar.hair];
+			}
+			if (thisAvatar.gender == 1){
+				hairTexture.sprite = SessionScript.avatarHairMasc[thisAvatar.hair];
+			}
+			item0Texture.sprite = SessionScript.avatarItem0[thisAvatar.item0];
+			item1Texture.sprite = SessionScript.avatarItem1[thisAvatar.item1];
+			item2Texture.sprite = SessionScript.avatarItem2[thisAvatar.item2];
+			item3Texture.sprite = SessionScript.avatarItem3[thisAvatar.item3];
+			item0TextureB.sprite = SessionScript.avatarItem0b[thisAvatar.item0];
+			item1TextureB.sprite = SessionScript.avatarItem1b[thisAvatar.item1];
+			item2TextureB.sprite = SessionScript.avatarItem2b[thisAvatar.item2];
+			item3TextureB.sprite = SessionScript.avatarItem3b[thisAvatar.item3];
 		}
-		if (thisAvatar.gender == 1){
-			hairTexture.sprite = SessionScript.avatarHairMasc[thisAvatar.hair];
+		if (thisAvatar.skin == -1){
+			baseTexture.sprite = SessionScript.noAvatar;
+			if (thisAvatar.gender == 0){
+				hairTexture.sprite = SessionScript.avatarBlank;
+			}
+			if (thisAvatar.gender == 1){
+				hairTexture.sprite = SessionScript.avatarBlank;
+			}
+			item0Texture.sprite = SessionScript.avatarBlank;
+			item1Texture.sprite = SessionScript.avatarBlank;
+			item2Texture.sprite = SessionScript.avatarBlank;
+			item3Texture.sprite = SessionScript.avatarBlank;
+			item0TextureB.sprite = SessionScript.avatarBlank;
+			item1TextureB.sprite = SessionScript.avatarBlank;
+			item2TextureB.sprite = SessionScript.avatarBlank;
+			item3TextureB.sprite = SessionScript.avatarBlank;
 		}
-		item0Texture.sprite = SessionScript.avatarItem0[thisAvatar.item0];
-		item1Texture.sprite = SessionScript.avatarItem1[thisAvatar.item1];
-		item2Texture.sprite = SessionScript.avatarItem2[thisAvatar.item2];
-		item3Texture.sprite = SessionScript.avatarItem3[thisAvatar.item3];
-		item0TextureB.sprite = SessionScript.avatarItem0b[thisAvatar.item0];
-		item1TextureB.sprite = SessionScript.avatarItem1b[thisAvatar.item1];
-		item2TextureB.sprite = SessionScript.avatarItem2b[thisAvatar.item2];
-		item3TextureB.sprite = SessionScript.avatarItem3b[thisAvatar.item3];
 	}
 	
 	public void RandomAvatar(){

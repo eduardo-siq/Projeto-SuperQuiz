@@ -111,10 +111,10 @@ public class BuiltInQuestions {
 		0,
 		"Quem é o principal vilão da trilogia original de Guerra nas Estrelas?",
 		"Darth Vader",
-		"Jabba, o Hutt",
-		"Vice-rei Gunray",
-		"Governador Tarkin",
-		"Boba Fett",
+		"Khan",
+		"Sauron",
+		"Valdemort",
+		"Roy Batty",
 		"X",
 		"X"));
 		questionsPreLoad.Add(new QuestionPreLoad(

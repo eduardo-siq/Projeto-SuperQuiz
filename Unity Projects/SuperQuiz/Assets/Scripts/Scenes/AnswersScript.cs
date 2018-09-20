@@ -22,26 +22,22 @@ public class AnswersScript : MonoBehaviour
     string right = "acertou";
     string wrong = "errou";
 
-    void Start()
-    {
+    void Start(){
         StartCoroutine(StartScene());
         // answerLineScrollbar = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Scrollbar Vertical").GetComponent<Scrollbar>();
     }
 
-    void Update()
-    {
+    void Update(){
         // if (endScene){
         // resultRect.anchoredPosition = new Vector2 (resultRect.anchoredPosition.x, resultRect.anchoredPosition.y - Time.deltaTime * 1200);
         // return;
         // }
-        if (quit)
-        {
+        if (quit){
             SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
         }
     }
 
-    IEnumerator StartScene()
-    {
+    IEnumerator StartScene(){
         yield return null;
         resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Answers").GetComponent<RectTransform>();
         answerLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Viewport/Content").gameObject;
@@ -52,45 +48,39 @@ public class AnswersScript : MonoBehaviour
         AnswersList();
     }
 
-    public void AnswersList()
-    {
-        string thisAnswer = "";
-        int index = 0;
-        bool variation1 = true;
-        answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
-        answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
-        for (int i = 0; i < SessionScript.answersList.Count; i++)
-        {
-            index = i + 1;
-            if (SessionScript.answersList[i].right)
-            {
-                thisAnswer = right;
-            }
-            if (!SessionScript.answersList[i].right)
-            {
-                thisAnswer = wrong;
-            }
-            GameObject newAnswerLine = Instantiate(answerLinePrefab);
-            newAnswerLine.transform.SetParent(answerLinesViewport.transform, true);
-            newAnswerLine.transform.Find("Text").GetComponent<Text>().text = "Questão " + index.ToString() + ": " + thisAnswer + " (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
-            newAnswerLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f - 30 * i, 0f);
-            if (variation1)
-            {
-                newAnswerLine.GetComponent<Image>().sprite = answerLineTexture1;
-            }
-            else
-            {
-                newAnswerLine.GetComponent<Image>().sprite = answerLineTexture2;
-            }
-            variation1 = !variation1;
-            float sizeY = 30 * (i + 1);
-            if (sizeY < 200) sizeY = 200f;
-            answerLinesViewport.GetComponent<RectTransform>().sizeDelta = new Vector2(200f, sizeY);
-            newAnswerLine.transform.localScale = new Vector3(1, 1, 1);
-        }
-        answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().value = 1;
-        // answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().size = 0;
-    }
+	public void AnswersList(){
+		string thisAnswer = "";
+		int index = 0;
+		bool variation1 = true;
+		answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
+		answerLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
+		for (int i = 0; i < SessionScript.answersList.Count; i++){
+			index = i + 1;
+			if (SessionScript.answersList[i].right){
+				thisAnswer = right;
+			}
+			if (!SessionScript.answersList[i].right){
+				thisAnswer = wrong;
+			}
+			GameObject newAnswerLine = Instantiate(answerLinePrefab);
+			newAnswerLine.transform.SetParent(answerLinesViewport.transform, true);
+			newAnswerLine.transform.Find("Text").GetComponent<Text>().text = "Questão " + index.ToString() + ": " + thisAnswer + " (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
+			newAnswerLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f - 30 * i, 0f);
+			if (variation1){
+				newAnswerLine.GetComponent<Image>().sprite = answerLineTexture1;
+			}
+			else{
+				newAnswerLine.GetComponent<Image>().sprite = answerLineTexture2;
+			}
+			variation1 = !variation1;
+			float sizeY = 30 * (i + 1);
+			if (sizeY < 200) sizeY = 200f;
+			answerLinesViewport.GetComponent<RectTransform>().sizeDelta = new Vector2(200f, sizeY);
+			newAnswerLine.transform.localScale = new Vector3(1, 1, 1);
+		}
+		answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().value = 1;
+		// answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().size = 0;
+	}
 
     public void SelectResult(){
         SessionScript.ButtonAudio(SessionScript.neutral);

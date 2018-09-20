@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Avatar
-{
+public class Avatar{
 
     public int skin;
     public int hair;
@@ -14,8 +13,7 @@ public class Avatar
     public int item3;
     public string name;
 
-    public Avatar()
-    {
+    public Avatar(){
         skin = 0;
         hair = 0;
         gender = 0;
@@ -25,6 +23,10 @@ public class Avatar
         item3 = 0;
         name = "noName";
     }
+	
+	public Avatar(Avatar newAvatar){
+		
+	}
 
     public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName){
         skin = newSkin;
@@ -49,4 +51,10 @@ public class Avatar
         randomAvatar.item3 = Random.Range(0, SessionScript.avatarItem3.Count);
         return randomAvatar;
     }
+	
+	public static Avatar UndefinedAvatar(){
+		Avatar newAvatar = new Avatar();
+		newAvatar.skin = -1;
+		return newAvatar;
+	}
 }
