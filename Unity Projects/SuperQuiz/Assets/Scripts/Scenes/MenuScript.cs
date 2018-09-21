@@ -23,11 +23,11 @@ public class MenuScript : MonoBehaviour{
         yield return null;
         menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
         avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
-		if (SessionScript.playerAvatar.skin == -1){
+		if (SessionScript.player.avatar.skin == -1){
 			avatar.SetActive(false);
 			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/NoPortrait").gameObject.SetActive(true);
 		}else{
-			avatar.GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.playerAvatar);
+			avatar.GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.player.avatar);
 		}
         // avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
         // avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];

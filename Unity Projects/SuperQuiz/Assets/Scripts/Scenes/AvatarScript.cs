@@ -116,11 +116,11 @@ public class AvatarScript : MonoBehaviour{
 			CustomizationStage();
 		}
 
-        if (SessionScript.score >= SessionScript.thresholdTier1)
+        if (SessionScript.player.score >= SessionScript.thresholdTier1)
         {
             SessionScript.currentTier = 1;
         }
-        if (SessionScript.score >= SessionScript.thresholdTier2)
+        if (SessionScript.player.score >= SessionScript.thresholdTier2)
         {
             SessionScript.currentTier = 2;
         }
@@ -181,34 +181,34 @@ public class AvatarScript : MonoBehaviour{
         switch (item)
         {
             case 0:
-                SessionScript.playerAvatar.item0 = SessionScript.playerAvatar.item0 + 1;
-                if (SessionScript.playerAvatar.item0 > item0MaxIndex)
+                SessionScript.player.avatar.item0 = SessionScript.player.avatar.item0 + 1;
+                if (SessionScript.player.avatar.item0 > item0MaxIndex)
                 {
-                    SessionScript.playerAvatar.item0 = 0;
+                    SessionScript.player.avatar.item0 = 0;
 
                 }
                 break;
             case 1:
-                SessionScript.playerAvatar.item1 = SessionScript.playerAvatar.item1 + 1;
-                if (SessionScript.playerAvatar.item1 > item1MaxIndex)
+                SessionScript.player.avatar.item1 = SessionScript.player.avatar.item1 + 1;
+                if (SessionScript.player.avatar.item1 > item1MaxIndex)
                 {
-                    SessionScript.playerAvatar.item1 = 0;
+                    SessionScript.player.avatar.item1 = 0;
 
                 }
                 break;
             case 2:
-                SessionScript.playerAvatar.item2 = SessionScript.playerAvatar.item2 + 1;
-                if (SessionScript.playerAvatar.item2 > item2MaxIndex)
+                SessionScript.player.avatar.item2 = SessionScript.player.avatar.item2 + 1;
+                if (SessionScript.player.avatar.item2 > item2MaxIndex)
                 {
-                    SessionScript.playerAvatar.item2 = 0;
+                    SessionScript.player.avatar.item2 = 0;
 
                 }
                 break;
             case 3:
-                SessionScript.playerAvatar.item3 = SessionScript.playerAvatar.item3 + 1;
-                if (SessionScript.playerAvatar.item3 > item3MaxIndex)
+                SessionScript.player.avatar.item3 = SessionScript.player.avatar.item3 + 1;
+                if (SessionScript.player.avatar.item3 > item3MaxIndex)
                 {
-                    SessionScript.playerAvatar.item3 = 0;
+                    SessionScript.player.avatar.item3 = 0;
 
                 }
                 break;
@@ -222,36 +222,36 @@ public class AvatarScript : MonoBehaviour{
     public void PreviousItem(int item){
         switch (item){
             case 0:
-                SessionScript.playerAvatar.item0 = SessionScript.playerAvatar.item0 - 1;
-                if (SessionScript.playerAvatar.item0 < 0)
+                SessionScript.player.avatar.item0 = SessionScript.player.avatar.item0 - 1;
+                if (SessionScript.player.avatar.item0 < 0)
                 {
-                    SessionScript.playerAvatar.item0 = item0MaxIndex;
+                    SessionScript.player.avatar.item0 = item0MaxIndex;
                 }
-                print(SessionScript.playerAvatar.item0);
+                print(SessionScript.player.avatar.item0);
                 break;
             case 1:
-                SessionScript.playerAvatar.item1 = SessionScript.playerAvatar.item1 - 1;
-                if (SessionScript.playerAvatar.item1 < 0)
+                SessionScript.player.avatar.item1 = SessionScript.player.avatar.item1 - 1;
+                if (SessionScript.player.avatar.item1 < 0)
                 {
-                    SessionScript.playerAvatar.item1 = item1MaxIndex;
+                    SessionScript.player.avatar.item1 = item1MaxIndex;
                 }
-                print(SessionScript.playerAvatar.item1);
+                print(SessionScript.player.avatar.item1);
                 break;
             case 2:
-                SessionScript.playerAvatar.item2 = SessionScript.playerAvatar.item2 - 1;
-                if (SessionScript.playerAvatar.item2 < 0)
+                SessionScript.player.avatar.item2 = SessionScript.player.avatar.item2 - 1;
+                if (SessionScript.player.avatar.item2 < 0)
                 {
-                    SessionScript.playerAvatar.item2 = item2MaxIndex;
+                    SessionScript.player.avatar.item2 = item2MaxIndex;
                 }
-                print(SessionScript.playerAvatar.item2);
+                print(SessionScript.player.avatar.item2);
                 break;
             case 3:
-                SessionScript.playerAvatar.item3 = SessionScript.playerAvatar.item3 - 1;
-                if (SessionScript.playerAvatar.item3 < 0)
+                SessionScript.player.avatar.item3 = SessionScript.player.avatar.item3 - 1;
+                if (SessionScript.player.avatar.item3 < 0)
                 {
-                    SessionScript.playerAvatar.item3 = item3MaxIndex;
+                    SessionScript.player.avatar.item3 = item3MaxIndex;
                 }
-                print(SessionScript.playerAvatar.item3);
+                print(SessionScript.player.avatar.item3);
                 break;
             default:
                 break;
@@ -263,23 +263,23 @@ public class AvatarScript : MonoBehaviour{
     public void NextHair()
     {
         int index;
-        if (SessionScript.playerAvatar.gender == 0)
+        if (SessionScript.player.avatar.gender == 0)
         {
-            index = SessionScript.playerAvatar.hair + 1;
+            index = SessionScript.player.avatar.hair + 1;
             if (index >= SessionScript.avatarHairFem.Count)
             {
                 index = 0;
             }
-            SessionScript.playerAvatar.hair = index;
+            SessionScript.player.avatar.hair = index;
         }
-        if (SessionScript.playerAvatar.gender == 1)
+        if (SessionScript.player.avatar.gender == 1)
         {
-            index = SessionScript.playerAvatar.hair + 1;
+            index = SessionScript.player.avatar.hair + 1;
             if (index >= SessionScript.avatarHairMasc.Count)
             {
                 index = 0;
             }
-            SessionScript.playerAvatar.hair = index;
+            SessionScript.player.avatar.hair = index;
         }
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
@@ -288,23 +288,23 @@ public class AvatarScript : MonoBehaviour{
     public void PreviousHair()
     {
         int index;
-        if (SessionScript.playerAvatar.gender == 0)
+        if (SessionScript.player.avatar.gender == 0)
         {
-            index = SessionScript.playerAvatar.hair - 1;
+            index = SessionScript.player.avatar.hair - 1;
             if (index < 0)
             {
                 index = SessionScript.avatarHairFem.Count - 1;
             }
-            SessionScript.playerAvatar.hair = index;
+            SessionScript.player.avatar.hair = index;
         }
-        if (SessionScript.playerAvatar.gender == 1)
+        if (SessionScript.player.avatar.gender == 1)
         {
-            index = SessionScript.playerAvatar.hair - 1;
+            index = SessionScript.player.avatar.hair - 1;
             if (index < 0)
             {
                 index = SessionScript.avatarHairMasc.Count - 1;
             }
-            SessionScript.playerAvatar.hair = index;
+            SessionScript.player.avatar.hair = index;
         }
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
@@ -362,45 +362,44 @@ public class AvatarScript : MonoBehaviour{
 	}
 
     public void SelectBase(int index){
-        SessionScript.playerAvatar.skin = index;
+        SessionScript.player.avatar.skin = index;
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
     }
 
-    public void Portrait()
-    {
+    public void Portrait(){
         if (SessionScript.customizationStage == 0)
         {
             RaffleBlankAvatar();
             return;
         }
-        baseTexture.sprite = SessionScript.avatarBase[SessionScript.playerAvatar.skin];
-        if (SessionScript.playerAvatar.gender == 0)
+        baseTexture.sprite = SessionScript.avatarBase[SessionScript.player.avatar.skin];
+        if (SessionScript.player.avatar.gender == 0)
         {
-            hairTexture.sprite = SessionScript.avatarHairFem[SessionScript.playerAvatar.hair];
+            hairTexture.sprite = SessionScript.avatarHairFem[SessionScript.player.avatar.hair];
         }
-        if (SessionScript.playerAvatar.gender == 1)
+        if (SessionScript.player.avatar.gender == 1)
         {
-            hairTexture.sprite = SessionScript.avatarHairMasc[SessionScript.playerAvatar.hair];
+            hairTexture.sprite = SessionScript.avatarHairMasc[SessionScript.player.avatar.hair];
         }
         if (SessionScript.customizationStage != 2)
         {
             return;
         }
-        item0Texture.sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
-        item1Texture.sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
-        item2Texture.sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
-        item3Texture.sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
-        item0TextureB.sprite = SessionScript.avatarItem0b[SessionScript.playerAvatar.item0];
-        item1TextureB.sprite = SessionScript.avatarItem1b[SessionScript.playerAvatar.item1];
-        item2TextureB.sprite = SessionScript.avatarItem2b[SessionScript.playerAvatar.item2];
-        item3TextureB.sprite = SessionScript.avatarItem3b[SessionScript.playerAvatar.item3];
+        item0Texture.sprite = SessionScript.avatarItem0[SessionScript.player.avatar.item0];
+        item1Texture.sprite = SessionScript.avatarItem1[SessionScript.player.avatar.item1];
+        item2Texture.sprite = SessionScript.avatarItem2[SessionScript.player.avatar.item2];
+        item3Texture.sprite = SessionScript.avatarItem3[SessionScript.player.avatar.item3];
+        item0TextureB.sprite = SessionScript.avatarItem0b[SessionScript.player.avatar.item0];
+        item1TextureB.sprite = SessionScript.avatarItem1b[SessionScript.player.avatar.item1];
+        item2TextureB.sprite = SessionScript.avatarItem2b[SessionScript.player.avatar.item2];
+        item3TextureB.sprite = SessionScript.avatarItem3b[SessionScript.player.avatar.item3];
 
         // Selection Options
-        item0Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem0[SessionScript.playerAvatar.item0];
-        item1Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem1[SessionScript.playerAvatar.item1];
-        item2Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.playerAvatar.item2];
-        item3Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.playerAvatar.item3];
+        item0Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem0[SessionScript.player.avatar.item0];
+        item1Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem1[SessionScript.player.avatar.item1];
+        item2Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.player.avatar.item2];
+        item3Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.player.avatar.item3];
 
         // AJUSTE MANUAL COTURNO
         // if coturno + calça ; algo acontece
@@ -429,10 +428,10 @@ public class AvatarScript : MonoBehaviour{
 
     public void RaffleAvatarItems()
     {
-        SessionScript.playerAvatar.item0 = Mathf.RoundToInt(Random.Range(0, SessionScript.item0TierIndex.x));
-        SessionScript.playerAvatar.item1 = Mathf.RoundToInt(Random.Range(0, SessionScript.item1TierIndex.x));
-        SessionScript.playerAvatar.item2 = Mathf.RoundToInt(Random.Range(0, SessionScript.item2TierIndex.x));
-        SessionScript.playerAvatar.item3 = Mathf.RoundToInt(Random.Range(0, SessionScript.item3TierIndex.x));
+        SessionScript.player.avatar.item0 = Mathf.RoundToInt(Random.Range(0, SessionScript.item0TierIndex.x));
+        SessionScript.player.avatar.item1 = Mathf.RoundToInt(Random.Range(0, SessionScript.item1TierIndex.x));
+        SessionScript.player.avatar.item2 = Mathf.RoundToInt(Random.Range(0, SessionScript.item2TierIndex.x));
+        SessionScript.player.avatar.item3 = Mathf.RoundToInt(Random.Range(0, SessionScript.item3TierIndex.x));
         Portrait();
     }
 
@@ -441,18 +440,18 @@ public class AvatarScript : MonoBehaviour{
         int randomComplexion = Random.Range(1, SessionScript.avatarBase.Count);
         int randomHair = 0;
         baseTexture.sprite = SessionScript.avatarBase[randomComplexion];
-        if (SessionScript.playerAvatar.gender == 0)
+        if (SessionScript.player.avatar.gender == 0)
         {
             randomHair = Random.Range(0, SessionScript.avatarHairFem.Count);
             hairTexture.sprite = SessionScript.avatarHairFem[randomHair];
         }
-        if (SessionScript.playerAvatar.gender == 1)
+        if (SessionScript.player.avatar.gender == 1)
         {
             randomHair = Random.Range(0, SessionScript.avatarHairMasc.Count);
             hairTexture.sprite = SessionScript.avatarHairMasc[randomHair];
         }
-        SessionScript.playerAvatar.skin = randomComplexion;
-        SessionScript.playerAvatar.hair = randomHair;
+        SessionScript.player.avatar.skin = randomComplexion;
+        SessionScript.player.avatar.hair = randomHair;
         item0Texture.sprite = SessionScript.avatarBlank;
         item1Texture.sprite = SessionScript.avatarBlank;
         item2Texture.sprite = SessionScript.avatarBlank;
@@ -475,7 +474,7 @@ public class AvatarScript : MonoBehaviour{
     public void SelectGender(int index)
     {
         SessionScript.ButtonAudio(SessionScript.neutral);
-        SessionScript.playerAvatar.gender = index;
+        SessionScript.player.avatar.gender = index;
         allowNext = true;
         SessionScript.customizationStage = SessionScript.customizationStage + 1;
         if (SessionScript.customizationStage > 2) SessionScript.customizationStage = 2;
@@ -486,7 +485,7 @@ public class AvatarScript : MonoBehaviour{
     {
         if (index == 0) return; // Never allow index 0
         SessionScript.ButtonAudio(SessionScript.neutral);
-        SessionScript.playerAvatar.skin = index;
+        SessionScript.player.avatar.skin = index;
         allowNext = true;
         Portrait();
     }

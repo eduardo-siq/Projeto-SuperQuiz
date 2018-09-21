@@ -6,15 +6,16 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SessionScript : MonoBehaviour
-{
+public class SessionScript : MonoBehaviour{
 
     public static SessionScript instance = null;
 
     // User & Game
-    public static int score;
+	// public static int playerId;
+    // public static int score;
     public static int userGroup;
     public static bool firstLogIn;
+	public static Player player;
     public bool getBuiltInQuestions;
 
     // Questions
@@ -113,7 +114,12 @@ public class SessionScript : MonoBehaviour
 
     void Start(){
         // Users
-        score = 0;
+		player = new Player();
+		player.id = 100;
+        player.score = 0;
+		player.name = "você";
+		player.avatar = new Avatar();
+		player.avatar.skin = -1;
         userGroup = -1; // default for no/unqualified user
         firstLogIn = true;
 
@@ -121,7 +127,7 @@ public class SessionScript : MonoBehaviour
         missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		playerList = new List<Player>();
 		InstantiateDummyPlayers();
-		SortPlayerListByScore();
+		// SortPlayerListByScore();
 
         // Questions
         questionListPreLoad = new List<QuestionPreLoad>();
@@ -131,22 +137,13 @@ public class SessionScript : MonoBehaviour
         subjectName = new List<string>();
         userGroupName = new List<string>();
 
-        // Point-and-Click
-        // texturePoint = Resources.Load("Textures/PointAndClick/pointAndClick", typeof(Sprite)) as Sprite;	// OBSOLETE
-        // if (texturePoint == null)																		// OBSOLETE
-        // {																								// OBSOLETE
-        // print("missing texture");																	// OBSOLETE
-        // texturePoint = missingTexture;																// OBSOLETE
-        // }																								// OBSOLETE
         pointAndClickSource = Resources.Load("Textures/PointAndClick/pointAndClickSource") as Texture2D;
-        if (pointAndClickSource == null)
-        {
+        if (pointAndClickSource == null){
             print("missing texture map");
             pointAndClickSource = Resources.Load("Textures/PointAndClick/missingSource") as Texture2D;
         }
         spritePoint = Resources.Load("Textures/PointAndClick/pointAndClickSprite", typeof(Sprite)) as Sprite;
-        if (spritePoint == null)
-        {
+        if (spritePoint == null){
             print("missing sprite");
             spritePoint = Resources.Load("Textures/PointAndClick/missingSprite", typeof(Sprite)) as Sprite;
         }
@@ -170,13 +167,13 @@ public class SessionScript : MonoBehaviour
         avatarBase = new List<Sprite>();
         avatarBlank = Resources.Load("Textures/Avatar/avatar_blank", typeof(Sprite)) as Sprite;
 		noAvatar = Resources.Load("Textures/Avatar/avatar_noAvatar", typeof(Sprite)) as Sprite;
-        if (firstLogIn){
-            playerAvatar = new Avatar();
-			playerAvatar.skin = -1;
-        }
-        selectedItem1 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
-        selectedItem2 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
-        selectedItem3 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+        // if (firstLogIn){
+            // playerAvatar = new Avatar();
+			// playerAvatar.skin = -1;
+        // }
+        // selectedItem1 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+        // selectedItem2 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
+        // selectedItem3 = 0;  // REMOVE LATER: REPLACE FOR LOADING FROM SAVE FILE
         firstTierMaxIndex = 5;
         secondTierMaxIndex = 5;
         thirdTierMaxIndex = 5;
@@ -585,44 +582,44 @@ public class SessionScript : MonoBehaviour
 		}
 	}
 	
-	public static void SortPlayerListByScore(){
-		print ("SortPlayerListByScore");
-		List <Player> auxPlayerList = playerList;
-		playerList = new List <Player>();
-		int higherScore = -999;
-		int loop = 0;
-		bool done = false;
-		do {
-			loop = loop + 1;
-			higherScore = -999;
-			for (int i = 0; i < auxPlayerList.Count; i++){
-				if (auxPlayerList[i].score >= higherScore){
-					higherScore = auxPlayerList[i].score;
-					print ("higherScore: " + higherScore);
-				}
-			}
-			for (int i = 0; i < auxPlayerList.Count; i++){
-				print ("check each player");
-				if (auxPlayerList[i].score == higherScore){
-					print ("Add PlayerList!");
-					playerList.Add(new Player(auxPlayerList[i]));
-					auxPlayerList[i].score = -999;
-					print (playerList[playerList.Count - 1].name);
-					break;
-				}
-			}
-			print ("auxPlayerList: " + auxPlayerList.Count + "/ playerList " + playerList.Count);
-			if (auxPlayerList.Count == playerList.Count){
-				done = true;
-			}
-			if (loop >= 100){
-				print ("INFINITE LOOP!");
-				done = true;
-			}
-			print ("end this loop");
-		} while (!done);
+	// public static void SortPlayerListByScore(){
+		// print ("SortPlayerListByScore");
+		// List <Player> auxPlayerList = playerList;
+		// playerList = new List <Player>();
+		// int higherScore = -999;
+		// int loop = 0;
+		// bool done = false;
+		// do {
+			// loop = loop + 1;
+			// higherScore = -999;
+			// for (int i = 0; i < auxPlayerList.Count; i++){
+				// if (auxPlayerList[i].score >= higherScore){
+					// higherScore = auxPlayerList[i].score;
+					// print ("higherScore: " + higherScore);
+				// }
+			// }
+			// for (int i = 0; i < auxPlayerList.Count; i++){
+				// print ("check each player");
+				// if (auxPlayerList[i].score == higherScore){
+					// print ("Add PlayerList!");
+					// playerList.Add(new Player(auxPlayerList[i]));
+					// auxPlayerList[i].score = -999;
+					// print (playerList[playerList.Count - 1].name);
+					// break;
+				// }
+			// }
+			// print ("auxPlayerList: " + auxPlayerList.Count + "/ playerList " + playerList.Count);
+			// if (auxPlayerList.Count == playerList.Count){
+				// done = true;
+			// }
+			// if (loop >= 100){
+				// print ("INFINITE LOOP!");
+				// done = true;
+			// }
+			// print ("end this loop");
+		// } while (!done);
 		
-	}
+	// }
 
     public void PlaySong(AudioClip audio)
     {

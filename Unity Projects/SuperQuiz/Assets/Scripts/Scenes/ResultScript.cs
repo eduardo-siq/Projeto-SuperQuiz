@@ -15,6 +15,7 @@ public class ResultScript : MonoBehaviour{
 	public Sprite resultLineTexture1;
 	public Sprite resultLineTexture2;
 	public Text scoreValueText;
+	public List <Player> playerRankingList;
 	private bool quit;
 
 	// Result variables
@@ -36,13 +37,15 @@ public class ResultScript : MonoBehaviour{
 		// avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
 		// avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
 		scoreValueText = GameObject.Find("Canvas/Scroll View/Viewport/Result/ScoreValue").GetComponent<Text>();
-		scoreValue = SessionScript.score;
+		scoreValue = SessionScript.player.score;
 		scoreValueText.text = scoreValue.ToString();
 		resultLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Content").gameObject;
 		resultLinePrefab = Resources.Load("Prefabs/ResultLine") as GameObject;
 		resultLineTexture1 = Resources.Load("Textures/UI/button_result_list", typeof(Sprite)) as Sprite;
 		resultLineTexture2 = Resources.Load("Textures/UI/button_result_list2", typeof(Sprite)) as Sprite;
-		
+		playerRankingList = new List <Player>();
+		SetPlayerRankingList();
+		SortPlayerListByScore();
 		ResultList();
 	}
 
@@ -56,20 +59,65 @@ public class ResultScript : MonoBehaviour{
 			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
 		}
 	}
-
+	
+	void SetPlayerRankingList(){
+		if (playerRankingList.Count > 0) playerRankingList.Clear();
+		for (int i = 0; i < SessionScript.playerList.Count; i++){
+			playerRankingList.Add(new Player(SessionScript.playerList[i]));
+		}
+		bool playerFound = false;
+		for (int i = 0; i < playerRankingList.Count; i++){
+			if (playerRankingList[i].id == SessionScript.player.id){
+				playerFound = true;
+			}
+		}
+		if (!playerFound) playerRankingList.Add(new Player(SessionScript.player.id, "você", SessionScript.playerAvatar, SessionScript.player.score));
+	}
+	
+	public void SortPlayerListByScore(){
+		print ("SortPlayerListByScore");
+		List <Player> auxPlayerList = new List<Player>();
+		int loop = 0;
+		bool done = false;
+		
+		int currentScore = -999;
+		do{
+			for (int i = 0; i < playerRankingList.Count; i++){
+				if (playerRankingList[i].score > currentScore) currentScore = playerRankingList[i].score;
+			}
+			print ("currentScore = " + currentScore);
+			for (int i = 0; i < playerRankingList.Count; i++){
+				if (playerRankingList[i].score == currentScore){
+					auxPlayerList.Add(new Player(playerRankingList[i]));
+					print ("auxPlayerList count: " + auxPlayerList.Count);
+					print ("playerRankingList count: " + playerRankingList.Count);
+					playerRankingList.RemoveAt(i);
+				}
+			}
+			currentScore = -999;
+			if (loop >= 100){
+				print ("INFINITE LOOP!");
+				done = true;
+			}
+			if (playerRankingList.Count == 0) done = true;
+		} while (!done);
+		playerRankingList = auxPlayerList;
+	}
+	
 	public void ResultList(){
-		string thisAnswer = "";
+		print ("RESULT LIST METHOD!! playerRankingList count: " + playerRankingList.Count);
 		int index = 0;
 		bool variation1 = true;
 		resultLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
 		resultLinesViewport.transform.parent.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
-		for (int i = 0; i < SessionScript.playerList.Count; i++){
+		for (int i = 0; i < playerRankingList.Count; i++){
+			print ("resultList() i: " + i);
 			index = i + 1;
 
 			GameObject newResultLine = Instantiate(resultLinePrefab);
 			newResultLine.transform.SetParent(resultLinesViewport.transform, true);
-			newResultLine.transform.Find("Text").GetComponent<Text>().text = SessionScript.playerList[i].name;
-			newResultLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f - 30 * i, 0f);
+			newResultLine.transform.Find("Text").GetComponent<Text>().text = (1 + i) + "# " + playerRankingList[i].name + ": " + playerRankingList[i].score + " pontos";
+			newResultLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, - 20f - 30 * i, 0f);
 			if (variation1){
 				newResultLine.GetComponent<Image>().sprite = resultLineTexture1;
 			}
