@@ -578,6 +578,7 @@ public class SessionScript : MonoBehaviour{
 			Player newPlayer = new Player(Player.RandomPlayer());
 			newPlayer.id = i;
 			newPlayer.score = Random.Range(-5,10) * 10;
+			print ("newPlayer.avatar.skin " + newPlayer.avatar.skin);
 			playerList.Add(newPlayer);
 		}
 	}
@@ -623,12 +624,12 @@ public class SessionScript : MonoBehaviour{
 
     public void PlaySong(AudioClip audio)
     {
-        songAudio.PlayOneShot(audio, soundVolume);
+        songAudio.PlayOneShot(audio, soundVolume * 0.5f);
     }
 
     public static void ButtonAudio(AudioClip audio)
     {
-        buttonAudio.PlayOneShot(audio, soundVolume * 2);
+        buttonAudio.PlayOneShot(audio, soundVolume * 2f);
     }
 
     public static void ButtonAudioLow(AudioClip audio)

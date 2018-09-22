@@ -331,6 +331,8 @@
     <Compile Include="Assets\Scripts\QuestionClass.cs" />
     <Compile Include="Assets\Scripts\QuestionClassPreLoad.cs" />
     <Compile Include="Assets\Scripts\RandomPlayerScript.cs" />
+    <Compile Include="Assets\Scripts\RankingWindow.cs" />
+    <Compile Include="Assets\Scripts\ResultLine.cs" />
     <Compile Include="Assets\Scripts\Scenes\AboutScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AvatarScript.cs" />

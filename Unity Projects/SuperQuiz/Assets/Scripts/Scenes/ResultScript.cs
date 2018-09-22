@@ -9,6 +9,7 @@ public class ResultScript : MonoBehaviour{
 	// UI
 	public RectTransform resultRect;
 	public bool endScene;
+	public static RankingWindow rankingWindow;
 	public GameObject avatar;
 	public GameObject resultLinesViewport;
 	public GameObject resultLinePrefab;
@@ -32,6 +33,7 @@ public class ResultScript : MonoBehaviour{
 	IEnumerator StartScene(){
 		yield return null;
 		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Result").GetComponent<RectTransform>();
+		rankingWindow = GameObject.Find("Canvas/Scroll View/Viewport/Result/RankingWindow").GetComponent<RankingWindow>();
 		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Avatar").gameObject;
 		// avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
 		// avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
@@ -47,6 +49,8 @@ public class ResultScript : MonoBehaviour{
 		SetPlayerRankingList();
 		SortPlayerListByScore();
 		ResultList();
+		rankingWindow.content.SetActive(false);
+		rankingWindow.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, 0f);	// Objeto começa fora de cena para que seu Start() ocorra, mas fora da visão do player
 	}
 
 
@@ -116,6 +120,8 @@ public class ResultScript : MonoBehaviour{
 
 			GameObject newResultLine = Instantiate(resultLinePrefab);
 			newResultLine.transform.SetParent(resultLinesViewport.transform, true);
+			newResultLine.GetComponent<ResultLine>().id = playerRankingList[i].id;
+			newResultLine.GetComponent<ResultLine>().rank = (1 + i);
 			newResultLine.transform.Find("Text").GetComponent<Text>().text = (1 + i) + "# " + playerRankingList[i].name + ": " + playerRankingList[i].score + " pontos";
 			newResultLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, - 20f - 30 * i, 0f);
 			if (variation1){
@@ -132,6 +138,20 @@ public class ResultScript : MonoBehaviour{
 		}
 		resultLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().value = 1;
 		// answerLinesViewport.transform.parent.transform.parent.Find("Scrollbar Vertical").GetComponent<Scrollbar>().size = 0;
+	}
+	
+	public static void SelectResultLine(int id, int rank){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		if (id == SessionScript.player.id){
+			rankingWindow.OpenWindow(SessionScript.player.avatar, rank, SessionScript.player.name, "", SessionScript.player.score);
+		}else{
+			for (int i = 0; i < SessionScript.playerList.Count; i++){
+				if (id == SessionScript.playerList[i].id){
+					rankingWindow.OpenWindow(SessionScript.playerList[i].avatar, rank, SessionScript.playerList[i].name, "", SessionScript.playerList[i].score);
+					break;
+				}
+			}
+		}
 	}
 
 	public void SelectMenu(){

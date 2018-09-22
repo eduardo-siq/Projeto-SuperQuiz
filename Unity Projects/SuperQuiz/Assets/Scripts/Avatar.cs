@@ -39,8 +39,7 @@ public class Avatar{
         name = newName;
     }
 
-    public static Avatar RandomAvatar(){
-        Avatar randomAvatar = new Avatar();
+    public static void RandomAvatar(Avatar randomAvatar){
         randomAvatar.gender = Random.Range(0, 2);
         randomAvatar.skin = Random.Range(1, SessionScript.avatarBase.Count);
         if (randomAvatar.gender == 0) randomAvatar.hair = Random.Range(0, SessionScript.avatarHairFem.Count);
@@ -49,12 +48,11 @@ public class Avatar{
         randomAvatar.item1 = Random.Range(0, SessionScript.avatarItem1.Count);
         randomAvatar.item2 = Random.Range(0, SessionScript.avatarItem2.Count);
         randomAvatar.item3 = Random.Range(0, SessionScript.avatarItem3.Count);
-        return randomAvatar;
     }
 	
-	public static Avatar UndefinedAvatar(){
-		Avatar newAvatar = new Avatar();
-		newAvatar.skin = -1;
-		return newAvatar;
-	}
+	// public static Avatar UndefinedAvatar(){	// OBSOLETE
+		// Avatar newAvatar = new Avatar();
+		// newAvatar.skin = -1;
+		// return newAvatar;
+	// }
 }

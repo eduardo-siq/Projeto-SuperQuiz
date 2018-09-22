@@ -16,22 +16,22 @@ public class RandomPlayerScript{
 	
 	static void CreateNameList(){
 		nameList = new List<string>();
-		nameList.Add("Arthur");
-		nameList.Add("Eduardo");
-		nameList.Add("Fernando");
-		nameList.Add("Lucas");
-		nameList.Add("João");
-		nameList.Add("Victor");
-		nameList.Add("Carla");
-		nameList.Add("Mariana");
-		nameList.Add("Roberto");
-		nameList.Add("Mario");
-		nameList.Add("Maria");
-		nameList.Add("Alfredo");
-		nameList.Add("Fernanda");
-		nameList.Add("Felipe");
-		nameList.Add("Carol");
-		nameList.Add("Débora");
-		nameList.Add("Rodrigo");
+		nameList.Add("arthur");
+		nameList.Add("eduardo");
+		nameList.Add("fernando");
+		nameList.Add("lucas");
+		nameList.Add("joão");
+		nameList.Add("victor");
+		nameList.Add("carla");
+		nameList.Add("mariana");
+		nameList.Add("roberto");
+		nameList.Add("mario");
+		nameList.Add("maria");
+		nameList.Add("alfredo");
+		nameList.Add("fernanda");
+		nameList.Add("felipe");
+		nameList.Add("carol");
+		nameList.Add("débora");
+		nameList.Add("rodrigo");
 	}
 }

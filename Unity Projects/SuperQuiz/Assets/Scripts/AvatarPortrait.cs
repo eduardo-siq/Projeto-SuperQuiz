@@ -35,7 +35,9 @@ public class AvatarPortrait : MonoBehaviour{
 	
 	void Portrait(){
 		if (thisAvatar == null){
-			thisAvatar = Avatar.RandomAvatar();
+			print ("AVATAR NULL");
+			thisAvatar = new Avatar();
+			Avatar.RandomAvatar(thisAvatar);
 		}
 		if (thisAvatar.skin != -1){
 			baseTexture.sprite = SessionScript.avatarBase[thisAvatar.skin];
@@ -74,7 +76,7 @@ public class AvatarPortrait : MonoBehaviour{
 	}
 	
 	public void RandomAvatar(){
-		thisAvatar = Avatar.RandomAvatar();
+		Avatar.RandomAvatar(thisAvatar);
 		Portrait();
 	}
 	

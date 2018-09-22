@@ -12,7 +12,8 @@ public class Player{
 	public Player(){
 		id = 0;
 		name = "";
-		avatar = new Avatar(Avatar.UndefinedAvatar());
+		avatar = new Avatar();
+		avatar.skin = -1;
 		score = 0;
 	}
 	
@@ -36,7 +37,10 @@ public class Player{
 		return newPlayer;
 	}
 	
-	// public static Player RandomPlayerWithAvatar(){
-		// print ("hello, wordl");
-	// }
+	public static Player RandomPlayerWithAvatar(){
+		Player newPlayer = new Player();
+		newPlayer.name = RandomPlayerScript.RandomName();
+		Avatar.RandomAvatar(newPlayer.avatar);
+		return newPlayer;
+	}
 }
