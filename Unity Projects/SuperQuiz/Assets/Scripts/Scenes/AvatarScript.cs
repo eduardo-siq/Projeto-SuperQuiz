@@ -9,7 +9,8 @@ public class AvatarScript : MonoBehaviour{
     // UI
     public RectTransform avatarRect;
     public bool endScene;
-    public GameObject selectStage;
+    public GameObject selectStageNext;
+	public GameObject selectStagePrevious;
     public bool allowNext = true;   // OBSOLETE
     public GameObject lowerMenu;
     public GameObject options;
@@ -53,7 +54,8 @@ public class AvatarScript : MonoBehaviour{
 
     IEnumerator StartScene(){
         yield return null;
-        selectStage = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState").gameObject;
+        selectStageNext = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState/Next").gameObject;
+		selectStagePrevious = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState/Previous").gameObject;
         avatarRect = GameObject.Find("Canvas/Scroll View/Viewport/Avatar").GetComponent<RectTransform>();
         portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
 		portraitBackgroundComplexion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PortraitBackgroundComplexion").gameObject;
@@ -89,7 +91,8 @@ public class AvatarScript : MonoBehaviour{
 			// complextion.SetActive(false);
 			// hair.SetActive(false);
 			// items.SetActive(false);
-			// selectStage.SetActive(false);
+			// selectStageNext.SetActive(false);
+			// selectStagePrevious
 			// lowerMenu.SetActive(false);
 			// options.SetActive(false);
 		// }
@@ -107,7 +110,8 @@ public class AvatarScript : MonoBehaviour{
 			complextion.SetActive(true);
 			hair.SetActive(true);
 			items.SetActive(false);
-			selectStage.SetActive(true);
+			selectStageNext.SetActive(true);
+			selectStagePrevious.SetActive(false);
 			lowerMenu.SetActive(false);
 			options.SetActive(false);
 			RaffleBlankAvatar();
@@ -319,14 +323,17 @@ public class AvatarScript : MonoBehaviour{
 			// complextion.SetActive(false);
 			// hair.SetActive(false);
 			// items.SetActive(false);
-			// selectStage.SetActive(false);
+			// selectStageNext.SetActive(false);
+			// selectStagePrevious
 			// lowerMenu.SetActive(false);
 			// options.SetActive(false);
 			SessionScript.customizationStage = 1;	// Gender selection disabled
 		}
 		if (SessionScript.customizationStage == 1){
 			//allowNext = false;
-			PopUpScript.InstantiatePopUp("Escolha a aparência.", "OK");
+			if (!allStagesCompleted){
+				PopUpScript.InstantiatePopUp("Escolha a aparência.", "OK");
+			}
 			portrait.SetActive(true);
 			portrait.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, -46f);
 			portraitBackgroundComplexion.SetActive(true);
@@ -335,7 +342,8 @@ public class AvatarScript : MonoBehaviour{
 			complextion.SetActive(true);
 			hair.SetActive(true);
 			items.SetActive(false);
-			selectStage.SetActive(true);
+			selectStageNext.SetActive(true);
+			selectStagePrevious.SetActive(false);
 			lowerMenu.SetActive(false);
 			options.SetActive(false);
 			RaffleBlankAvatar();
@@ -353,7 +361,8 @@ public class AvatarScript : MonoBehaviour{
 			complextion.SetActive(false);
 			hair.SetActive(false);
 			items.SetActive(true);
-			selectStage.SetActive(false);
+			selectStageNext.SetActive(false);
+			selectStagePrevious.SetActive(false);
 			lowerMenu.SetActive(true);
 			options.SetActive(true);
 			allStagesCompleted = true;
@@ -462,12 +471,11 @@ public class AvatarScript : MonoBehaviour{
         item3TextureB.sprite = SessionScript.avatarBlank;
     }
 
-    public void SelectResetAvatar()
-    {
+    public void SelectResetAvatar(){
         SessionScript.ButtonAudio(SessionScript.neutral);
         SelectRaffle();
-        allStagesCompleted = false;
-        SessionScript.customizationStage = 0;
+        //allStagesCompleted = false;
+        SessionScript.customizationStage = 1;
         CustomizationStage();
     }
 

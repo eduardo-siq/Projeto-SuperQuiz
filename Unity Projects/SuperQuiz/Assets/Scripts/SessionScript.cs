@@ -51,7 +51,7 @@ public class SessionScript : MonoBehaviour{
     public static List<Sprite> avatarBase;
     public static Sprite avatarBlank;
 	public static Sprite noAvatar;
-    public static Avatar playerAvatar;
+   // public static Avatar playerAvatar;
     public static int selectedItem0;
     public static int selectedItem1;
     public static int selectedItem2;
@@ -553,17 +553,16 @@ public class SessionScript : MonoBehaviour{
         print("item 3 tier index " + item3TierIndex);
     }
 
-    public static void RaffleInitialAvatar()	// OBSOLETE
-    {
-        playerAvatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
-        playerAvatar.item0 = Mathf.RoundToInt(Random.Range(0, item0TierIndex.x));
-        playerAvatar.item1 = Mathf.RoundToInt(Random.Range(0, item1TierIndex.x));
-        playerAvatar.item2 = Mathf.RoundToInt(Random.Range(0, item2TierIndex.x));
-        playerAvatar.item3 = Mathf.RoundToInt(Random.Range(0, item3TierIndex.x));
+    public static void RaffleInitialAvatar(){	// OBSOLETE
+        player.avatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
+        player.avatar.item0 = Mathf.RoundToInt(Random.Range(0, item0TierIndex.x));
+        player.avatar.item1 = Mathf.RoundToInt(Random.Range(0, item1TierIndex.x));
+        player.avatar.item2 = Mathf.RoundToInt(Random.Range(0, item2TierIndex.x));
+        player.avatar.item3 = Mathf.RoundToInt(Random.Range(0, item3TierIndex.x));
     }
 
     public static void RaffleAvatar(int maxItem0Index, int maxItem1Index, int maxItem2Index, int maxItem3Index){
-        playerAvatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
+        player.avatar.skin = Mathf.RoundToInt(Random.Range(1, avatarBase.Count));
         if (avatarItem0.Count > 0 && avatarItem1.Count > 0 && avatarItem2.Count > 0 && avatarItem2.Count > 0){
             selectedItem1 = Random.Range(0, maxItem0Index);
             selectedItem1 = Random.Range(0, maxItem1Index);

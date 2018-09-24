@@ -75,7 +75,7 @@ public class ResultScript : MonoBehaviour{
 				playerFound = true;
 			}
 		}
-		if (!playerFound) playerRankingList.Add(new Player(SessionScript.player.id, "você", SessionScript.playerAvatar, SessionScript.player.score));
+		if (!playerFound) playerRankingList.Add(new Player(SessionScript.player.id, "você", SessionScript.player.avatar, SessionScript.player.score));
 	}
 	
 	public void SortPlayerListByScore(){

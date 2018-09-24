@@ -63,7 +63,7 @@ public class TutorialScript : MonoBehaviour{
 		tutorialRect = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial").GetComponent<RectTransform>();
 		instruction = 0;
 		instructionText0 = "\n\nBem vindo ao\nSuperQuiz!\n\n\n\n\n";
-		instructionText1 = "Este é um jogo de perguntas e respostas, e permite que você crie e customize seu personagem\n\n\n\n\n\n";
+		instructionText1 = "Este é um jogo de perguntas e respostas que permite que você crie e customize seu personagem\n\n\n\n\n\n";
 		instructionText2 = "No menu principal, você pode acessar diferentes áreas do jogo\n\n\n\n\n\n\n";
 		instructionText3 = "\nAqui você inicia uma nova partida\n\n\n\n\n\n\n";
 		instructionText4 = "\nAqui, você cria e edita seu personagem\n\n\n\n\n\n";
