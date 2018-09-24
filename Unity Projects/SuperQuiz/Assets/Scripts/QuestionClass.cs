@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Question
-{
+public class Question{
 
     public int index;
     public int questionType;    // 0: multiple answer, 1: fill the blanks, 2: point-and-click, 3: longa, 4: imagem
@@ -16,8 +15,7 @@ public class Question
     public List<bool> subject;
     public Sprite questionImage;
 
-    public Question()
-    {
+    public Question(){
         index = 0;
         questionType = 0;
         text = "";

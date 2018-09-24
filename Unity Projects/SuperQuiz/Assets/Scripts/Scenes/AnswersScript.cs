@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class AnswersScript : MonoBehaviour
-{
+public class AnswersScript : MonoBehaviour{
 
     // UI
     public RectTransform resultRect;
