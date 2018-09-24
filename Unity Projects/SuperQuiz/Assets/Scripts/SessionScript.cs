@@ -70,20 +70,22 @@ public class SessionScript : MonoBehaviour{
     public static int thresholdTier2 = 40;
 
     // Sound
-    public static AudioSource songAudio;
-    public static AudioSource buttonAudio;
-    public static AudioClip song1;
-    public static AudioClip song2;
-    public static AudioClip positive;
-    public static AudioClip negative;
-    public static AudioClip neutral;
-    public static AudioClip subtle;
-    public static AudioClip popUp;
-    public static AudioClip popUpOut;
-    public static AudioClip blop;
-    public static int currentSong;
-    public static bool soundOn;
-    public static float soundVolume;
+	public static AudioSource songAudio;
+	public static AudioSource buttonAudio;
+	public static AudioClip song1;
+	public static AudioClip song2;
+	public static AudioClip positive;
+	public static AudioClip negative;
+	public static AudioClip neutral;
+	public static AudioClip subtle;
+	public static AudioClip popUp;
+	public static AudioClip popUpOut;
+	public static AudioClip blop;
+	public static AudioClip success;
+	public static AudioClip error;
+	public static int currentSong;
+	public static bool soundOn;
+	public static float soundVolume;
 
     // Auxiliary / Editor
     public static Sprite missingTexture;
@@ -197,6 +199,20 @@ public class SessionScript : MonoBehaviour{
         subtle = Resources.Load("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
         song1 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
         song2 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
+		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
+		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
         currentSong = 1;
         soundOn = true;
         soundVolume = 0.5f;
@@ -621,30 +637,28 @@ public class SessionScript : MonoBehaviour{
 		
 	// }
 
-    public void PlaySong(AudioClip audio)
-    {
+    public void PlaySong(AudioClip audio){
         songAudio.PlayOneShot(audio, soundVolume * 0.5f);
     }
 
-    public static void ButtonAudio(AudioClip audio)
-    {
+    public static void ButtonAudio(AudioClip audio){
         buttonAudio.PlayOneShot(audio, soundVolume * 2f);
     }
 
-    public static void ButtonAudioLow(AudioClip audio)
-    {
+    public static void ButtonAudioLow(AudioClip audio){
         buttonAudio.PlayOneShot(audio, soundVolume * 0.75f);
     }
+	
+	public static void QuestionAudio(AudioClip audio){
+		buttonAudio.PlayOneShot(audio, soundVolume * 1.5f);
+	}
 
-    public static void TurnOnOffSound()
-    {
+    public static void TurnOnOffSound(){
         soundOn = !soundOn;
-        if (soundOn)
-        {
+        if (soundOn){
             soundVolume = 0.5f;
         }
-        if (!soundOn)
-        {
+        if (!soundOn){
             soundVolume = 0f;
         }
         songAudio.volume = soundVolume;

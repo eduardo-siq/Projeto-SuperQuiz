@@ -13,7 +13,7 @@ public class GameplayScript : MonoBehaviour
     public Text scoreText;
     public bool endScene;
     public string nextScene = "";
-    public AnimSucessScript sucessAnimation;
+    public AnimSuccessScript successAnimation;
     public AnimErrorScript errorAnimation;
     public bool lockButton;
     public GameObject lowerMenu;
@@ -76,7 +76,7 @@ public class GameplayScript : MonoBehaviour
         {
             scoreText.text = SessionScript.player.score.ToString() + " ponto!";
         }
-        sucessAnimation = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").GetComponent<AnimSucessScript>();
+        successAnimation = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").GetComponent<AnimSuccessScript>();
         errorAnimation = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").GetComponent<AnimErrorScript>();
         lowerMenu = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/LowerMenu").gameObject;
         questionCounter = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionCounter/Counter").GetComponent<Text>();
@@ -164,7 +164,7 @@ public class GameplayScript : MonoBehaviour
                 if (currentQuestion.questionType == 0)
                 {
                     answerPermitted = false;
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     //SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, currentQuestionTimeSpent));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
                     //Invoke ("StartNewQuestion", 1f);
                     //ChooseAnswer(-1);
@@ -415,8 +415,8 @@ public class GameplayScript : MonoBehaviour
                 if (writtenAnswerSimple == rightAnswerSimple)
                 {
                     writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
-                    sucessAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.positive);
+                    successAnimation.PlayAnimation();
+                    SessionScript.QuestionAudio(SessionScript.success);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 	
                 }
@@ -424,13 +424,13 @@ public class GameplayScript : MonoBehaviour
                 {
                     errorAnimation.PlayAnimation();
                     writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
                 answerPermitted = false;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             case 2:     // Point-and-click
                 Vector3 click = Input.mousePosition;
@@ -463,8 +463,8 @@ public class GameplayScript : MonoBehaviour
                 if (answer == rightAnswer)
                 {
                     questionLongAnswers[answer].GetComponent<Image>().color = Color.green;
-                    sucessAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.positive);
+                    successAnimation.PlayAnimation();
+                    SessionScript.QuestionAudio(SessionScript.success);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
@@ -472,20 +472,20 @@ public class GameplayScript : MonoBehaviour
                 {
                     errorAnimation.PlayAnimation();
                     questionLongAnswers[answer].GetComponent<Image>().color = Color.red;
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
                 answerPermitted = false;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             case 4:     // Image
                 if (answer == rightAnswer)
                 {
                     answers[answer].GetComponent<Image>().color = Color.green;
-                    sucessAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.positive);
+                    successAnimation.PlayAnimation();
+                    SessionScript.QuestionAudio(SessionScript.success);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
@@ -493,20 +493,20 @@ public class GameplayScript : MonoBehaviour
                 {
                     answers[answer].GetComponent<Image>().color = Color.red;
                     errorAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
                 answerPermitted = false;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             default:    // Multiple answer
                 if (answer == rightAnswer)
                 {
                     answers[answer].GetComponent<Image>().color = Color.green;
-                    sucessAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.positive);
+                    successAnimation.PlayAnimation();
+                    SessionScript.QuestionAudio(SessionScript.success);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
@@ -514,13 +514,13 @@ public class GameplayScript : MonoBehaviour
                 {
                     answers[answer].GetComponent<Image>().color = Color.red;
                     errorAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
                 answerPermitted = false;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
         }
     }
@@ -540,8 +540,8 @@ public class GameplayScript : MonoBehaviour
                 if (writtenAnswerSimple == rightAnswerSimple)
                 {
                     writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
-                    sucessAnimation.PlayAnimation();
-                    SessionScript.ButtonAudio(SessionScript.positive);
+                    successAnimation.PlayAnimation();
+                    SessionScript.QuestionAudio(SessionScript.success);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, true, true, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 	
                 }
@@ -549,7 +549,7 @@ public class GameplayScript : MonoBehaviour
                 {
                     errorAnimation.PlayAnimation();
                     writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
@@ -557,49 +557,49 @@ public class GameplayScript : MonoBehaviour
                 if (writtenAnswer.text == "")
                 {
                     writtenAnswer.gameObject.GetComponent<Image>().color = Color.red;
-                    SessionScript.ButtonAudio(SessionScript.negative);
+                    SessionScript.QuestionAudio(SessionScript.error);
                     SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
                     showAnswer = true;
                 }
                 answerPermitted = false;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             case 2:     // Point-and-click
                 errorAnimation.PlayAnimation();
-                SessionScript.ButtonAudio(SessionScript.negative);
+                SessionScript.QuestionAudio(SessionScript.error);
                 SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                 SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
                 answerPermitted = false;
                 showAnswer = true;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             case 3:     // Long
                 errorAnimation.PlayAnimation();
-                SessionScript.ButtonAudio(SessionScript.negative);
+                SessionScript.QuestionAudio(SessionScript.error);
                 SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                 SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
                 answerPermitted = false;
                 showAnswer = true;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             case 4:     // Image
                 errorAnimation.PlayAnimation();
-                SessionScript.ButtonAudio(SessionScript.negative);
+                SessionScript.QuestionAudio(SessionScript.error);
                 SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                 SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
                 answerPermitted = false;
                 showAnswer = true;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
             default:    // Multiple answer
                 errorAnimation.PlayAnimation();
-                SessionScript.ButtonAudio(SessionScript.negative);
+                SessionScript.QuestionAudio(SessionScript.error);
                 SessionScript.answersList.Add(new Answer(currentQuestion.index, false, true, currentQuestion.subject, currentQuestionTimeSpent));
                 SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
                 answerPermitted = false;
                 showAnswer = true;
-                Invoke("EndQuestion", 0.5f);
+                Invoke("EndQuestion", 2.25f);
                 break;
         }
     }
@@ -615,20 +615,20 @@ public class GameplayScript : MonoBehaviour
 		if (wrong){
 			print("wrong");
 			errorAnimation.PlayAnimation();
-			SessionScript.ButtonAudio(SessionScript.negative);
+			SessionScript.QuestionAudio(SessionScript.error);
 			SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
 			SessionScript.answersList.Add(new Answer(currentQuestion.index, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 			showAnswer = true;
 		}
 		if (!wrong){
 			print("right");
-			sucessAnimation.PlayAnimation();
-			SessionScript.ButtonAudio(SessionScript.positive);
+			successAnimation.PlayAnimation();
+			SessionScript.QuestionAudio(SessionScript.success);
 			SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;
 			SessionScript.answersList.Add(new Answer(currentQuestion.index, true, false, currentQuestion.subject, currentQuestionTimeSpent));
 		}
 		answerPermitted = false;
-		Invoke("EndQuestion", 0.5f);
+		Invoke("EndQuestion", 2.25f);
 	}
 
 	public void EndQuestion(){
@@ -1168,7 +1168,7 @@ public class GameplayScript : MonoBehaviour
     }
 
     // public void SelectResult(){
-    // SessionScript.ButtonAudio(SessionScript.positive);
+    // SessionScript.QuestionAudio(SessionScript.success);
     // nextScene = "result";
     // Invoke ("EndScene", 0.5f);
     // Invoke ("NextScene", 1f);
