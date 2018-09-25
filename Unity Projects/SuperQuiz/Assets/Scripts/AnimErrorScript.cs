@@ -11,16 +11,26 @@ public class AnimErrorScript : MonoBehaviour{
 	
 	float alpha;
 	bool fadeIn;
+	bool fadeOut;
 	
 	void Update(){
 		if (fadeIn){
-			if (alpha < 0.5){
-				alpha = shadowImage.color.a + Time.deltaTime / 2;
+			if (alpha < 0.5f){
+				alpha = shadowImage.color.a + Time.deltaTime;
 				shadowImage.color = new Color(0f, 0f, 0f, alpha);
 			}
 		}
-		if (alpha > 0.5){
+		if (alpha > 0.5f){
 			fadeIn = false;
+		}
+		if (fadeOut){
+			if (alpha > 0.0f){
+				alpha = shadowImage.color.a - Time.deltaTime;
+				shadowImage.color = new Color(0f, 0f, 0f, alpha);
+			}
+		}
+		if (alpha <= 0.0f){
+			fadeOut = false;
 		}
 	}
 
@@ -29,16 +39,25 @@ public class AnimErrorScript : MonoBehaviour{
 		shadowImage.color = new Color(0f, 0f, 0f, alpha);
 		fadeIn = true;
 		Invoke("Animation", 0.25f);
+		Invoke("FadeOut", 2f);
 		Invoke("Reset", 2.25f);
+		Invoke("ResetShadow", 2.5f);
 	}
 	
 	void Animation(){
 		errorAnimation.SetActive(true);
 		shadow.SetActive(true);
 	}
+	
+	void FadeOut(){
+		fadeOut = true;
+	}
 
 	void Reset(){
 		errorAnimation.SetActive(false);
+	}
+	
+	void ResetShadow(){
 		shadow.SetActive(false);
 	}
 }

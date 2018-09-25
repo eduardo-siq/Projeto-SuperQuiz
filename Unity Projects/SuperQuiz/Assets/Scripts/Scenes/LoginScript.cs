@@ -12,6 +12,7 @@ public class LoginScript : MonoBehaviour{
 	public InputField userInputField;
 	public InputField passwordInputField;
 	public int selectedInputField = 1;
+	public GameObject acceptWindow;
 	private bool quit;
 
 	// Login variables
@@ -25,8 +26,8 @@ public class LoginScript : MonoBehaviour{
 
 	void Start(){
 		StartCoroutine(StartScene());
-		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/User").GetComponent<InputField>();
-		passwordInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/Password").GetComponent<InputField>();
+		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/User").GetComponent<InputField>();
+		passwordInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/Password").GetComponent<InputField>();
 		userInputField.ActivateInputField();
 	}
 
@@ -60,9 +61,10 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.userGroup = 0;
 			print("userGroup " + SessionScript.userGroup);
 			SessionScript.GetQuestionListFromPreLoad();
-			Invoke("EndScene", 1.2f);
-			Invoke("NextScene", 1.2f);
-			TransitionScript.EndAnimation();
+			Invoke("ToggleAcceptTerms", 0.5f);
+			// Invoke("EndScene", 1.2f);
+			// Invoke("NextScene", 1.2f);
+			//TransitionScript.EndAnimation();
 			return;
 		}
 		if (userInput == user2 && passwordInput == password2){
@@ -70,9 +72,10 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.userGroup = 1;
 			print("userGroup " + SessionScript.userGroup);
 			SessionScript.GetQuestionListFromPreLoad();
-			Invoke("EndScene", 1.2f);
-			Invoke("NextScene", 1.2f);
-			TransitionScript.EndAnimation();
+			Invoke("ToggleAcceptTerms", 0.5f);
+			// Invoke("EndScene", 1.2f);
+			// Invoke("NextScene", 1.2f);
+			//TransitionScript.EndAnimation();
 			return;
 		}
 		if (userInput != user || userInput != user2 || passwordInput == password || passwordInput == password2){
@@ -80,6 +83,19 @@ public class LoginScript : MonoBehaviour{
 		}
 		print("userGroup " + SessionScript.userGroup);
 	}
+	
+	public void ToggleAcceptTerms(){
+		acceptWindow.SetActive(!acceptWindow.activeSelf);
+	}
+	
+	public void SelectAcceptTerms(){
+		SessionScript.ButtonAudio(SessionScript.positive);
+		Invoke("ToggleAcceptTerms", 0.5f);
+		Invoke("EndScene", 1.2f);
+		Invoke("NextScene", 1.2f);
+		TransitionScript.EndAnimation();
+	}
+	
 
 	public void NextScene(){
 		if (SessionScript.firstLogIn){   // Dummy first login
