@@ -46,8 +46,8 @@ public class BuiltInQuestions {
 		"Qual é a macro-região mais populosa do Brasil?",
 		"Sudeste",
 		 "0",
-		 "0",
 		 "1",
+		 "0",
 		 "",
 		 "X",
 		 "X"));
@@ -126,6 +126,17 @@ public class BuiltInQuestions {
 		"Península Ibérica",
 		"Ilhas Britânicas",
 		"Europa Central",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		10,
+		5,
+		"Quais são macro-regiões onde ficam estados de Minas Gerais e Mato Grosso?",
+		"0_1_0_Sudeste",
+		"1_1_0_Centro-Oeste",
+		"",
+		"",
+		"",
 		"X",
 		"X"));
 		return questionsPreLoad;

@@ -150,10 +150,9 @@ public class SessionScript : MonoBehaviour{
             spritePoint = Resources.Load("Textures/PointAndClick/missingSprite", typeof(Sprite)) as Sprite;
         }
         detail = new List<Detail>();
-        GetDetailList();
-        print("detail[0].colorCode " + detail[0].colorCode);
-        print("detail[1].colorCode " + detail[1].colorCode);
-        print("detail[2].colorCode " + detail[2].colorCode);
+        // print("detail[0].colorCode " + detail[0].colorCode);
+        // print("detail[1].colorCode " + detail[1].colorCode);
+        // print("detail[2].colorCode " + detail[2].colorCode);
 
         // Avatar
         avatarItem0 = new List<Sprite>();
@@ -254,23 +253,14 @@ public class SessionScript : MonoBehaviour{
         StartCoroutine(UpdateScene());
     }
 
-    public void GetDetailList(){
-        print("GetDetailList");
-        detail = Detail.GetBuiltInList();
-        print("detail.Count: " + detail.Count);
-    }
-
-    public void StartNewScene()
-    {
+    public void StartNewScene(){
         songAudio.volume = soundVolume;
         buttonAudio.volume = soundVolume;
     }
 
-    IEnumerator LoadFile()
-    {
+    IEnumerator LoadFile(){
         yield return null;
-        if (File.Exists(Application.persistentDataPath + "/" + bncQFileName + ".dat"))
-        {
+        if (File.Exists(Application.persistentDataPath + "/" + bncQFileName + ".dat")){
             print("load questions");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fileStream = File.Open(Application.persistentDataPath + "/" + bncQFileName + ".dat", FileMode.Open);
@@ -278,8 +268,7 @@ public class SessionScript : MonoBehaviour{
 
             // info loaded - start
             print("qdbFile.t.Count " + qdbFile.t.Count);
-            for (int i = 0; i < qdbFile.t.Count; i++)
-            {
+            for (int i = 0; i < qdbFile.t.Count; i++){
                 print(i);
                 print("qdbFile.tp[" + i + "] " + qdbFile.tp[i]);
                 print("qdbFile.t[" + i + "] " + qdbFile.t[i]);
@@ -288,12 +277,10 @@ public class SessionScript : MonoBehaviour{
                 print("qdbFile.c[" + i + "] " + qdbFile.c[i]);
                 print("qdbFile.d[" + i + "] " + qdbFile.d[i]);
                 print("qdbFile.e[" + i + "] " + qdbFile.e[i]); ;
-                if (qdbFile.u.Count > 0)
-                {
+                if (qdbFile.u.Count > 0){
                     print("qdbFile.u[" + i + "] " + qdbFile.u[i]);
                 }
-                if (qdbFile.s.Count > 0)
-                {
+                if (qdbFile.s.Count > 0){
                     print("qdbFile.s[" + i + "] " + qdbFile.s[i]);
                 }
                 questionListPreLoad.Add(new QuestionPreLoad(i, qdbFile.tp[i], qdbFile.t[i], qdbFile.a[i], qdbFile.b[i], qdbFile.c[i], qdbFile.d[i], qdbFile.e[i], qdbFile.u[i], qdbFile.s[i]));
@@ -305,8 +292,7 @@ public class SessionScript : MonoBehaviour{
 
             fileStream.Close();
         }
-        else
-        { // Missing BncQ
+        else{ // Missing BncQ
             print("there is no file to be loaded");
             // errorWindow.SetActive(true);
             // Destroy(characters);
@@ -316,85 +302,75 @@ public class SessionScript : MonoBehaviour{
         }
     }
 
-    IEnumerator LoadBuiltInQuestions()
-    {
+    IEnumerator LoadBuiltInQuestions(){
         yield return null;
         questionListPreLoad = BuiltInQuestions.GetBuildInQuestions();
     }
 
-    public static void GetQuestionListFromPreLoad()
-    {
-        print("GetQuestionListFromPreLoad");
-        Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
-        Sprite texture;
-        if (userGroup == -1) return;
-        print("GetQuestionListFromPreLoad OK");
-        print("questionListPreLoad.Count " + questionListPreLoad.Count);
-        for (int i = 0; i < questionListPreLoad.Count; i++)
-        {
-            print("GetQuestionListFromPreLoad " + i);
-            if (questionListPreLoad[i].userGroupString == "X")
-            {   // No specific user
-                print("get question " + i + "(i = " + i + ")");
-                questionList.Add(new Question(questionListPreLoad[i]));
-                if (questionList[i].questionType == 4)
-                {
-                    print("loading texture");
-                    texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-                    if (texture != null)
-                    {
-                        questionList[i].questionImage = texture;
-                        print("image loaded");
-                    }
-                    if (texture == null)
-                    {
-                        questionList[i].questionImage = missingTexture;
-                        print("image not found");
-                    }
-                }
-            }
-            if (questionListPreLoad[i].userGroupString != "X")
-            {
-                for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++)
-                {
-                    if (questionListPreLoad[i].userGroup[userGroup] == true)
-                    {
-                        print("get question " + i + "(y = " + y + ")");
-                        questionList.Add(new Question(questionListPreLoad[i]));
-                        if (questionList[i].questionType == 4)
-                        {
-                            print("loading texture");
-                            texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-                            if (texture != null)
-                            {
-                                questionList[i].questionImage = texture;
-                                print("image loaded");
-                            }
-                            if (texture == null)
-                            {
-                                questionList[i].questionImage = missingTexture;
-                                print("image not found");
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        if (numberOfQuestionsDemanded > questionList.Count)
-            numberOfQuestionsDemanded = questionList.Count;
-    }
+	public static void GetQuestionListFromPreLoad(){
+		print("GetQuestionListFromPreLoad");
+		Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
+		Sprite texture;
+		if (userGroup == -1) return;
+		print("GetQuestionListFromPreLoad OK");
+		print("questionListPreLoad.Count " + questionListPreLoad.Count);
+		for (int i = 0; i < questionListPreLoad.Count; i++){
+			print("GetQuestionListFromPreLoad " + i);
+			if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
+				print("get question " + i + "(i = " + i + ")");
+				questionList.Add(new Question(questionListPreLoad[i]));
+				if (questionList[i].questionType == 4){
+					print("loading texture");
+					texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
+					if (texture != null){
+						questionList[i].questionImage = texture;
+						print("image loaded");
+					}
+					if (texture == null){
+						questionList[i].questionImage = missingTexture;
+						print("image not found");
+					}
+				}
+				if (questionList[i].questionType == 2){
+					detail.Add (new Detail(questionList[i].answer1, questionList[i].answer2, questionList[i].answer3));
+				}
+				if (questionList[i].questionType == 5){
+					// detail.Add (new Detail(questionList[i].answer1, questionList[i].answer2, questionList[i].answer3));
+				}
+			}
+			if (questionListPreLoad[i].userGroupString != "X"){
+				for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++){
+					if (questionListPreLoad[i].userGroup[userGroup] == true){
+						print("get question " + i + "(y = " + y + ")");
+						questionList.Add(new Question(questionListPreLoad[i]));
+						if (questionList[i].questionType == 4){
+							print("loading texture");
+							texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
+							if (texture != null){
+								questionList[i].questionImage = texture;
+								print("image loaded");
+							}
+							if (texture == null){
+								questionList[i].questionImage = missingTexture;
+								print("image not found");
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		if (numberOfQuestionsDemanded > questionList.Count)
+			numberOfQuestionsDemanded = questionList.Count;
+	}
 
-    public void LoadQuestions()
-    {
-        for (int i = 0; i < questionListPreLoad.Count; i++)
-        {
+    public void LoadQuestions(){
+        for (int i = 0; i < questionListPreLoad.Count; i++){
             questionList.Add(new Question(questionListPreLoad[i]));
         }
     }
 
-    void LoadAvatarAssets()
-    {
+    void LoadAvatarAssets(){
         bool loadItems = true;
         bool loadHairFem = true;
         bool loadHairMasc = true;

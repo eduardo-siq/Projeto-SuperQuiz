@@ -5,7 +5,7 @@ using UnityEngine;
 public class Question{
 
     public int index;
-    public int questionType;    // 0: multiple answer, 1: fill the blanks, 2: point-and-click, 3: longa, 4: imagem
+    public int questionType;    // 0: multiple answer, 1: fill the blanks, 2: point-and-click, 3: longa, 4: image, 5: point-and-click multiple items
     public string text;
     public string answer0;  // Right answer
     public string answer1;
@@ -28,8 +28,7 @@ public class Question{
         questionImage = null;
     }
 
-    public Question(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, int newSubject)
-    {
+    public Question(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, int newSubject){
         index = newIndex;
         questionType = newQuestionType;
         text = newT;
@@ -42,8 +41,7 @@ public class Question{
         questionImage = null;
     }
 
-    public Question(Question baseQuestion)
-    {
+    public Question(Question baseQuestion){
         index = baseQuestion.index;
         questionType = baseQuestion.questionType;
         text = baseQuestion.text;
@@ -57,8 +55,7 @@ public class Question{
         questionImage = null;
     }
 
-    public Question(QuestionPreLoad baseQuestion)
-    {
+    public Question(QuestionPreLoad baseQuestion){
         index = baseQuestion.index;
         questionType = baseQuestion.questionType;
         text = baseQuestion.text;
@@ -69,15 +66,12 @@ public class Question{
         answer4 = baseQuestion.answer4;
         subject = new List<bool>();
         questionImage = null;
-        if (baseQuestion.subject != null)
-        {
-            if (baseQuestion.subject != "")
-            {
+        if (baseQuestion.subject != null){
+            if (baseQuestion.subject != ""){
                 string[] questionSubjects;
                 string[] space = new string[] { " " };
                 questionSubjects = baseQuestion.subject.Split(space, System.StringSplitOptions.None);
-                for (int i = 0; i < questionSubjects.Length; i++)
-                {
+                for (int i = 0; i < questionSubjects.Length; i++){
                     if (questionSubjects[i] == "T")
                     {
                         subject.Add(true);
@@ -91,13 +85,11 @@ public class Question{
         }
     }
 
-    public void Index(int newIndex)
-    {
+    public void Index(int newIndex){
         index = newIndex;
     }
 
-    public void Text(string newT)
-    {
+    public void Text(string newT){
         text = newT;
     }
 }

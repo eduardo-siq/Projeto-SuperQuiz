@@ -90,7 +90,7 @@ public class LoginScript : MonoBehaviour{
 	
 	public void SelectAcceptTerms(){
 		SessionScript.ButtonAudio(SessionScript.positive);
-		Invoke("ToggleAcceptTerms", 0.5f);
+		//Invoke("ToggleAcceptTerms", 0.5f);
 		Invoke("EndScene", 1.2f);
 		Invoke("NextScene", 1.2f);
 		TransitionScript.EndAnimation();
