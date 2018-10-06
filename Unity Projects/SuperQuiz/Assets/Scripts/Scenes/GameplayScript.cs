@@ -754,6 +754,7 @@ public class GameplayScript : MonoBehaviour{
 						answerText = answerText + pointAnswerList[i].text;
 					}
 				}
+				answerText = answerText + ".";
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "RESPOSTA: " + answerText;
 			}
 		}
@@ -848,6 +849,7 @@ public class GameplayScript : MonoBehaviour{
     }
 
     public void ToPointImage(){
+		print ("ToPointImage ToPointImage ToPointImage");
         SessionScript.ButtonAudio(SessionScript.neutral);
         questionPointText.SetActive(false);
         questionPointButton.SetActive(true);
@@ -855,7 +857,7 @@ public class GameplayScript : MonoBehaviour{
     }
 
     public void ToPointConfirm(){
-		if (currentQuestion.questionType == 2) answerPermitted = false;
+		//if (currentQuestion.questionType == 2) answerPermitted = false;
         questionPointText.SetActive(false);
         questionPointButton.SetActive(false);
         questionPointConfirm.SetActive(true);

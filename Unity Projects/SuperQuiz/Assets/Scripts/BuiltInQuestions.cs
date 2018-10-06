@@ -120,7 +120,7 @@ public class BuiltInQuestions {
 		questionsPreLoad.Add(new QuestionPreLoad(
 		9,
 		3,
-		"O Renascimento foi um movimento cultural e artístico que começou no final da Idade Média. Ele foi caracterizado pelo redescobrimento das tradições artíticas gregas e romadas, e participaram desse movimento figuras como Michelangelo e Leonardo da Vinci. Onde esse movimento se iníciou?",
+		"O Renascimento foi um movimento cultural e artístico que começou no final da Idade Média. Ele foi caracterizado pelo redescobrimento das tradições artíticas gregas e romanas, e participaram desse movimento figuras como Michelangelo e Leonardo da Vinci. Onde esse movimento se iníciou?",
 		"Península Itálica",
 		"Oriente Médio",
 		"Península Ibérica",

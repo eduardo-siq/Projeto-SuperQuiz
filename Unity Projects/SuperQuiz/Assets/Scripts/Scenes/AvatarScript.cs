@@ -437,7 +437,7 @@ public class AvatarScript : MonoBehaviour{
 
     public void RaffleAvatarItems()
     {
-        SessionScript.player.avatar.item0 = Mathf.RoundToInt(Random.Range(0, SessionScript.item0TierIndex.x));
+        SessionScript.player.avatar.item0 = Mathf.RoundToInt(Random.Range(1, SessionScript.item0TierIndex.x));	// Never selects avatar_0_0_0
         SessionScript.player.avatar.item1 = Mathf.RoundToInt(Random.Range(0, SessionScript.item1TierIndex.x));
         SessionScript.player.avatar.item2 = Mathf.RoundToInt(Random.Range(0, SessionScript.item2TierIndex.x));
         SessionScript.player.avatar.item3 = Mathf.RoundToInt(Random.Range(0, SessionScript.item3TierIndex.x));
