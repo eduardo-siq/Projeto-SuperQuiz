@@ -17,9 +17,9 @@ public class TutorialScript : MonoBehaviour{
 	string instructionText6;
 	string instructionText7;
 	string instructionText8;
-	string instructionText9;
-	string instructionText10;
-	string instructionText11;
+	// string instructionText9;
+	// string instructionText10;
+	// string instructionText11;
 	Sprite instructionImage0;
 	Sprite instructionImage1;
 	Sprite instructionImage2;
@@ -29,9 +29,9 @@ public class TutorialScript : MonoBehaviour{
 	Sprite instructionImage6;
 	Sprite instructionImage7;
 	Sprite instructionImage8;
-	Sprite instructionImage9;
-	Sprite instructionImage10;
-	Sprite instructionImage11;
+	// Sprite instructionImage9;
+	// Sprite instructionImage10;
+	// Sprite instructionImage11;
 
 	// UI
 	public RectTransform tutorialRect;
@@ -68,7 +68,9 @@ public class TutorialScript : MonoBehaviour{
 		instructionText3 = "\nAqui você inicia uma nova partida\n\n\n\n\n\n\n";
 		instructionText4 = "\nAqui, você cria e edita seu personagem\n\n\n\n\n\n";
 		instructionText5 = "Use as setas para selecionar seus acessórios\n\n\n\n\n\n\n";
-		instructionText6 = "\nPronto!\nAgora você já pode jogar o SuperQuiz!\n\n\n\n\n";
+		instructionText6 = "\nAqui você vê o ranking e sua pontuação\n\n\n\n\n\n\n";
+		instructionText7 = "\nVocê também pode verificar as suas respostas\n\n\n\n\n\n";
+		instructionText8 = "\nPronto!\nAgora você já pode jogar o SuperQuiz!\n\n\n\n\n";
 		instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
 		instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
 		instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
@@ -76,6 +78,8 @@ public class TutorialScript : MonoBehaviour{
 		instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
 		instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
 		instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
+		instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
+		instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
 		instructionWindow = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/InstructionWindow").gameObject;
 		changeInstruction = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ChangeInstruction").gameObject;
 		toMenu = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenu").gameObject;
@@ -143,22 +147,22 @@ public class TutorialScript : MonoBehaviour{
 				instructionWindowText.text = instructionText6;
 				instructionWindowImage.sprite = instructionImage6;
 				break;
-			// case 7:
-				// instructionWindow.SetActive(true);
-				// changeInstruction.SetActive(true);
-				// toMenu.SetActive(true);
-				// toMenuEnd.SetActive(false);
-				// instructionWindowText.text = instructionText7;
-				// instructionWindowImage.sprite = instructionImage7;
-				// break;
-			// case 8:
-				// instructionWindow.SetActive(true);
-				// changeInstruction.SetActive(true);
-				// toMenu.SetActive(true);
-				// toMenuEnd.SetActive(false);
-				// instructionWindowText.text = instructionText8;
-				// instructionWindowImage.sprite = instructionImage8;
-				// break;
+			case 7:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText7;
+				instructionWindowImage.sprite = instructionImage7;
+				break;
+			case 8:
+				instructionWindow.SetActive(true);
+				changeInstruction.SetActive(true);
+				toMenu.SetActive(true);
+				toMenuEnd.SetActive(false);
+				instructionWindowText.text = instructionText8;
+				instructionWindowImage.sprite = instructionImage8;
+				break;
 			// case 9:
 				// instructionWindow.SetActive(true);
 				// changeInstruction.SetActive(true);
