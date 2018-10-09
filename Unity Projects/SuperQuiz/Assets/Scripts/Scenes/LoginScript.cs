@@ -95,7 +95,14 @@ public class LoginScript : MonoBehaviour{
 		Invoke("NextScene", 1.2f);
 		TransitionScript.EndAnimation();
 	}
-	
+
+	public void SelectDeclineTerms(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		Invoke("ToggleAcceptTerms", 0.5f);
+		// Invoke("EndScene", 1.2f);
+		// Invoke("NextScene", 1.2f);
+		// TransitionScript.EndAnimation();
+	}
 
 	public void NextScene(){
 		if (SessionScript.firstLogIn){   // Dummy first login
