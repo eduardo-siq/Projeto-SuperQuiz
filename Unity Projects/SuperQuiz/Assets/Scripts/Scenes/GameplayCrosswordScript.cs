@@ -24,12 +24,17 @@ public class GameplayCrosswordScript : MonoBehaviour{
 	// }
 
 	IEnumerator StartScene(){
+		yield return null;
+		// UI
+		
+		// Crossword
+		crossword = new List <Crossword>();
 		
 		if (getBuiltInCrossword) GetBuiltInCrossword();
 	}
 	
-	GetBuiltInCrossword(){
-		BuiltInCrossword.GetCrossword();
+	public void GetBuiltInCrossword(){
+		crossword = BuiltInCrossword.GetCrossword();
 	}
 }
 

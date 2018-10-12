@@ -1,57 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class BuiltInCrossword : MonoBehaviour  {
+public class BuiltInCrossword  {
 	
-	public GetCrossword(){
+	public static List<Crossword> GetCrossword(){
+		List <Crossword> newCrossword = new List <Crossword>();
 		string newWord;
 		string newText;
-		newWord = "Obiwan";
+		newWord = "OBIWAN";
 		newText = "Mestre jedi do filme Guerra nas Estrelas";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Clarke";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "CLARKE";
 		newText = "Arthur ______, autor de ficção científica";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Matrix";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "MATRIX";
 		newText = "Filme no qual a humanidade vive em uma realidade virtual controlada por máquinas";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Edward";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "EDWARD";
 		newText = "______ Harris, ator americano. Trabalhou em Apollo 13 e Snowpiercer";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Deuses";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "DEUSES";
 		newText = "Os Próprios _______, livro de Isaac Asimov";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Brazil";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "BRAZIL";
 		newText = "Filme de Terry Gilliam sobre um futuro distópico";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Huxley";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "HUXLEY";
 		newText = "Aldous ______, autor de Admirável Mundo Novo";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Engine";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "ENGINE";
 		newText = "The Difference ______, livro de William Gibson e Bruce Sterling";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord);
-		newWord = "Animal";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "ANIMAL";
 		newText = "______ Farm, livro de George Orwell";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord)
-		newWord = "Recall";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "RECALL";
 		newText = "Total ______, filme de Arnold Schwarzenegger";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord)
-		newWord = "Orwell";
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		newWord = "ORWELL";
 		newText = "George ______, autor de 1984";
-		GameplayCrosswordScript.crossword.Add(new Crossword(newWord, newText));
-		print ("Added crossword: " + newWord)
+		newCrossword.Add(new Crossword(newWord, newText));
+		Debug.Log ("Added crossword: " + newWord);
+		return newCrossword;
 	}
 // O B I W A N (mestre jedi)
 // C L A R K E (Arthur Clark)

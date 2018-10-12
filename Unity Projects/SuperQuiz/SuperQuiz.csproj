@@ -322,7 +322,9 @@
     <Compile Include="Assets\Scripts\AvatarPortrait.cs" />
     <Compile Include="Assets\Scripts\BackgroundScript.cs" />
     <Compile Include="Assets\Scripts\BncQFile.cs" />
+    <Compile Include="Assets\Scripts\BuiltInCrossword.cs" />
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />
+    <Compile Include="Assets\Scripts\CrosswordClass.cs" />
     <Compile Include="Assets\Scripts\DetailClass.cs" />
     <Compile Include="Assets\Scripts\GlowScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
@@ -337,6 +339,7 @@
     <Compile Include="Assets\Scripts\Scenes\AboutScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AvatarScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\GameplayCrosswordScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameplayScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScriptLimited.cs" />
