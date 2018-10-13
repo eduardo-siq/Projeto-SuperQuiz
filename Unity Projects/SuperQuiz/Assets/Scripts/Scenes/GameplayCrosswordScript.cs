@@ -11,6 +11,10 @@ public class GameplayCrosswordScript : MonoBehaviour{
 	// Crossword
 	public List <Crossword> crossword;
 	
+	// Prefab
+	public GameObject crosswordLine;
+	public GameObject crosswordCharacter;
+	
 	// Other
 	public bool getBuiltInCrossword;
 	
@@ -30,7 +34,19 @@ public class GameplayCrosswordScript : MonoBehaviour{
 		// Crossword
 		crossword = new List <Crossword>();
 		
+		// Prefab
+		crosswordLine = Resources.Load("Prefabs/CrosswordLine") as GameObject;
+		crosswordCharacter = Resources.Load("Prefabs/CrosswordCharacter") as GameObject;
+
+		// Other
+		
+		// Methods
 		if (getBuiltInCrossword) GetBuiltInCrossword();
+		InstantiateLines();
+	}
+	
+	public void InstantiateLines(){
+		
 	}
 	
 	public void GetBuiltInCrossword(){

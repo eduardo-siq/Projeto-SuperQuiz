@@ -36,6 +36,8 @@ public class SessionScript : MonoBehaviour{
     public static Sprite spritePoint;
     public static List<Detail> detail;
     public static bool useQuestionPointOffset = true;
+	
+	// Crossword
 
     // Avatar
     public static List<Sprite> avatarItem0;
