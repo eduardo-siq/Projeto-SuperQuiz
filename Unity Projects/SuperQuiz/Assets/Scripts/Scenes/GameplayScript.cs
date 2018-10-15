@@ -727,7 +727,7 @@ public class GameplayScript : MonoBehaviour{
 		if (showAnswer){
 			correctAnswer.SetActive(true);
 			Invoke ("CloseCorrection", 2.5f);
-			correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "RESPOSTA: " + currentQuestion.answer0;
+			correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "Resposta certa: " + currentQuestion.answer0;
 			if (currentQuestion.questionType != 2){
 				correctAnswer.transform.Find("Image").gameObject.SetActive(false);
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
@@ -740,7 +740,7 @@ public class GameplayScript : MonoBehaviour{
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().alignment = TextAnchor.UpperCenter;
 				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = SessionScript.missingTexture;	// MISSING TEXTURE INSERIDA PRIMEIRO
 				Vector3 colorInput = new Vector3(red, green, blue);
-				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// RESPOSTA CERTA, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
+				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
 			}
 			if (currentQuestion.questionType == 5){
 				numberOfPointItemsAnswered = 0;
@@ -755,7 +755,7 @@ public class GameplayScript : MonoBehaviour{
 					}
 				}
 				answerText = answerText + ".";
-				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "RESPOSTA: " + answerText;
+				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "Resposta certa: " + answerText;
 			}
 		}
 		// if (!SessionScript.singleRun){
@@ -799,7 +799,7 @@ public class GameplayScript : MonoBehaviour{
         Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
         print("QuestionPointGetDetail: pixelColor " + pixelColor.r + ", " + pixelColor.g + ", " + pixelColor.b);
         questionPointDetail.sprite = SessionScript.missingTexture;	// MISSING TEXTURE COLOCADA PRIMEIRA
-		questionPointDetail.sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// RESPOSTA CERTA, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
+		questionPointDetail.sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
         // for (int i = 0; i < SessionScript.detail.Count; i++){
             // if (colorInput == SessionScript.detail[i].colorCode){
                 // questionPointDetail.sprite = SessionScript.detail[i].texture;

@@ -42,6 +42,77 @@ public class BuiltInQuestions {
 		"X"));
 		questionsPreLoad.Add(new QuestionPreLoad(
 		2,
+		5,
+		"Quais são macro-regiões onde ficam estados de Minas Gerais e Mato Grosso?",
+		"0_1_0_Sudeste",
+		"1_1_0_Centro-Oeste",
+		"",
+		"",
+		"",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		3,
+		4,
+		"De qual país é essa bandeira?",
+		"Reino Unido",
+		"Inglaterra",
+		"Canadá",
+		"EUA",
+		"Escócia",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		4,
+		0,
+		"A Muralha da China foi construída como defesa contra invasores de que país?",
+		"Mongólia",
+		"Tibete",
+		"Japão",
+		"Índia",
+		"Coréia",
+		"X",
+		"X"));
+		return questionsPreLoad;
+	}
+	
+	public static List<QuestionPreLoad> GetBuildInQuestionsOld(){
+		List <QuestionPreLoad> questionsPreLoad = new List <QuestionPreLoad>();
+		// questionsPreLoad.Add(new QuestionPreLoad(
+		// int newIndex,
+		// int newQuestionType,
+		// string newT,
+		// string newA0,
+		// string newA1,
+		// string newA2,
+		// string newA3,
+		// string newA4,
+		// string newUserGroup,
+		// string newSubject));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		0,
+		0,
+		"Qual país é famoso por suas pirâmides?",
+		"Egito",
+		"Itália",
+		"Rússia",
+		"Japão",
+		"Índia",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		1,
+		1,
+		"Em qual país surgiu a democracia?",
+		"Grécia",
+		"",
+		"",
+		"",
+		"",
+		"X",
+		"X"));
+		questionsPreLoad.Add(new QuestionPreLoad(
+		2,
 		2,
 		"Qual é a macro-região mais populosa do Brasil?",
 		"Sudeste",

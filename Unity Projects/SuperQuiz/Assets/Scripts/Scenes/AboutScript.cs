@@ -12,6 +12,7 @@ public class AboutScript : MonoBehaviour{
 	private bool quit;
 	public GameObject faqWindow;
 	public GameObject rulesWindow;
+	public string nextScene;
 
 	void Start(){
 		StartCoroutine(StartScene());
@@ -65,22 +66,33 @@ public class AboutScript : MonoBehaviour{
 	void OpenRules(){
 		rulesWindow.SetActive(true);
 	}
+	
+	public void SelectTutorial(){
+		nextScene = "tutorial";
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		Invoke("EndScene", 1.2f);
+		Invoke("NextScene", 0.2f);
+		// TransitionScript.PlayAnimation();
+		// TransitionScript.StartAnimation();
+		TransitionScript.EndAnimation();
+	}
 
 	public void Noise(){
 		SessionScript.ButtonAudio(SessionScript.negative);
 	}
 
 	public void SelectMenu(){
+		nextScene = "menu";
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		Invoke("EndScene", 1.2f);
-		Invoke("NextScene", 1.2f);
+		Invoke("NextScene", 0.2f);
 		// TransitionScript.PlayAnimation();
 		// TransitionScript.StartAnimation();
 		TransitionScript.EndAnimation();
 	}
 
 	public void NextScene(){
-		SceneManager.LoadScene("menu", LoadSceneMode.Single);
+		SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
 	}
 
 	void EndScene(){	// OBSOLETE?

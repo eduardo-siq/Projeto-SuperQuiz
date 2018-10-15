@@ -166,7 +166,7 @@ public class ResultScript : MonoBehaviour{
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		nextScene = "answers";
 		Invoke("EndScene", 1.2f);
-		Invoke("NextScene", 1.2f);
+		Invoke("NextScene", 0.2f);
 		// TransitionScript.PlayAnimation();
 		// TransitionScript.StartAnimation();
 		TransitionScript.EndAnimation();

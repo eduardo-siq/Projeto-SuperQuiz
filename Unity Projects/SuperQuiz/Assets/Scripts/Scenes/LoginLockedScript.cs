@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LoginLockedScript : MonoBehaviour
-{
+public class LoginLockedScript : MonoBehaviour{
 
     // UI
     public RectTransform loginRect;

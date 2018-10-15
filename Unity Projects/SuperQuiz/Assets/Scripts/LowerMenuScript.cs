@@ -98,17 +98,14 @@ public class LowerMenuScript : MonoBehaviour
         }
     }
 
-    public void SelectScene(string option)
-    {
+    public void SelectScene(string option){
         print("SELECT SCENE " + option);
-        if (instance.lockScene)
-        {
+        if (instance.lockScene){
             SessionScript.ButtonAudio(SessionScript.subtle);
             print("LOCKED (instance.lockScene " + instance.lockScene + ")");
             return;
         }
-        if (option == thisScene)
-        {
+        if (option == thisScene){
             print("SAME SCENE (instance.lockScene " + instance.lockScene + ")");
             SessionScript.ButtonAudio(SessionScript.subtle);
             return;
@@ -118,14 +115,13 @@ public class LowerMenuScript : MonoBehaviour
         SessionScript.ButtonAudio(SessionScript.neutral);
         nextScene = option;
         Invoke("EndScene", 1.2f);   // OBSOLETE?
-        Invoke("NextScene", 1.2f);
+        Invoke("NextScene", 0.2f);
         // TransitionScript.PlayAnimation();
         // TransitionScript.StartAnimation();
         TransitionScript.EndAnimation();
     }
 
-    public void SelectQuit()
-    {
+    public void SelectQuit(){
         SessionScript.ButtonAudio(SessionScript.neutral);
         quit = true;
         print("QUIT");
@@ -133,19 +129,16 @@ public class LowerMenuScript : MonoBehaviour
         Invoke("Quit", 0.5f);
     }
 
-    void Quit()
-    {
+    void Quit(){
         Application.Quit();
     }
 
-    public void NextScene()
-    {
+    public void NextScene(){
         instance.lockScene = true;
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
     }
 
-    void EndScene()
-    {   // OBSOLETE?
+    void EndScene(){   // OBSOLETE?
         if (thisScene == "about") aboutScript.endScene = true;
         if (thisScene == "answers") answerScript.endScene = true;
         if (thisScene == "avatar") avatarScript.endScene = true;
@@ -154,8 +147,7 @@ public class LowerMenuScript : MonoBehaviour
         if (thisScene == "result") resultScript.endScene = true;
     }
 
-    public void TurnOnOffSound()
-    {
+    public void TurnOnOffSound(){
         SessionScript.TurnOnOffSound();
         SetButtonItens();
     }

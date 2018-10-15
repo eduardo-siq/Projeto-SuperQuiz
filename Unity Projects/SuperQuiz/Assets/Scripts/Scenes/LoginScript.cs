@@ -13,6 +13,7 @@ public class LoginScript : MonoBehaviour{
 	public InputField passwordInputField;
 	public int selectedInputField = 1;
 	public GameObject acceptWindow;
+	public GameObject errorWindow;
 	private bool quit;
 
 	// Login variables
@@ -22,12 +23,14 @@ public class LoginScript : MonoBehaviour{
 	private string password2 = "43";
 	public string userInput = "";
 	public string passwordInput = "";
+	public bool block;
 
 
 	void Start(){
 		StartCoroutine(StartScene());
 		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/User").GetComponent<InputField>();
 		passwordInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/Password").GetComponent<InputField>();
+		errorWindow = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/ErrorWindow").gameObject;
 		userInputField.ActivateInputField();
 	}
 
@@ -56,6 +59,10 @@ public class LoginScript : MonoBehaviour{
 	}
 
 	public void LoginButton(){   // DUMMY LOGIN
+		if (block){
+			SessionScript.ButtonAudio(SessionScript.subtle);
+			return;
+		}
 		if (userInput == user && passwordInput == password){
 			SessionScript.ButtonAudio(SessionScript.positive);
 			SessionScript.userGroup = 0;
@@ -63,7 +70,7 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.GetQuestionListFromPreLoad();
 			Invoke("ToggleAcceptTerms", 0.5f);
 			// Invoke("EndScene", 1.2f);
-			// Invoke("NextScene", 1.2f);
+			// Invoke("NextScene", 0.2f);
 			//TransitionScript.EndAnimation();
 			return;
 		}
@@ -74,14 +81,27 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.GetQuestionListFromPreLoad();
 			Invoke("ToggleAcceptTerms", 0.5f);
 			// Invoke("EndScene", 1.2f);
-			// Invoke("NextScene", 1.2f);
+			// Invoke("NextScene", 0.2f);
 			//TransitionScript.EndAnimation();
 			return;
 		}
 		if (userInput != user || userInput != user2 || passwordInput == password || passwordInput == password2){
-			SessionScript.ButtonAudio(SessionScript.negative);
+			OpenErrorMessage();
 		}
 		print("userGroup " + SessionScript.userGroup);
+	}
+	
+	void OpenErrorMessage(){
+		block = true;
+		SessionScript.ButtonAudio(SessionScript.negative);
+		errorWindow.SetActive(true);
+		Invoke ("CloseErrorMessage", 2.5f);
+	}
+	
+	void CloseErrorMessage(){
+		errorWindow.SetActive(false);
+		SessionScript.ButtonAudioLow(SessionScript.blop);
+		block = false;
 	}
 	
 	public void ToggleAcceptTerms(){
@@ -92,7 +112,7 @@ public class LoginScript : MonoBehaviour{
 		SessionScript.ButtonAudio(SessionScript.positive);
 		//Invoke("ToggleAcceptTerms", 0.5f);
 		Invoke("EndScene", 1.2f);
-		Invoke("NextScene", 1.2f);
+		Invoke("NextScene", 0.2f);
 		TransitionScript.EndAnimation();
 	}
 
@@ -100,7 +120,7 @@ public class LoginScript : MonoBehaviour{
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		Invoke("ToggleAcceptTerms", 0.5f);
 		// Invoke("EndScene", 1.2f);
-		// Invoke("NextScene", 1.2f);
+		// Invoke("NextScene", 0.2f);
 		// TransitionScript.EndAnimation();
 	}
 

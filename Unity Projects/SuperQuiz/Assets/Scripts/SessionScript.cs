@@ -380,8 +380,7 @@ public class SessionScript : MonoBehaviour{
         int t = 0;  // item type
         int r = 0;  // item tier
         int i = 0;  // item index
-        do
-        {   // Item type 1: hat (?)
+        do{   // Item type 1: hat (?)
             Sprite texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString(), typeof(Sprite)) as Sprite;    //avatar_type_tier_index
             if (texture != null)
             {
@@ -570,7 +569,7 @@ public class SessionScript : MonoBehaviour{
 		for (int i = 0; i < numberOfPlayers; i++){
 			Player newPlayer = new Player(Player.RandomPlayer());
 			newPlayer.id = i;
-			newPlayer.score = Random.Range(-5,10) * 10;
+			newPlayer.score = Random.Range(-5,5) * 10;
 			print ("newPlayer.avatar.skin " + newPlayer.avatar.skin);
 			playerList.Add(newPlayer);
 		}
@@ -616,7 +615,7 @@ public class SessionScript : MonoBehaviour{
 	// }
 
     public void PlaySong(AudioClip audio){
-        songAudio.PlayOneShot(audio, soundVolume * 0.5f);
+        songAudio.PlayOneShot(audio, soundVolume * 0.33f);
     }
 
     public static void ButtonAudio(AudioClip audio){

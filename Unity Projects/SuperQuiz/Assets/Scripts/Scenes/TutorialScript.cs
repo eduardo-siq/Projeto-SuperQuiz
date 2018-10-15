@@ -43,6 +43,11 @@ public class TutorialScript : MonoBehaviour{
 	public Image instructionWindowImage;
 	public bool endScene;
 	private bool quit;
+	
+	// Other
+	public float timer = 0;
+	public bool runTimer = false;
+	public GameObject buttonHelp;
 
 	void Start(){
 		StartCoroutine(StartScene());
@@ -55,6 +60,14 @@ public class TutorialScript : MonoBehaviour{
 		// }
 		if (quit){
 			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
+		}
+		if (runTimer){
+			timer = timer + Time.deltaTime;
+		}
+		if (timer > 5f){
+			ShowMenuButton();
+			runTimer = false;
+			timer = 0f;
 		}
 	}
 
@@ -86,6 +99,7 @@ public class TutorialScript : MonoBehaviour{
 		toMenuEnd = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenuEnd").gameObject;
 		instructionWindowText = instructionWindow.transform.Find("Text").GetComponent<Text>();
 		instructionWindowImage = instructionWindow.transform.Find("Image").GetComponent<Image>();
+		buttonHelp = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/Help").gameObject;
 		Tutorial();
 	}
 	
@@ -192,6 +206,7 @@ public class TutorialScript : MonoBehaviour{
 			changeInstruction.SetActive(false);
 			toMenu.SetActive(false);
 			toMenuEnd.SetActive(true);
+			runTimer = true;
 			break;
 		}
 	}
@@ -210,11 +225,16 @@ public class TutorialScript : MonoBehaviour{
 		instruction = instruction - 1;
 		Tutorial();
 	}
+	
+	public void ShowMenuButton(){
+		buttonHelp.SetActive(true);
+		SessionScript.ButtonAudioLow(SessionScript.blop);
+	}
 
 	public void SelectMenu(){
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		Invoke("EndScene", 1.2f);
-		Invoke("NextScene", 1.2f);
+		Invoke("NextScene", 0.2f);
 		// TransitionScript.PlayAnimation();
 		// TransitionScript.StartAnimation();
 		TransitionScript.EndAnimation();
@@ -223,7 +243,7 @@ public class TutorialScript : MonoBehaviour{
 	public void SelectMenuEnd(){
 		SessionScript.ButtonAudio(SessionScript.positive);
 		Invoke("EndScene", 1.2f);
-		Invoke("NextScene", 1.2f);
+		Invoke("NextScene", 0.2f);
 		// TransitionScript.PlayAnimation();
 		// TransitionScript.StartAnimation();
 		TransitionScript.EndAnimation();
