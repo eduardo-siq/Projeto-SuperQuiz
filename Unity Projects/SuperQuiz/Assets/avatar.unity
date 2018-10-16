@@ -220,7 +220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarRect: {fileID: 0}
   endScene: 0
-  selectStage: {fileID: 0}
+  selectStageNext: {fileID: 0}
+  selectStagePrevious: {fileID: 0}
   allowNext: 0
   lowerMenu: {fileID: 0}
   options: {fileID: 0}
@@ -1122,7 +1123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -86}
+  m_AnchoredPosition: {x: -1.7, y: -86}
   m_SizeDelta: {x: 100, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &248718062
@@ -4157,7 +4158,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 828617f9dcc61d740b55d3b2da051ed8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f004f03ebbde9b341a5be04cc0b16516, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -6402,7 +6403,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 6386b8279753a3f418ff0866feb06e6d, type: 3}
+  m_Texture: {fileID: 2800000, guid: c69e1e40c58a60941bb9f85759fdab44, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -7232,7 +7233,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 828617f9dcc61d740b55d3b2da051ed8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f978b71f0d0d0304799671f09094c76e, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

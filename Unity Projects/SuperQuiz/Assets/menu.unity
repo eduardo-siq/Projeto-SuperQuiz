@@ -544,8 +544,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 133074009}
-  - {fileID: 1396517054}
   - {fileID: 1559123436}
+  - {fileID: 1396517054}
   - {fileID: 2004606654}
   m_Father: {fileID: 1035854005}
   m_RootOrder: 0
@@ -1939,6 +1939,27 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114842496073218278, guid: f2ee16797282ea94890d3698dda0ece1,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c69e1e40c58a60941bb9f85759fdab44,
+        type: 3}
+    - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1.69238
+      objectReference: {fileID: 0}
+    - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1.4147849
+      objectReference: {fileID: 0}
+    - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1.4326941
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f2ee16797282ea94890d3698dda0ece1, type: 2}
   m_IsPrefabParent: 0
@@ -1979,7 +2000,7 @@ RectTransform:
   - {fileID: 905188945}
   - {fileID: 627720933}
   m_Father: {fileID: 643173174}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
