@@ -132,8 +132,9 @@ d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
 e765c60703e1d2470ee601d503ef86b2 Assembly-CSharp.dll:.AnimErrorScript
 959e8219c4c3b444b135ba55aca7c946 Assembly-CSharp.dll:.AvatarScript
 629e84bd13b5c32d10eb6197d6cdfed5 Assembly-CSharp.dll:.AnimSuccessScript
+7505d560bde54c8fa387b36b8c318bcc Assembly-CSharp.dll:.GameplayCrosswordScript
 32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
-06f58d5bf57184f62c384846da44d87b Assembly-CSharp.dll:.TutorialScript
+3acacd8f1ba0d6c6ab66939fefef98b1 Assembly-CSharp.dll:.TutorialScript
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -152,7 +153,7 @@ f662c521d939376f8c3c72a6f2efb4e8 Assembly-CSharp.dll:.BackgroundScript
 08440a1b429be2f021f5c2fa71b06787 Assembly-CSharp.dll:.ResultLine
 cdec38c5f6970f166127f650234e7363 Assembly-CSharp.dll:.LoginLockedScript
 814de87de9977b492b8bfb08453c3d4d Assembly-CSharp.dll:.RankingWindow
-5d77c48fe801c59b7a9ccb4349002e23 Assembly-CSharp.dll:.AboutScript
+3cf4cfd7b5214b2f33a1ed6f70d38c82 Assembly-CSharp.dll:.AboutScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 96d0fbde9fd209878a0a291f82c9bcdd UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -166,9 +167,10 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.CrosswordLine
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GlowScript
 a1695fa85674deeb3fba1f12222413b3 Assembly-CSharp.dll:.SessionScript
 1592fec7d569d9d3eb2a33c65187f6af Assembly-CSharp.dll:.LoadScript
-fb307311bc97f20291aa746e18fb4064 Assembly-CSharp.dll:.LoginScript
+0990e96c065754f89a2d991b9e6bf2d4 Assembly-CSharp.dll:.LoginScript
 da040dcf419d94291a11b94c9745e4d3 Assembly-CSharp.dll:.ResultScript
 41cc74ff68fbeef5112809fae6bff2a1 Assembly-CSharp.dll:.TransitionScript

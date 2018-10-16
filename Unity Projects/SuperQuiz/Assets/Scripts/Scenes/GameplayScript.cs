@@ -262,23 +262,19 @@ public class GameplayScript : MonoBehaviour{
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
 				a1 = Random.Range(0, 5);
-				while (a1 == a0)
-				{
+				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
 				a2 = Random.Range(0, 5);
-				while (a2 == a0 || a2 == a1)
-				{
+				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
 				a3 = Random.Range(0, 5);
-				while (a3 == a0 || a3 == a1 || a3 == a2)
-				{
+				while (a3 == a0 || a3 == a1 || a3 == a2){
 					a3 = Random.Range(0, 5);
 				}
 				a4 = Random.Range(0, 5);
-				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3)
-				{
+				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
 
@@ -312,23 +308,19 @@ public class GameplayScript : MonoBehaviour{
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
 				a1 = Random.Range(0, 5);
-				while (a1 == a0)
-				{
+				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
 				a2 = Random.Range(0, 5);
-				while (a2 == a0 || a2 == a1)
-				{
+				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
 				a3 = Random.Range(0, 5);
-				while (a3 == a0 || a3 == a1 || a3 == a2)
-				{
+				while (a3 == a0 || a3 == a1 || a3 == a2){
 					a3 = Random.Range(0, 5);
 				}
 				a4 = Random.Range(0, 5);
-				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3)
-				{
+				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
 
@@ -348,6 +340,7 @@ public class GameplayScript : MonoBehaviour{
 				answers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + answers[2].transform.Find("Text").GetComponent<Text>().text;
 				answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
 				answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
+				StartCoroutine("DoubleCheckQuestionImage");
 				break;
 			case 5:	// Point-and-click multiple items
 				questionImage.SetActive(false);
@@ -374,13 +367,11 @@ public class GameplayScript : MonoBehaviour{
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
 				a1 = Random.Range(0, 5);
-				while (a1 == a0)
-				{
+				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
 				a2 = Random.Range(0, 5);
-				while (a2 == a0 || a2 == a1)
-				{
+				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
 				a3 = Random.Range(0, 5);
@@ -389,8 +380,7 @@ public class GameplayScript : MonoBehaviour{
 					a3 = Random.Range(0, 5);
 				}
 				a4 = Random.Range(0, 5);
-				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3)
-				{
+				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
 
@@ -741,6 +731,7 @@ public class GameplayScript : MonoBehaviour{
 				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = SessionScript.missingTexture;	// MISSING TEXTURE INSERIDA PRIMEIRO
 				Vector3 colorInput = new Vector3(red, green, blue);
 				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
+				StartCoroutine("DoubleCheckCorrectImage");
 			}
 			if (currentQuestion.questionType == 5){
 				numberOfPointItemsAnswered = 0;
@@ -756,6 +747,7 @@ public class GameplayScript : MonoBehaviour{
 				}
 				answerText = answerText + ".";
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "Resposta certa: " + answerText;
+				StartCoroutine("DoubleCheckCorrectImage");
 			}
 		}
 		// if (!SessionScript.singleRun){
@@ -1215,5 +1207,27 @@ public class GameplayScript : MonoBehaviour{
     void EndScene(){
         endScene = true;
     }
+	
+	// Double Checks
+	
+	IEnumerator DoubleCheckQuestionImage(){
+		yield return null;
+		questionImageTexture.sprite = currentQuestion.questionImage;
+	}
+	
+	IEnumerator DoubleCheckCorrectImage(){
+		yield return null;
+		if (currentQuestion.questionType == 2){
+			float red = float.Parse(currentQuestion.answer1);
+			float green = float.Parse(currentQuestion.answer2);
+			float blue = float.Parse(currentQuestion.answer3);
+			correctAnswer.transform.Find("Image").gameObject.SetActive(true);
+			Vector3 colorInput = new Vector3(red, green, blue);
+			correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;
+		}
+		if (currentQuestion.questionType == 5){
+			print ("Images not avaiable for this question");
+		}
+	}
 
 }

@@ -75,7 +75,7 @@ public class TutorialScript : MonoBehaviour{
 		yield return null;
 		tutorialRect = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial").GetComponent<RectTransform>();
 		instruction = 0;
-		instructionText0 = "\n\nBem vindo ao\nSuperQuiz!\n\n\n\n\n";
+		instructionText0 = "\n\nBem vindo ao\nDesafio Quiz!\n\n\n\n\n";
 		instructionText1 = "Este é um jogo de perguntas e respostas que permite que você crie e customize seu personagem\n\n\n\n\n\n";
 		instructionText2 = "No menu principal, você pode acessar diferentes áreas do jogo\n\n\n\n\n\n\n";
 		instructionText3 = "\nAqui você inicia uma nova partida\n\n\n\n\n\n\n";
@@ -83,7 +83,7 @@ public class TutorialScript : MonoBehaviour{
 		instructionText5 = "Use as setas para selecionar seus acessórios\n\n\n\n\n\n\n";
 		instructionText6 = "\nAqui você vê o ranking e sua pontuação\n\n\n\n\n\n\n";
 		instructionText7 = "\nVocê também pode verificar as suas respostas\n\n\n\n\n\n";
-		instructionText8 = "\nPronto!\nAgora você já pode jogar o SuperQuiz!\n\n\n\n\n";
+		instructionText8 = "\nPronto!\nAgora você já pode jogar o Desafio Quiz!\n\n\n\n\n";
 		instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
 		instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
 		instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
