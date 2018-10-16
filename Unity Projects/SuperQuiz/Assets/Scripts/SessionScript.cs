@@ -85,9 +85,10 @@ public class SessionScript : MonoBehaviour{
 	public static AudioClip blop;
 	public static AudioClip success;
 	public static AudioClip error;
-	public static int currentSong;
+	public static AudioClip currentSong;
 	public static bool soundOn;
 	public static float soundVolume;
+	public static bool fadeOutSong;
 
     // Auxiliary / Editor
     public static Sprite missingTexture;
@@ -199,7 +200,7 @@ public class SessionScript : MonoBehaviour{
         blop = Resources.Load("Sound/neutral_blop", typeof(AudioClip)) as AudioClip;
         subtle = Resources.Load("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
         song1 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
-        song2 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
+        song2 = Resources.Load("Sound/trilhaSuperQuiz2", typeof(AudioClip)) as AudioClip;
 		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
 		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
 		if (error == null) print ("ERROR NOT FOUND");
@@ -214,9 +215,10 @@ public class SessionScript : MonoBehaviour{
 		if (success == null) print ("SUCCESS NOT FOUND");
 		if (success == null) print ("SUCCESS NOT FOUND");
 		if (success == null) print ("SUCCESS NOT FOUND");
-        currentSong = 1;
+        currentSong = song1;
         soundOn = true;
         soundVolume = 0.5f;
+		fadeOutSong = false;
 
         // Score
         rightScore = 10;
@@ -239,19 +241,23 @@ public class SessionScript : MonoBehaviour{
         yield return null;
         questionsAskedListCount = questionsAskedList.Count;
         answersListCount = answersList.Count;   // MAYBE IRRELEVANT
-        if (!songAudio.isPlaying)
-        {
-            if (currentSong == 1)
-            {
-                PlaySong(song2);
-            }
-            if (currentSong == 2)
-            {
-                PlaySong(song1);
-            }
-            currentSong = currentSong + 1;
-            if (currentSong > 2) { currentSong = 1; }
-        }
+        // if (!songAudio.isPlaying){	// Loops same song
+            // if (currentSong == 1){
+                // PlaySong(song1);
+            // }
+            // if (currentSong == 2){
+                // PlaySong(song2);
+            // }
+            // currentSong = currentSong + 1;
+            // if (currentSong > 2) { currentSong = 1; }
+        // }
+		if (fadeOutSong){
+			songAudio.volume = songAudio.volume - (Time.deltaTime);
+			if (songAudio.volume <= 0){
+				songAudio.Stop();
+				fadeOutSong = false;
+			}
+		}
         StartCoroutine(UpdateScene());
     }
 
@@ -614,8 +620,19 @@ public class SessionScript : MonoBehaviour{
 		
 	// }
 
-    public void PlaySong(AudioClip audio){
-        songAudio.PlayOneShot(audio, soundVolume * 0.33f);
+    public static void PlaySong(){
+		print ("PLAY SONG " + currentSong + " volume: " + songAudio.volume);
+        //songAudio.PlayOneShot(audio, soundVolume * 0.5f);
+		songAudio.clip = currentSong;
+		songAudio.loop = true;
+		fadeOutSong = false;
+		if (currentSong == song1){
+			songAudio.volume = soundVolume * 0.45f;
+		}
+		if (currentSong == song2){
+			songAudio.volume = soundVolume * 0.55f;
+		}
+		songAudio.Play();
     }
 
     public static void ButtonAudio(AudioClip audio){

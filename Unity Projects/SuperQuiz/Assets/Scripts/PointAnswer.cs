@@ -9,6 +9,7 @@ public class PointAnswer {
 	public float green;
 	public float blue;	// merge as color?
 	public bool right;
+	public bool pointed;
 	public Detail detail;	// obsolete?
 	public string text;
 	
@@ -26,6 +27,7 @@ public class PointAnswer {
 		green = newGreen;
 		blue = newBlue;
 		right = newRight;
+		pointed = false;
 		detail = new Detail (newRed, newBlue, newGreen);
 	}
 	
@@ -35,6 +37,7 @@ public class PointAnswer {
 			green = 0;
 			blue = 0;
 			right = true;
+			pointed = false;
 			return;
 		}
 		string[] question;

@@ -37,6 +37,7 @@ public class LoginScript : MonoBehaviour{
 	IEnumerator StartScene(){
 		yield return null;
 		loginRect = GameObject.Find("Canvas/Scroll View/Viewport/Login").GetComponent<RectTransform>();
+		SessionScript.PlaySong();
 	}
 
 

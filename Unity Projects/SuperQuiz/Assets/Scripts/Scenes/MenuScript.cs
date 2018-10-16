@@ -39,6 +39,12 @@ public class MenuScript : MonoBehaviour{
 			// GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Button>().enabled = false;
 			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Image>().sprite = Resources.Load("Textures/UI/PlayDisabled", typeof (Sprite)) as Sprite;
         }
+		
+		// Soundtrack
+		if (!SessionScript.songAudio.isPlaying){
+			SessionScript.PlaySong();
+		}
+		Invoke ("CheckSong", 1f);
     }
 
 
@@ -56,6 +62,8 @@ public class MenuScript : MonoBehaviour{
 				 PopUpScript.InstantiatePopUp("Todos as questões foram respondidas!", "OK");
 				return;
 			}
+			SessionScript.currentSong = SessionScript.song2;
+			SessionScript.fadeOutSong = true;
 		}
         nextScene = option;
         SessionScript.ButtonAudio(SessionScript.neutral);
@@ -79,18 +87,23 @@ public class MenuScript : MonoBehaviour{
     // Application.Quit();
     // }
 
-    public void NextScene()
-    {
+    public void NextScene(){
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
     }
 
-    void EndScene()
-    {
+    void EndScene(){
         endScene = true;
     }
 
-    public void TurnOnOffSound()
-    {
+    public void TurnOnOffSound(){
         SessionScript.TurnOnOffSound();
     }
+	
+	// Double Checks
+	
+	void CheckSong(){
+		if (!SessionScript.songAudio.isPlaying){
+			SessionScript.PlaySong();
+		}
+	}
 }

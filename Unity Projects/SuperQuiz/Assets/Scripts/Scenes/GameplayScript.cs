@@ -145,6 +145,10 @@ public class GameplayScript : MonoBehaviour{
         else{
             questionPointOffset = new Vector2(0, 0);
         }
+		
+		// Soundtrack
+		SessionScript.PlaySong();
+		
 
         // TEST TEST TES TEST
         Invoke("StartNewQuestion", 0.1f);
@@ -343,6 +347,7 @@ public class GameplayScript : MonoBehaviour{
 				StartCoroutine("DoubleCheckQuestionImage");
 				break;
 			case 5:	// Point-and-click multiple items
+				pointAnswerList = new List <PointAnswer>();
 				questionImage.SetActive(false);
 				questionWrite.SetActive(false);
 				questionPoint.SetActive(true);
@@ -504,7 +509,7 @@ public class GameplayScript : MonoBehaviour{
 					bool blackB = false;
 					Color pixelColorB = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
 					Vector3 colorInputB = new Vector3(pixelColorB.r, pixelColorB.g, pixelColorB.b);
-					if (colorInputB.x >= -0.05f && colorInputB.x < 0.05f){
+					if (colorInputB.x >= -0.05f && colorInputB.x < 0.05f){	// Check if player clicked black
 						if (colorInputB.y >= -0.05f && colorInputB.y < 0.05f){
 							if (colorInputB.z >= -0.05f && colorInputB.z < 0.05f){
 								blackB = true;
@@ -512,6 +517,7 @@ public class GameplayScript : MonoBehaviour{
 							}
 						}
 					}
+					// CHECK IF REPEATED ITEM HERE!!
 					if (!blackB){
 						SessionScript.ButtonAudio(SessionScript.neutral);
 						Invoke("ToPointConfirm", 0.25f);
@@ -655,19 +661,29 @@ public class GameplayScript : MonoBehaviour{
 			Invoke("EndQuestion", 2.25f);
 		}
 		if (currentQuestion.questionType == 5){
-				Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-				Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
-				for (int i = 0; i < pointAnswerList.Count; i ++){
-					print ("pointAnswerList[" + i + "] " + pointAnswerList[i].red + " / " + pointAnswerList[i].green + " / " + pointAnswerList[i].blue + " | colorInput: " + colorInput);
-					if (pointAnswerList[i].red == colorInput.x && pointAnswerList[i].green == colorInput.y && pointAnswerList[i].blue == colorInput.z){
+			bool repeatedItem = false;
+			Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
+			Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
+			for (int i = 0; i < pointAnswerList.Count; i ++){
+				print ("pointAnswerList[" + i + "] " + pointAnswerList[i].red + " / " + pointAnswerList[i].green + " / " + pointAnswerList[i].blue + " | colorInput: " + colorInput);
+				if (pointAnswerList[i].red == colorInput.x && pointAnswerList[i].green == colorInput.y && pointAnswerList[i].blue == colorInput.z){
+					if (pointAnswerList[i].pointed == true){
+						print ("REPEATED ITEM");
+						repeatedItem = true;
+					}
+					if (pointAnswerList[i].pointed == false){
+						pointAnswerList[i].pointed = true;
 						pointAnswerList[i].right = true;
 						print ("RIGHT pointAnswerList[" + i + "].right: " + pointAnswerList[i].right);
-					} else {
-						print ("WRONG pointAnswerList[" + i + "].right: " + pointAnswerList[i].right);
 					}
+				} else {
+					print ("WRONG pointAnswerList[" + i + "].right: " + pointAnswerList[i].right);
 				}
+			}
+			if (repeatedItem == false){
 				numberOfPointItemsAnswered = numberOfPointItemsAnswered + 1;
 				itemsCounterText.text = numberOfPointItemsAnswered + " / " + numberOfPointItems;
+			}
 			if (numberOfPointItemsAnswered >= numberOfPointItems){
 				for (int i = 0; i < pointAnswerList.Count; i ++){
 					if (pointAnswerList[i].right == false){
@@ -759,9 +775,11 @@ public class GameplayScript : MonoBehaviour{
 		if (SessionScript.questionsAskedList.Count == SessionScript.numberOfQuestionsDemanded){
 			nextScene = "menu";
 			toMenuText.SetActive(true);
-			Invoke ("EndScene", 4f);
-			Invoke ("NextScene", 4f);
-			Invoke("StartEndTransition", 2.8f);	// mesma diferença de timming das outras cenas
+			Invoke ("EndScene", 2f);
+			Invoke ("NextScene", 2f);
+			Invoke("StartEndTransition", 0.8f);	// mesma diferença de timming das outras cenas	// OBSOLETO
+			SessionScript.currentSong = SessionScript.song1;
+			SessionScript.fadeOutSong = true;
 		}
 		currentQuestionTime = 0;
 		clockImage.fillAmount = 0;
@@ -1186,6 +1204,8 @@ public class GameplayScript : MonoBehaviour{
         nextScene = "menu";
         Invoke("EndScene", 0.5f);
         Invoke("NextScene", 1f);
+		SessionScript.currentSong = SessionScript.song1;
+		SessionScript.fadeOutSong = true;
     }
 
     // public void SelectResult(){
