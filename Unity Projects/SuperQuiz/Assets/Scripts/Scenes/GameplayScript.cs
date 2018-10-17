@@ -775,6 +775,9 @@ public class GameplayScript : MonoBehaviour{
 		if (SessionScript.questionsAskedList.Count == SessionScript.numberOfQuestionsDemanded){
 			nextScene = "menu";
 			toMenuText.SetActive(true);
+			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionCounter").SetActive(false);
+			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Score").SetActive(false);
+			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock").SetActive(false);
 			Invoke ("EndScene", 2f);
 			Invoke ("NextScene", 2f);
 			Invoke("StartEndTransition", 0.8f);	// mesma diferença de timming das outras cenas	// OBSOLETO

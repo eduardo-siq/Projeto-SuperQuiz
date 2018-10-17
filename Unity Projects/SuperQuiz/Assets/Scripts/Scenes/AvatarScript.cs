@@ -39,6 +39,8 @@ public class AvatarScript : MonoBehaviour{
     int item1MaxIndex;
     int item2MaxIndex;
     int item3MaxIndex;
+	public Sprite item_initial_1;
+	public Sprite item_initial_2;
 
     // Creation process
     public GameObject gender;
@@ -81,6 +83,8 @@ public class AvatarScript : MonoBehaviour{
         complextion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Complexion").gameObject;
         hair = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Hair").gameObject;
         items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
+		item_initial_1 = Resources.Load("Textures/Avatar/avatar_initial_0", typeof(Sprite)) as Sprite;
+		item_initial_2 = Resources.Load("Textures/Avatar/avatar_initial_1", typeof(Sprite)) as Sprite;
         if (SessionScript.customizationStage == 2){
             allStagesCompleted = true;
         }
@@ -424,8 +428,8 @@ public class AvatarScript : MonoBehaviour{
         SessionScript.player.avatar.skin = randomComplexion;
         SessionScript.player.avatar.hair = randomHair;
         item0Texture.sprite = SessionScript.avatarBlank;
-        item1Texture.sprite = SessionScript.avatarBlank;
-        item2Texture.sprite = SessionScript.avatarBlank;
+        item1Texture.sprite = item_initial_1;
+        item2Texture.sprite = item_initial_2;
         item3Texture.sprite = SessionScript.avatarBlank;
         item0TextureB.sprite = SessionScript.avatarBlank;
         item1TextureB.sprite = SessionScript.avatarBlank;

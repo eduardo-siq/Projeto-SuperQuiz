@@ -130,7 +130,7 @@ d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 e765c60703e1d2470ee601d503ef86b2 Assembly-CSharp.dll:.AnimErrorScript
-959e8219c4c3b444b135ba55aca7c946 Assembly-CSharp.dll:.AvatarScript
+15c19d2854e6ea8495422ecfe925af69 Assembly-CSharp.dll:.AvatarScript
 629e84bd13b5c32d10eb6197d6cdfed5 Assembly-CSharp.dll:.AnimSuccessScript
 7505d560bde54c8fa387b36b8c318bcc Assembly-CSharp.dll:.GameplayCrosswordScript
 32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
