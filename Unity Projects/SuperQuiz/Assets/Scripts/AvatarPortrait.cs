@@ -20,6 +20,11 @@ public class AvatarPortrait : MonoBehaviour{
 	
 	void Start(){
 		portrait = this.gameObject;
+		GetImageComponents();
+		Portrait();
+	}
+	
+	void GetImageComponents(){
 		baseTexture = portrait.transform.Find("Base").GetComponent<Image>();
 		hairTexture = portrait.transform.Find("Hair").GetComponent<Image>();
 		item0Texture = portrait.transform.Find("Item0").GetComponent<Image>();
@@ -30,10 +35,13 @@ public class AvatarPortrait : MonoBehaviour{
 		item1TextureB = portrait.transform.Find("Item1B").GetComponent<Image>();
 		item2TextureB = portrait.transform.Find("Item2B").GetComponent<Image>();
 		item3TextureB = portrait.transform.Find("Item3B").GetComponent<Image>();
-		Portrait();
 	}
 	
 	void Portrait(){
+		if (portrait == null){
+			portrait = this.gameObject;
+			GetImageComponents();
+		}
 		if (thisAvatar == null){
 			print ("AVATAR NULL");
 			thisAvatar = new Avatar();

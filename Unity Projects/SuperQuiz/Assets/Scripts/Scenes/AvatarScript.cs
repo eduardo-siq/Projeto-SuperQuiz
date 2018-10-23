@@ -49,6 +49,9 @@ public class AvatarScript : MonoBehaviour{
     public GameObject items;
     public bool allStagesCompleted; // MOVE TO SESSION SCRIPT
                                     // public int stage = 0;   // 0: gender, 1: complexion & hair, 2: itens	// OBSOLETE
+									
+	// Photography
+	public GameObject photographyWindow;
 
     void Start(){
         StartCoroutine(StartScene());
@@ -85,6 +88,9 @@ public class AvatarScript : MonoBehaviour{
         items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
 		item_initial_1 = Resources.Load("Textures/Avatar/avatar_initial_0", typeof(Sprite)) as Sprite;
 		item_initial_2 = Resources.Load("Textures/Avatar/avatar_initial_1", typeof(Sprite)) as Sprite;
+		// Photography
+		photographyWindow = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PhotographyWindow").gameObject;
+		photographyWindow.SetActive(false);
         if (SessionScript.customizationStage == 2){
             allStagesCompleted = true;
         }
@@ -481,6 +487,29 @@ public class AvatarScript : MonoBehaviour{
         if (SessionScript.customizationStage < 0) SessionScript.customizationStage = 0;
         CustomizationStage();
     }
+	
+	public void SelectPhotography(){
+		SessionScript.ButtonAudioLow(SessionScript.neutral);
+		Invoke("OpenPhotographyWindow", 0.5f);
+		Invoke("TakePhotography", 0.55f);
+		Invoke("ClosePhotographyWindow", 1f);
+	}
+	
+	void OpenPhotographyWindow(){
+		SessionScript.ButtonAudioLoud(SessionScript.photography);
+		photographyWindow.SetActive(true);
+		photographyWindow.transform.Find("Portrait").GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.player.avatar);
+	}
+	
+	void TakePhotography(){
+		// script for photography here
+	}
+	
+	void ClosePhotographyWindow(){
+		photographyWindow.SetActive(false);
+	}
+	
+	
 
     public void SelectMenu(){
         SessionScript.ButtonAudio(SessionScript.neutral);

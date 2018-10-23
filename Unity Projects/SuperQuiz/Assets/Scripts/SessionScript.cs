@@ -86,6 +86,7 @@ public class SessionScript : MonoBehaviour{
 	public static AudioClip success;
 	public static AudioClip error;
 	public static AudioClip currentSong;
+	public static AudioClip photography;
 	public static bool soundOn;
 	public static float soundVolume;
 	public static bool fadeOutSong;
@@ -203,6 +204,7 @@ public class SessionScript : MonoBehaviour{
         song2 = Resources.Load("Sound/trilhaSuperQuiz2", typeof(AudioClip)) as AudioClip;
 		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
 		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
+		photography = Resources.Load("Sound/photography_sound", typeof(AudioClip)) as AudioClip;
 		if (error == null) print ("ERROR NOT FOUND");
 		if (error == null) print ("ERROR NOT FOUND");
 		if (error == null) print ("ERROR NOT FOUND");
@@ -641,6 +643,10 @@ public class SessionScript : MonoBehaviour{
 
     public static void ButtonAudioLow(AudioClip audio){
         buttonAudio.PlayOneShot(audio, soundVolume * 0.75f);
+    }
+	
+	public static void ButtonAudioLoud(AudioClip audio){
+        buttonAudio.PlayOneShot(audio, soundVolume * 4f);
     }
 	
 	public static void QuestionAudio(AudioClip audio){
