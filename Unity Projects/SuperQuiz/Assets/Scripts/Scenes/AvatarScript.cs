@@ -503,6 +503,7 @@ public class AvatarScript : MonoBehaviour{
 	
 	void TakePhotography(){
 		// script for photography here
+		// EzSS_Editor.ScreenshotButton();
 	}
 	
 	void ClosePhotographyWindow(){

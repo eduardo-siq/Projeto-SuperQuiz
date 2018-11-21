@@ -11,7 +11,7 @@ public class TestButton : MonoBehaviour  {
 		List <bool> sub = new List <bool>();
 		sub.Add(true);
 		for (int i = 0; i < 15; i++){
-			SessionScript.answersList.Add(new Answer(i, true, false, sub, 1f));
+			SessionScript.answersList.Add(new Answer(i, 0, true, false, sub, 1f));
         }
         print ("SessionScript.answersList: " + SessionScript.answersList.Count);
         GameObject.Find("Answers").gameObject.GetComponent<AnswersScript>().AnswersList();

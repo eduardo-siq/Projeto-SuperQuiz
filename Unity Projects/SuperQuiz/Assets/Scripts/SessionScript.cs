@@ -104,6 +104,9 @@ public class SessionScript : MonoBehaviour{
     public static int rightScore;
     public static int timeoutScore;
     public static int wrongScore;
+	
+	// Authentication & Database
+	//AuthenticationScript authentication;
 
     void Awake(){
         bncQFileName = bncQFileNameEditor;
@@ -236,6 +239,10 @@ public class SessionScript : MonoBehaviour{
             print("load built-in questions");
             StartCoroutine(LoadBuiltInQuestions());
         }
+		
+		// Authentication & Database
+		//authentication = gameObject.GetComponent<AuthenticationScript>();	// MAYBE OBSOLETE
+		//AuthenticationScript.StartAuthenticationScript();
 
     }
 
