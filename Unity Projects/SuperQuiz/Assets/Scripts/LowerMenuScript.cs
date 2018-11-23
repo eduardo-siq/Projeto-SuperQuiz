@@ -53,15 +53,13 @@ public class LowerMenuScript : MonoBehaviour
         }
         if (thisScene == "answers") answerScript = GameObject.FindWithTag("SceneManager").GetComponent<AnswersScript>();
         if (thisScene == "avatar") avatarScript = GameObject.FindWithTag("SceneManager").GetComponent<AvatarScript>();
-        if (thisScene == "gameplay")
-        {
+        if (thisScene == "gameplay"){
             gameplayScript = GameObject.FindWithTag("SceneManager").GetComponent<GameplayScript>();
             instance.lockScene = true;
             menuButton.GetComponent<Button>().interactable = false;
             infoButton.GetComponent<Button>().interactable = false;
         }
-        if (thisScene == "menu")
-        {
+        if (thisScene == "menu"){
             menuScript = GameObject.FindWithTag("SceneManager").GetComponent<MenuScript>();
             menuButton.GetComponent<Button>().interactable = false;
         }
@@ -123,10 +121,10 @@ public class LowerMenuScript : MonoBehaviour
 
     public void SelectQuit(){
         SessionScript.ButtonAudio(SessionScript.neutral);
-        quit = true;
+        //quit = true;
         print("QUIT");
-        Invoke("EndScene", 0.25f);  // OBSOLETE?
-        Invoke("Quit", 0.5f);
+        SelectScene ("login");	// Exit button logs out the player and returns to login scene
+		AuthenticationScript.SignOut();
     }
 
     void Quit(){

@@ -267,6 +267,10 @@ public class SessionScript : MonoBehaviour{
 				fadeOutSong = false;
 			}
 		}
+		if (Input.GetKeyDown(KeyCode.Escape)) {	// Exit Game
+			AuthenticationScript.SignOut();
+			Application.Quit();
+		}
         StartCoroutine(UpdateScene());
     }
 
