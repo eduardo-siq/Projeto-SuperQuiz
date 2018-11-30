@@ -88,6 +88,7 @@ f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Simple
+05524b8f659e7bfe5756d1335fec24ba Firebase.Platform.dll:Firebase.Platform.FirebaseMonoBehaviour
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestButton
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 dbc29a6f2739d277c10da432d73adb6d UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
@@ -130,7 +131,8 @@ d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 e765c60703e1d2470ee601d503ef86b2 Assembly-CSharp.dll:.AnimErrorScript
-15c19d2854e6ea8495422ecfe925af69 Assembly-CSharp.dll:.AvatarScript
+ce47473ba25eb58b4f1a9052e110e314 Assembly-CSharp.dll:.AvatarScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AuthenticationScript
 629e84bd13b5c32d10eb6197d6cdfed5 Assembly-CSharp.dll:.AnimSuccessScript
 7505d560bde54c8fa387b36b8c318bcc Assembly-CSharp.dll:.GameplayCrosswordScript
 32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
@@ -171,6 +173,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GlowScript
 a1695fa85674deeb3fba1f12222413b3 Assembly-CSharp.dll:.SessionScript
 1592fec7d569d9d3eb2a33c65187f6af Assembly-CSharp.dll:.LoadScript
-0990e96c065754f89a2d991b9e6bf2d4 Assembly-CSharp.dll:.LoginScript
+89efefc7da574ef228a57c9be8a47871 Assembly-CSharp.dll:.LoginScript
 da040dcf419d94291a11b94c9745e4d3 Assembly-CSharp.dll:.ResultScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Firebase.Sample.Database.DatabaseScript
 41cc74ff68fbeef5112809fae6bff2a1 Assembly-CSharp.dll:.TransitionScript
