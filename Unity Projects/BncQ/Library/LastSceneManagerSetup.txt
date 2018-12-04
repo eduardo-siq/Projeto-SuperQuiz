@@ -1,4 +1,4 @@
 sceneSetups:
-- path: E:/RocketPropelledGames/Projeto - Treinamento/Projeto-SuperQuiz/Unity Projects/SuperQuiz/Assets/load.unity
+- path: Assets/Login.unity
   isLoaded: 1
   isActive: 1

@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
 using UnityEngine.SceneManagement;
+
 [System.Serializable]
 public class TextEditorClass : MonoBehaviour {
 

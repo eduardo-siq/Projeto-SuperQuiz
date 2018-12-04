@@ -30,9 +30,9 @@ public class DatabaseScript : MonoBehaviour {
 		if (dice == 4){ testString = "Quiet an experience to live in fear, isn't it? That's what it is to be a slave."; testString2 = "Blade Runner";}
 		print ("DatabaseScript: " + testString);
 		
-		dbRoot = FirebaseDatabase.DefaultInstance.GetReference("");
-		dbTest1 = dbRoot.Child("test1");
-		dbTest2 = dbRoot.Child("test2");
+		// dbRoot = FirebaseDatabase.DefaultInstance.GetReference("");	// set by timer in Update
+		// dbTest1 = dbRoot.Child("test1");
+		// dbTest2 = dbRoot.Child("test2");
 		
 		// Add event listeners to references
 		
@@ -47,11 +47,25 @@ public class DatabaseScript : MonoBehaviour {
 		if (!setValues){
 			timer = timer + Time.deltaTime;
 			if (timer > 1){
+				dbRoot = FirebaseDatabase.DefaultInstance.GetReference("");
+				dbTest1 = dbRoot.Child("test1");
+				dbTest2 = dbRoot.Child("test2");
 				dbTest1.SetValueAsync(testString);
 				dbTest2.SetValueAsync(testString2);
 				setValues = true;
+				TestSetValue();
 			}
 		}
+	}
+	
+	void TestSetValue(){
+		int dice = UnityEngine.Random.Range(0,4);
+		print ("TEST SET VALUE: dice = " + dice);
+		dbRoot.Child("movie0" + dice.ToString() + "/phrase").SetValueAsync(testString);
+		dbRoot.Child("movie0" + dice.ToString() + "/title").SetValueAsync(testString2);
+		
+		dbRoot.Child("movie010/phrase").SetValueAsync(testString);
+		dbRoot.Child("movie010/title").SetValueAsync(testString2);
 	}
 	
 

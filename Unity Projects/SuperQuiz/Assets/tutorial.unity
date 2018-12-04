@@ -962,7 +962,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 225, y: 400}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1237,7 +1237,7 @@ RectTransform:
   - {fileID: 597733441}
   - {fileID: 506897294}
   m_Father: {fileID: 1881081996}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2155,8 +2155,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 490379733}
-  - {fileID: 32570965}
   - {fileID: 730309932}
+  - {fileID: 32570965}
   - {fileID: 1670375166}
   m_Father: {fileID: 1924372246}
   m_RootOrder: 0

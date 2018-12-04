@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class FadeOut : MonoBehaviour {
 
 	GameObject unity;
@@ -19,7 +20,7 @@ public class FadeOut : MonoBehaviour {
 	}
 	
 	void Update () {
-		f = f + Time.deltaTime/3;
+		f = f + Time.deltaTime/1.5f;
 		riBackground.color = new Color (1,1,1,1-f);
 		riUnity.color = new Color (1,1,1,1-f);
 		if (f >= 1) Destroy(this.gameObject);
