@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestionPreLoad
-{
+public class QuestionPreLoad{
 
     public int index;
     public int questionType;
@@ -17,8 +16,7 @@ public class QuestionPreLoad
     public List<bool> userGroup;
     public string subject;
 
-    public QuestionPreLoad()
-    {
+    public QuestionPreLoad(){
         index = 0;
         questionType = 0;
         text = "";
@@ -32,8 +30,7 @@ public class QuestionPreLoad
         subject = "";
     }
 
-    public QuestionPreLoad(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, string newUserGroup, string newSubject)
-    {
+    public QuestionPreLoad(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, string newUserGroup, string newSubject)    {
         index = newIndex;
         questionType = newQuestionType;
         text = newT;
@@ -45,21 +42,16 @@ public class QuestionPreLoad
         userGroupString = newUserGroup;
         subject = newSubject;
         userGroup = new List<bool>();
-        if (userGroupString != null && userGroupString != "X")
-        {
-            if (userGroupString != "")
-            {
+        if (userGroupString != null && userGroupString != "X"){
+            if (userGroupString != ""){
                 string[] questionUserGroups;
                 string[] space = new string[] { " " };
                 questionUserGroups = userGroupString.Split(space, System.StringSplitOptions.None);
-                for (int i = 0; i < questionUserGroups.Length; i++)
-                {
-                    if (questionUserGroups[i] == "T")
-                    {
+                for (int i = 0; i < questionUserGroups.Length; i++){
+                    if (questionUserGroups[i] == "T"){
                         userGroup.Add(true);
                     }
-                    if (questionUserGroups[i] == "F")
-                    {
+                    if (questionUserGroups[i] == "F"){
                         userGroup.Add(false);
                     }
                 }

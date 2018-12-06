@@ -32,10 +32,8 @@ public class SessionScript : MonoBehaviour{
     public static bool singleRun = true;
 
     // Point-and-Click
-    public static Texture2D pointAndClickSource;
-    public static Sprite spritePoint;
-    public static List<Detail> detail;
-    public static bool useQuestionPointOffset = true;
+	public static List<PointAndClickQuestion> pointAndClickQuestion;
+    public static bool useQuestionPointOffset = true;	// corrects pixel coordinates
 	
 	// Crossword
 
@@ -145,7 +143,10 @@ public class SessionScript : MonoBehaviour{
         answersList = new List<Answer>();
         subjectName = new List<string>();
         userGroupName = new List<string>();
-
+		
+		// Point-and-Click
+		pointAndClickQuestion = new List<PointAndClickQuestion>();
+/*
         pointAndClickSource = Resources.Load("Textures/PointAndClick/pointAndClickSource") as Texture2D;
         if (pointAndClickSource == null){
             print("missing texture map");
@@ -160,7 +161,7 @@ public class SessionScript : MonoBehaviour{
         // print("detail[0].colorCode " + detail[0].colorCode);
         // print("detail[1].colorCode " + detail[1].colorCode);
         // print("detail[2].colorCode " + detail[2].colorCode);
-
+*/
         // Avatar
         avatarItem0 = new List<Sprite>();
         avatarItem1 = new List<Sprite>();
@@ -340,7 +341,11 @@ public class SessionScript : MonoBehaviour{
 			if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
 				print("get question " + i + "(i = " + i + ")");
 				questionList.Add(new Question(questionListPreLoad[i]));
-				if (questionList[i].questionType == 4){
+				if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
+					pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
+					print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
+				}
+				if (questionList[i].questionType == 4){	// Question with image
 					print("loading texture");
 					texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
 					if (texture != null){
@@ -351,12 +356,6 @@ public class SessionScript : MonoBehaviour{
 						questionList[i].questionImage = missingTexture;
 						print("image not found");
 					}
-				}
-				if (questionList[i].questionType == 2){
-					detail.Add (new Detail(questionList[i].answer1, questionList[i].answer2, questionList[i].answer3));
-				}
-				if (questionList[i].questionType == 5){
-					// detail.Add (new Detail(questionList[i].answer1, questionList[i].answer2, questionList[i].answer3));
 				}
 			}
 			if (questionListPreLoad[i].userGroupString != "X"){
@@ -401,161 +400,123 @@ public class SessionScript : MonoBehaviour{
         int i = 0;  // item index
         do{   // Item type 1: hat (?)
             Sprite texture = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString(), typeof(Sprite)) as Sprite;    //avatar_type_tier_index
-            if (texture != null)
-            {
+            if (texture != null){
                 Sprite textureB = Resources.Load("Textures/Avatar/avatar_" + t.ToString() + "_" + r.ToString() + "_" + i.ToString() + "b", typeof(Sprite)) as Sprite; //avatar_type_tier_index
-                if (textureB == null)
-                {
+                if (textureB == null){
                     textureB = avatarBlank;
                 }
-                if (t == 0)
-                {
+                if (t == 0){
                     avatarItem0.Add(texture);
                     avatarItem0b.Add(textureB);
                     print("loaded avatar textures! #: " + avatarItem0.Count + "/ " + t + " " + r + " " + i);
                 }
-                if (t == 1)
-                {
+                if (t == 1){
                     avatarItem1.Add(texture);
                     avatarItem1b.Add(textureB);
                     print("loaded avatar textures! #: " + avatarItem1.Count + "/ " + t + " " + r + " " + i);
                 }
-                if (t == 2)
-                {
+                if (t == 2){
                     avatarItem2.Add(texture);
                     avatarItem2b.Add(textureB);
                     print("loaded avatar textures! #: " + avatarItem2.Count + "/ " + t + " " + r + " " + i);
                 }
-                if (t == 3)
-                {
+                if (t == 3){
                     avatarItem3.Add(texture);
                     avatarItem3b.Add(textureB);
                     print("loaded avatar textures! #: " + avatarItem3.Count + "/ " + t + " " + r + " " + i);
                 }
                 i = i + 1;
             }
-            else
-            {
+            else{
                 ItemTierIndex(i, r, t);
                 i = 0;
                 r = r + 1;
                 print("change tier: " + r);
-                if (r > 2)
-                {
+                if (r > 2){
                     i = 0;
                     r = 0;
                     t = t + 1;
                     print("change type: " + t);
                 }
-                if (t > 3)
-                {
+                if (t > 3){
                     loadItems = false;
                 }
             }
         } while (loadItems);
         i = 0;
-        do
-        {
+        do{
             Sprite texture = Resources.Load("Textures/Avatar/avatar_hf_" + i.ToString(), typeof(Sprite)) as Sprite;
-            if (texture != null)
-            {
+            if (texture != null){
                 avatarHairFem.Add(texture);
-            }
-            else
-            {
+            }else{
                 loadHairFem = false;
             }
             i = i + 1;
         } while (loadHairFem);
         i = 0;
-        do
-        {
+        do{
             Sprite texture = Resources.Load("Textures/Avatar/avatar_hm_" + i.ToString(), typeof(Sprite)) as Sprite;
-            if (texture != null)
-            {
+            if (texture != null){
                 avatarHairMasc.Add(texture);
-            }
-            else
-            {
+            }else{
                 loadHairMasc = false;
             }
             i = i + 1;
         } while (loadHairMasc);
         i = 0;
-        do
-        {
+        do{
             Sprite texture = Resources.Load("Textures/Avatar/avatar_base_" + i.ToString(), typeof(Sprite)) as Sprite;
-            if (texture != null)
-            {
+            if (texture != null){
                 avatarBase.Add(texture);
-            }
-            else
-            {
+            }else{
                 loadBase = false;
             }
             i = i + 1;
         } while (loadBase);
     }
 
-    void ItemTierIndex(int i, int r, int t)
-    {
-        if (t == 0)
-        {
-            if (r == 0)
-            {
+    void ItemTierIndex(int i, int r, int t){
+        if (t == 0){
+            if (r == 0){
                 item0TierIndex.x = i;
             }
-            if (r == 1)
-            {
+            if (r == 1){
                 item0TierIndex.y = i + item0TierIndex.x;
             }
-            if (r == 2)
-            {
+            if (r == 2){
                 item0TierIndex.z = i + item0TierIndex.y;
             }
         }
-        if (t == 1)
-        {
-            if (r == 0)
-            {
+        if (t == 1){
+            if (r == 0){
                 item1TierIndex.x = i;
             }
-            if (r == 1)
-            {
+            if (r == 1){
                 item1TierIndex.y = i + item1TierIndex.x;
             }
-            if (r == 2)
-            {
+            if (r == 2){
                 item1TierIndex.z = i + item1TierIndex.y;
             }
         }
-        if (t == 2)
-        {
-            if (r == 0)
-            {
+        if (t == 2){
+            if (r == 0){
                 item2TierIndex.x = i;
             }
-            if (r == 1)
-            {
+            if (r == 1){
                 item2TierIndex.y = i + item2TierIndex.x;
             }
-            if (r == 2)
-            {
+            if (r == 2){
                 item2TierIndex.z = i + item2TierIndex.y;
             }
         }
-        if (t == 3)
-        {
-            if (r == 0)
-            {
+        if (t == 3){
+            if (r == 0){
                 item3TierIndex.x = i;
             }
-            if (r == 1)
-            {
+            if (r == 1){
                 item3TierIndex.y = i + item3TierIndex.x;
             }
-            if (r == 2)
-            {
+            if (r == 2){
                 item3TierIndex.z = i + item3TierIndex.y;
             }
         }

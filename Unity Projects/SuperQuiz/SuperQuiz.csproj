@@ -385,11 +385,10 @@
     <Compile Include="Assets\Scripts\CrosswordClass.cs" />
     <Compile Include="Assets\Scripts\CrosswordLine.cs" />
     <Compile Include="Assets\Scripts\DatabaseScript.cs" />
-    <Compile Include="Assets\Scripts\DetailClass.cs" />
     <Compile Include="Assets\Scripts\GlowScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\PointAnswer.cs" />
+    <Compile Include="Assets\Scripts\PointAndClickQuestion.cs" />
     <Compile Include="Assets\Scripts\PopUpScript.cs" />
     <Compile Include="Assets\Scripts\QuestionClass.cs" />
     <Compile Include="Assets\Scripts\QuestionClassPreLoad.cs" />

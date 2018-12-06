@@ -52,13 +52,15 @@ public class GameplayScript : MonoBehaviour{
     public float currentQuestionTime;
     public float currentQuestionTimeSpent;
     public bool answerPermitted;
-    public Vector3 questionPointAnswer;
+	public int currentPointQuestionIndex;
+	public List <int> pointQuestionAnswerIndex;
+	public int clickedItemIndex;
     public int clickX;
     public int clickY;
+	public Vector3 clickedColor; // R G B
     public bool showAnswer;
-	public List<PointAnswer> pointAnswerList;
-	public int numberOfPointItems;
-	public int numberOfPointItemsAnswered;
+	// public int numberOfPointItems;
+	// public int numberOfPointItemsAnswered;
 
     void Start(){
         StartCoroutine(StartScene());
@@ -130,20 +132,14 @@ public class GameplayScript : MonoBehaviour{
         toMenuText.SetActive(false);
 		itemsCounter.SetActive(false);
         showAnswer = false;
-		pointAnswerList = new List <PointAnswer>();
-		numberOfPointItems = 0;
-		numberOfPointItemsAnswered = 0;
-
-        //Point-and-click
-        questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.spritePoint;
-        questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.spritePoint;
+       
         if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
             float x = 256f / Screen.width;
             float y = 512f / Screen.height;
             questionPointOffset = new Vector2(x, y);
         }
         else{
-            questionPointOffset = new Vector2(0, 0);
+            questionPointOffset = new Vector2(1, 1);
         }
 		
 		// Soundtrack
@@ -154,38 +150,38 @@ public class GameplayScript : MonoBehaviour{
         Invoke("StartNewQuestion", 0.1f);
     }
 
-    void Update(){       // CHANGED ANSER QUESTION METHOD -> UPDATE TIMEOUT METHOD
-            // if (endScene){
-            // gameplayRect.anchoredPosition = new Vector2 (gameplayRect.anchoredPosition.x, gameplayRect.anchoredPosition.y - Time.deltaTime * 1200);
-            // return;
-            // }	
-            // Question Timer
-            //int index = currentQuestion.index;
-        if (answerPermitted){
-            currentQuestionTime = currentQuestionTime + Time.deltaTime;
-            clockImage.fillAmount = currentQuestionTime / SessionScript.questionTime;
-            clockText.text = (SessionScript.questionTime - currentQuestionTime).ToString("0.");
-            if (currentQuestionTime > SessionScript.questionTime){
-                AnswerTimeout();
-                answerPermitted = false;
-                if (currentQuestion.questionType == 0){
-                    answerPermitted = false;
-                    SessionScript.QuestionAudio(SessionScript.error);
-                    //SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, currentQuestionTimeSpent));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
-                    //Invoke ("StartNewQuestion", 1f);
-                    //ChooseAnswer(-1);
-                }
-                if (currentQuestion.questionType == 1){
-                    //AcceptAnswer();
-                }
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Return)){
-            if (currentQuestion.questionType == 1 && writtenAnswer.text != ""){   // Fill-the-blank timeout
-                //AcceptAnswer();
-            }
-        }
-    }
+	void Update(){       // CHANGED ANSER QUESTION METHOD -> UPDATE TIMEOUT METHOD
+		// if (endScene){
+		// gameplayRect.anchoredPosition = new Vector2 (gameplayRect.anchoredPosition.x, gameplayRect.anchoredPosition.y - Time.deltaTime * 1200);
+		// return;
+		// }	
+		// Question Timer
+		//int index = currentQuestion.index;
+		if (answerPermitted){
+				currentQuestionTime = currentQuestionTime + Time.deltaTime;
+				clockImage.fillAmount = currentQuestionTime / SessionScript.questionTime;
+				clockText.text = (SessionScript.questionTime - currentQuestionTime).ToString("0.");
+			if (currentQuestionTime > SessionScript.questionTime){
+				AnswerTimeout();
+				answerPermitted = false;
+				if (currentQuestion.questionType == 0){
+					answerPermitted = false;
+					SessionScript.QuestionAudio(SessionScript.error);
+					//SessionScript.answersList.Add(new Answer(index, false, SessionScript.questionList[index].subject, currentQuestionTimeSpent));	// CHANGE THIS PART TO "AcceptMultipleAnswer(wrong)"
+					//Invoke ("StartNewQuestion", 1f);
+					//ChooseAnswer(-1);
+				}
+				if (currentQuestion.questionType == 1){
+					//AcceptAnswer();
+				}
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.Return)){
+			if (currentQuestion.questionType == 1 && writtenAnswer.text != ""){   // Fill-the-blank timeout
+				//AcceptAnswer();
+			}
+		}
+	}
 
 	public void StartNewQuestion(){
 		lowerMenu.SetActive(false);
@@ -199,10 +195,8 @@ public class GameplayScript : MonoBehaviour{
 			clear = true;
 			currentQuestion = SessionScript.questionList[Random.Range(0, SessionScript.questionList.Count)];
 			if (SessionScript.questionsAskedList.Count != 0){
-				for (int y = 0; y < SessionScript.questionsAskedList.Count; y++)
-				{
-					if (currentQuestion.index == SessionScript.questionsAskedList[y])
-					{
+				for (int y = 0; y < SessionScript.questionsAskedList.Count; y++){
+					if (currentQuestion.index == SessionScript.questionsAskedList[y]){
 						clear = false;
 					}
 				}
@@ -247,11 +241,17 @@ public class GameplayScript : MonoBehaviour{
 				questionPointConfirm.SetActive(false);
 				itemsCounter.SetActive(false);
 				questionPointText.transform.Find("Question/Text").GetComponent<Text>().text = currentQuestion.text;
-				float red = float.Parse(currentQuestion.answer1);
-				float green = float.Parse(currentQuestion.answer2);
-				float blue = float.Parse(currentQuestion.answer3);
-				questionPointAnswer = new Vector3(red, green, blue);
-				print("point-and-click");
+				for (int y = 0; y < SessionScript.pointAndClickQuestion.Count; y ++){
+					if (SessionScript.pointAndClickQuestion[y].index == currentQuestion.index){
+						currentPointQuestionIndex = y;
+						print("currentPointQuestionIndex = " +  y);
+						break;
+					}
+				} 
+				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				print("StartNewQuestion() point-and-click");
+				print ("currentPointQuestionIndex: " + currentPointQuestionIndex);
 				break;
 			case 3: // Long
 				questionImage.SetActive(false);
@@ -347,7 +347,6 @@ public class GameplayScript : MonoBehaviour{
 				StartCoroutine("DoubleCheckQuestionImage");
 				break;
 			case 5:	// Point-and-click multiple items
-				pointAnswerList = new List <PointAnswer>();
 				questionImage.SetActive(false);
 				questionWrite.SetActive(false);
 				questionPoint.SetActive(true);
@@ -357,9 +356,21 @@ public class GameplayScript : MonoBehaviour{
 				questionPointButton.SetActive(false);
 				questionPointConfirm.SetActive(false);
 				itemsCounter.SetActive(true);
+				pointQuestionAnswerIndex = new List<int>();
 				questionPointText.transform.Find("Question/Text").GetComponent<Text>().text = currentQuestion.text;
-				GetPointAnswerList();
-				print("point-and-click multiple items");
+				for (int y = 0; y < SessionScript.pointAndClickQuestion.Count; y ++){
+					print ("loop: " + y);
+					if (SessionScript.pointAndClickQuestion[y].index == currentQuestion.index){
+						currentPointQuestionIndex = y;
+						print("currentPointQuestionIndex = " +  y);
+						break;
+					}
+				}
+				itemsCounterText.text = 0 + " / " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count;
+				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				print("StartNewQuestion() point-and-click multiple items");
+				print ("currentPointQuestionIndex : " + currentPointQuestionIndex);
 				break;
 			default:    // Multiple answer
 				questionMultiple.SetActive(true);
@@ -410,6 +421,7 @@ public class GameplayScript : MonoBehaviour{
 	}
 
     public void AnswerQuestion(int answer){
+		print ("AnswerQuestion()");
         if (!answerPermitted){
             return;
         }
@@ -437,27 +449,25 @@ public class GameplayScript : MonoBehaviour{
                 answerPermitted = false;
                 Invoke("EndQuestion", 2.25f);
                 break;
-            case 2:     // Point-and-click
-                Vector3 click = Input.mousePosition;
-                click.x = click.x * questionPointOffset.x;
-                click.y = click.y * questionPointOffset.y;
-                clickX = Mathf.RoundToInt(click.x);
-                clickY = Mathf.RoundToInt(click.y);
-                bool black = false;
-                Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-                Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
-                if (colorInput.x >= -0.05f && colorInput.x < 0.05f){
-                    if (colorInput.y >= -0.05f && colorInput.y < 0.05f){
-                        if (colorInput.z >= -0.05f && colorInput.z < 0.05f){
-                            black = true;
-                            SessionScript.ButtonAudio(SessionScript.subtle);
-                        }
-                    }
-                }
+			case 2:     // Point-and-click
+				Vector3 mouseInput = Input.mousePosition;
+				clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
+				clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+				bool black = false;
+				Color pixelColor = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].source.GetPixel(clickX, clickY);
+				clickedColor = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
+				if (clickedColor.x <= 0.05f){
+					if (clickedColor.y <= 0.05f){
+						if (clickedColor.z <= 0.05f){
+							black = true;
+							SessionScript.ButtonAudioLow(SessionScript.subtle);
+						}
+					}
+				}
                 if (!black){
                     SessionScript.ButtonAudio(SessionScript.neutral);
                     Invoke("ToPointConfirm", 0.25f);
-                    //sound?
+                    SessionScript.ButtonAudio(SessionScript.subtle);
                 }
                 break;
             case 3:     // Long
@@ -499,34 +509,56 @@ public class GameplayScript : MonoBehaviour{
                 Invoke("EndQuestion", 2.25f);
                 break;
 			case  5:
-				if (numberOfPointItemsAnswered < numberOfPointItems){
-					answerPermitted = true;
-					Vector3 clickB = Input.mousePosition;
-					clickB.x = clickB.x * questionPointOffset.x;
-					clickB.y = clickB.y * questionPointOffset.y;
-					clickX = Mathf.RoundToInt(clickB.x);
-					clickY = Mathf.RoundToInt(clickB.y);
-					bool blackB = false;
-					Color pixelColorB = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-					Vector3 colorInputB = new Vector3(pixelColorB.r, pixelColorB.g, pixelColorB.b);
-					if (colorInputB.x >= -0.05f && colorInputB.x < 0.05f){	// Check if player clicked black
-						if (colorInputB.y >= -0.05f && colorInputB.y < 0.05f){
-							if (colorInputB.z >= -0.05f && colorInputB.z < 0.05f){
-								blackB = true;
-								SessionScript.ButtonAudio(SessionScript.subtle);
+				if (pointQuestionAnswerIndex.Count < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count){
+					clickedItemIndex = -1;	// resets last clicked item
+					mouseInput = Input.mousePosition;
+					clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
+					clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+					black = false;
+					pixelColor = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].source.GetPixel(clickX, clickY);
+					clickedColor = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
+					if (clickedColor.x <= 0.05f){
+						if (clickedColor.y <= 0.05f){
+							if (clickedColor.z <= 0.05f){
+								black = true;
+								SessionScript.ButtonAudioLow(SessionScript.subtle);
 							}
 						}
 					}
-					// CHECK IF REPEATED ITEM HERE!!
-					if (!blackB){
-						SessionScript.ButtonAudio(SessionScript.neutral);
-						Invoke("ToPointConfirm", 0.25f);
-						//sound?
+					if (!black){
+						for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor.Count; i++){
+							print ("itemColor[" + i + "]: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i] + "/ clickedColor: " + clickedColor);
+							string clickedColorString = clickedColor.ToString();
+							string itemColorString = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].ToString();
+							if (clickedColorString == itemColorString){
+								clickedItemIndex = i;	// compares colors to find which item was clicked
+								print ("Found item clicked: " + i + "(clickedItemIndex = " + clickedItemIndex + ")");
+							}
+							/*if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].x == clickedColor.x){
+								if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].y == clickedColor.y){
+									if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].z == clickedColor.z){
+										clickedItemIndex = i;	// compares colors to find which item was clicked
+										print ("Found item clicked: " + i + "(clickedItemIndex = " + clickedItemIndex + ")");
+									}
+								}
+							}*/
+						}
+						bool repeatedItem = false;
+						if (pointQuestionAnswerIndex.Count > 0){
+							for (int i = 0; i < pointQuestionAnswerIndex.Count; i++){
+								if (clickedItemIndex == i){
+									print ("QuestionPointCheckPixel() repeatedItem = true");
+									SessionScript.ButtonAudioLow(SessionScript.subtle);
+									repeatedItem = true;
+									break;
+								}
+							}
+						}
+						if (!repeatedItem){
+							SessionScript.ButtonAudio(SessionScript.subtle);
+							Invoke("ToPointConfirm", 0.25f);
+						}
 					}
-				}
-				if (numberOfPointItemsAnswered >= numberOfPointItems){
-					answerPermitted = false;
-					Invoke("EndQuestion", 2.25f);
 				}
 				break;
             default:    // Multiple answer
@@ -634,81 +666,77 @@ public class GameplayScript : MonoBehaviour{
 	}
 
 	public void QuestionPointCheckPixel(){
-		bool wrong = false;
+		print ("QuestionPointCheckPixel()");
 		if (currentQuestion.questionType == 2){
-			Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-			Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
-			print("pixelColor " + colorInput + "/ answer: " + questionPointAnswer);
-			if (questionPointAnswer.x <= colorInput.x - 0.05f || colorInput.x + 0.05f < questionPointAnswer.x) { wrong = true; }
-			if (questionPointAnswer.y <= colorInput.y - 0.05f || colorInput.y + 0.05f < questionPointAnswer.y) { wrong = true; }
-			if (questionPointAnswer.z <= colorInput.z - 0.05f || colorInput.z + 0.05f < questionPointAnswer.z) { wrong = true; }
-			if (wrong){
-				print("wrong");
+			bool rightItem = false;
+			for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor.Count; i++){
+				if (clickedColor == SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i]){
+					rightItem = true;
+					break;
+				}
+			}
+			print("QuestionPointCheckPixel() pixelColor " + clickedColor.ToString() + "/ answer: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[0]);
+		/*	if (questionPointAnswer.x <= colorInput.x - 0.1f || colorInput.x + 0.1f < questionPointAnswer.x) { colorInput.x = questionPointAnswer.x; wrong = true; }
+			if (questionPointAnswer.y <= colorInput.y - 0.1f || colorInput.y + 0.1f < questionPointAnswer.y) { colorInput.y = questionPointAnswer.y; wrong = true; }
+			if (questionPointAnswer.z <= colorInput.z - 0.1f || colorInput.z + 0.1f < questionPointAnswer.z) { colorInput.z = questionPointAnswer.z; wrong = true; }
+			print ("QuestionPointCheckPixel() colorInput (corrected): " + colorInput);	*/
+			if (rightItem){
+				print("QuestionPointCheckPixel() right");
+				successAnimation.PlayAnimation();
+				SessionScript.QuestionAudio(SessionScript.success);
+				SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;
+				SessionScript.answersList.Add(new Answer(currentQuestion.index, 0, true, false, currentQuestion.subject, currentQuestionTimeSpent));
+			}
+			if (!rightItem){
+				print("QuestionPointCheckPixel() wrong");
 				errorAnimation.PlayAnimation();
 				SessionScript.QuestionAudio(SessionScript.error);
 				SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
 				SessionScript.answersList.Add(new Answer(currentQuestion.index, 1, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 				showAnswer = true;
 			}
-			if (!wrong){
-				print("right");
-				successAnimation.PlayAnimation();
-				SessionScript.QuestionAudio(SessionScript.success);
-				SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;
-				SessionScript.answersList.Add(new Answer(currentQuestion.index, 0, true, false, currentQuestion.subject, currentQuestionTimeSpent));
-			}
 			answerPermitted = false;
 			Invoke("EndQuestion", 2.25f);
 		}
 		if (currentQuestion.questionType == 5){
-			bool repeatedItem = false;
-			Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-			Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
-			for (int i = 0; i < pointAnswerList.Count; i ++){
-				print ("pointAnswerList[" + i + "] " + pointAnswerList[i].red + " / " + pointAnswerList[i].green + " / " + pointAnswerList[i].blue + " | colorInput: " + colorInput);
-				if (pointAnswerList[i].red == colorInput.x && pointAnswerList[i].green == colorInput.y && pointAnswerList[i].blue == colorInput.z){
-					if (pointAnswerList[i].pointed == true){
-						print ("REPEATED ITEM");
-						repeatedItem = true;
+			pointQuestionAnswerIndex.Add(clickedItemIndex);
+			print ((pointQuestionAnswerIndex.Count -1).ToString() + "º answer given: " +  clickedItemIndex);
+			itemsCounterText.text = pointQuestionAnswerIndex.Count + " / " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count;
+			if (pointQuestionAnswerIndex.Count >= SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count){	// Compares list of given answers to list of correct answers
+				bool rightAllItems = true;
+				for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count; i++){
+					bool wrongItem = true;
+					for (int y = 0; y < pointQuestionAnswerIndex.Count; y ++){
+						if (pointQuestionAnswerIndex[y] == SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex[i]){	// Assumes answer is wrong, if it is still wrong at the end of any loop, breaks and ends question
+							wrongItem = false;
+							print ("answer " + y + "/" + i + " is right!");
+							break;
+						} else {print ("answer " + y + "/" + i + " is wrong! given " + pointQuestionAnswerIndex[y] + "correct is " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex[i]);}
 					}
-					if (pointAnswerList[i].pointed == false){
-						pointAnswerList[i].pointed = true;
-						pointAnswerList[i].right = true;
-						print ("RIGHT pointAnswerList[" + i + "].right: " + pointAnswerList[i].right);
-					}
-				} else {
-					print ("WRONG pointAnswerList[" + i + "].right: " + pointAnswerList[i].right);
-				}
-			}
-			if (repeatedItem == false){
-				numberOfPointItemsAnswered = numberOfPointItemsAnswered + 1;
-				itemsCounterText.text = numberOfPointItemsAnswered + " / " + numberOfPointItems;
-			}
-			if (numberOfPointItemsAnswered >= numberOfPointItems){
-				for (int i = 0; i < pointAnswerList.Count; i ++){
-					if (pointAnswerList[i].right == false){
-						print (pointAnswerList[i].text + " = " + pointAnswerList[i].right);
-						wrong = true;
+					if (wrongItem){
+						rightAllItems = false;
+						print ("wrong, loop: " + i);
+						break;
 					}
 				}
-				if (wrong){
-					print("wrong");
+				if (rightAllItems){
+					print("QuestionPointCheckPixel() rightAllItems = true");
+					successAnimation.PlayAnimation();
+					SessionScript.QuestionAudio(SessionScript.success);
+					SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;
+					SessionScript.answersList.Add(new Answer(currentQuestion.index, 0, true, false, currentQuestion.subject, currentQuestionTimeSpent));	
+				}
+				if (!rightAllItems){
+					print("QuestionPointCheckPixel() rightAllItems = false");
 					errorAnimation.PlayAnimation();
 					SessionScript.QuestionAudio(SessionScript.error);
 					SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
 					SessionScript.answersList.Add(new Answer(currentQuestion.index, 1, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					showAnswer = true;
 				}
-				if (!wrong){
-					print("right");
-					successAnimation.PlayAnimation();
-					SessionScript.QuestionAudio(SessionScript.success);
-					SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;
-					SessionScript.answersList.Add(new Answer(currentQuestion.index, 0, true, false, currentQuestion.subject, currentQuestionTimeSpent));
-				}
 				answerPermitted = false;
 				Invoke("EndQuestion", 2.25f);
-			} else{
+			} else{	// Not all items have been selected
 				SessionScript.ButtonAudio(SessionScript.neutral);
 				questionPointText.SetActive(false);
 				questionPointButton.SetActive(true);
@@ -739,31 +767,23 @@ public class GameplayScript : MonoBehaviour{
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
 			}
 			if (currentQuestion.questionType == 2){
-				float red = float.Parse(currentQuestion.answer1);
-				float green = float.Parse(currentQuestion.answer2);
-				float blue = float.Parse(currentQuestion.answer3);
 				correctAnswer.transform.Find("Image").gameObject.SetActive(true);
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().alignment = TextAnchor.UpperCenter;
 				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = SessionScript.missingTexture;	// MISSING TEXTURE INSERIDA PRIMEIRO
-				Vector3 colorInput = new Vector3(red, green, blue);
-				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
-				StartCoroutine("DoubleCheckCorrectImage");
+				correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemSprite[0];	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
+				//StartCoroutine("DoubleCheckCorrectImage");
 			}
 			if (currentQuestion.questionType == 5){
-				numberOfPointItemsAnswered = 0;
-				numberOfPointItems = 0;
 				string answerText = "";
-				for (int i = 0; i < pointAnswerList.Count; i++){
-					if (pointAnswerList[i].red != 0 || pointAnswerList[i].green != 0 || pointAnswerList[i].blue != 0){
-						if (i != 0){
-							answerText = answerText + ", ";
-						}
-						answerText = answerText + pointAnswerList[i].text;
+				for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count; i++){
+					if (i != 0){
+						answerText = answerText + ", ";
 					}
+					answerText = answerText + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex[i]];
 				}
 				answerText = answerText + ".";
 				correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "Resposta certa: " + answerText;
-				StartCoroutine("DoubleCheckCorrectImage");
+				//StartCoroutine("DoubleCheckCorrectImage");
 			}
 		}
 		// if (!SessionScript.singleRun){
@@ -807,93 +827,40 @@ public class GameplayScript : MonoBehaviour{
 		correctAnswer.SetActive(false);
 	}
 
-    public void QuestionPointGetDetail(){
-        Color pixelColor = SessionScript.pointAndClickSource.GetPixel(clickX, clickY);
-        Vector3 colorInput = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
-        print("QuestionPointGetDetail: pixelColor " + pixelColor.r + ", " + pixelColor.g + ", " + pixelColor.b);
-        questionPointDetail.sprite = SessionScript.missingTexture;	// MISSING TEXTURE COLOCADA PRIMEIRA
-		questionPointDetail.sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
-        // for (int i = 0; i < SessionScript.detail.Count; i++){
-            // if (colorInput == SessionScript.detail[i].colorCode){
-                // questionPointDetail.sprite = SessionScript.detail[i].texture;
-                // print("detail found");
-                // break;
-            // }
-            // bool red = false;	IDENTIFICAR PIXEL COM MARGEL DE ERRO
-            // bool blue = false;
-            // bool green = false;
-            // if (colorInput.x >= SessionScript.detail[i].colorCode.x - 0.05f && SessionScript.detail[i].colorCode.x + 0.05f < colorInput.x){
-            // red = true;
-            // print ("red ok");
-            // }
-            // if (colorInput.y >= SessionScript.detail[i].colorCode.y - 0.05f && SessionScript.detail[i].colorCode.y + 0.05f < colorInput.y){
-            // blue = true;
-            // print ("blue ok");
-            // }
-            // if (colorInput.z >= SessionScript.detail[i].colorCode.z - 0.05f && SessionScript.detail[i].colorCode.z + 0.05f < colorInput.z){
-            // green = true;
-            // print ("green ok");
-            // }
-            // if (red && blue && green){
-            // questionPointDetail.texture = SessionScript.detail[i].texture;
-            // print ("detail found");
-            // break;
-            // }
-        // }
-    }
+	public void ToLongQuestionText(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		questionLongText.SetActive(true);
+		questionLongAnswer.SetActive(false);
+	}
 
-    public void ToLongQuestionText(){
-        SessionScript.ButtonAudio(SessionScript.neutral);
-        questionLongText.SetActive(true);
-        questionLongAnswer.SetActive(false);
-    }
+	public void ToLongQuestionAnswer(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		questionLongText.SetActive(false);
+		questionLongAnswer.SetActive(true);
+	}
 
-    public void ToLongQuestionAnswer(){
-        SessionScript.ButtonAudio(SessionScript.neutral);
-        questionLongText.SetActive(false);
-        questionLongAnswer.SetActive(true);
-    }
+	public void ToPointText(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		questionPointText.SetActive(true);
+		questionPointButton.SetActive(false);
+		questionPointConfirm.SetActive(false);
+	}
 
-    public void ToPointText(){
-        SessionScript.ButtonAudio(SessionScript.neutral);
-        questionPointText.SetActive(true);
-        questionPointButton.SetActive(false);
-        questionPointConfirm.SetActive(false);
-    }
+	public void ToPointImage(){
+		print ("ToPointImage()");
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		questionPointText.SetActive(false);
+		questionPointButton.SetActive(true);
+		questionPointConfirm.SetActive(false);
+	}
 
-    public void ToPointImage(){
-		print ("ToPointImage ToPointImage ToPointImage");
-        SessionScript.ButtonAudio(SessionScript.neutral);
-        questionPointText.SetActive(false);
-        questionPointButton.SetActive(true);
-        questionPointConfirm.SetActive(false);
-    }
-
-    public void ToPointConfirm(){
+	public void ToPointConfirm(){
 		//if (currentQuestion.questionType == 2) answerPermitted = false;
-        questionPointText.SetActive(false);
-        questionPointButton.SetActive(false);
-        questionPointConfirm.SetActive(true);
-        QuestionPointGetDetail();
-    }
-	
-	public void GetPointAnswerList(){
-		numberOfPointItems = 0;
-		pointAnswerList = new List<PointAnswer>();
-		pointAnswerList.Add(new PointAnswer(currentQuestion.answer0));
-		pointAnswerList.Add(new PointAnswer(currentQuestion.answer1));
-		pointAnswerList.Add(new PointAnswer(currentQuestion.answer2));
-		pointAnswerList.Add(new PointAnswer(currentQuestion.answer3));
-		pointAnswerList.Add(new PointAnswer(currentQuestion.answer4));
-		for (int i = 0; i < 4; i++){
-			if (pointAnswerList[i].red == 0 && pointAnswerList[i].green == 0 && pointAnswerList[i].blue == 0){
-				pointAnswerList[i].right = true;
-			}
-			else{
-				numberOfPointItems = numberOfPointItems + 1;
-			}
-		}
-		itemsCounterText.text = numberOfPointItemsAnswered + " / " + numberOfPointItems;
+		questionPointText.SetActive(false);
+		questionPointButton.SetActive(false);
+		questionPointConfirm.SetActive(true);
+		questionPointDetail.sprite = SessionScript.missingTexture;	// MISSING TEXTURE COLOCADA PRIMEIRA
+		questionPointDetail.sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemSprite[clickedItemIndex];	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
 	}
 
     public string SimpleText(string text){
@@ -901,11 +868,11 @@ public class GameplayScript : MonoBehaviour{
         for (int i = 0; i < text.Length; i++){
             print("index " + i);
             character = text.Substring(i, 1);
+			// Diacritcs
             if (character == "à"){
                 text = text.Remove(i, 1);
                 text = text.Insert(i, "a");
             }
-            // Diacritcs
             if (character == "Á"){
                 text = text.Remove(i, 1);
                 text = text.Insert(i, "a");
@@ -1249,7 +1216,7 @@ public class GameplayScript : MonoBehaviour{
 			correctAnswer.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("Textures/PointAndClick/detail_" + 100 * colorInput.x + "_" + 100 * colorInput.y + "_" + 100 * colorInput.z, typeof(Sprite)) as Sprite;
 		}
 		if (currentQuestion.questionType == 5){
-			print ("Images not avaiable for this question");
+			print ("DoubleCheckCorrectImage() Images not available for this question");
 		}
 	}
 
