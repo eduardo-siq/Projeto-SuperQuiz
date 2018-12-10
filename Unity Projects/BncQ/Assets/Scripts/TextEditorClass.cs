@@ -71,6 +71,8 @@ public class TextEditorClass : MonoBehaviour {
 	bool filterWindowOpen;
 	
 	 public List <bool> subjectSelected;	// SELECTED IN EDITOR // REMOVE LATER
+	 
+	 // Firebase & DataBase
 
 
 
