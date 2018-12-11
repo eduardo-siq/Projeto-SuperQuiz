@@ -22,6 +22,7 @@ public class DatabaseScript : MonoBehaviour {
 	// TEST
 	int dice1;
 	int dice2;
+	DataSnapshot dbSnapshot;
 	
 	// Database variables
 	public DatabaseReference dbRoot;
@@ -47,10 +48,10 @@ public class DatabaseScript : MonoBehaviour {
 		// Use event listeners to retrieve data from firebase
 		Invoke("SetRerefences", 0.5f);
 		Invoke("StartListener", 0.75f);
-		Invoke("TestDatabase", 0.99f);
-		// Invoke("TestDatabase", 3f);
-		// Invoke("TestDatabase", 6f);
-		// Invoke("TestDatabase", 9f);
+		//Invoke("TestDatabase", 0.99f);
+		 Invoke("TestDatabase", 3f);
+		 Invoke("TestDatabase", 6f);
+		 Invoke("TestDatabase", 9f);
 		
 	}
 	
@@ -65,10 +66,25 @@ public class DatabaseScript : MonoBehaviour {
 	
 	void TestDatabase(){
 		dice2 = UnityEngine.Random.Range(0,9);
+		dbRoot.Child("movie0" + dice2.ToString() + "/phrase").SetValueAsync(testString);
+		dbRoot.Child("movie0" + dice2.ToString() + "/title").SetValueAsync(testString2);
+		dbTest1.SetValueAsync(testString);
+		dbTest2.SetValueAsync(testString2);
+		dbTest1.SetValueAsync(testString);
+		dbTest2.SetValueAsync(testString2);		
+		print ("TestDatabase(): " + dbTest1.GetValueAsync().ToString());
+		//
+		if (dbSnapshot.HasChild("test1")) print ("dbSnapshot.HasChild('test1')"); else print ("!dbSnapshot.HasChild('test1')");
+		if (dbSnapshot.HasChild("test2")) print ("dbSnapshot.HasChild('test2')"); else print ("!dbSnapshot.HasChild('test2')");
+		if (dbSnapshot.HasChild("test3")) print ("dbSnapshot.HasChild('test3')"); else print ("!dbSnapshot.HasChild('test3')");
+		
+		/*
 		print ("TEST SET VALUE: dice = " + dice2 + " - (" + Time.deltaTime.ToString() + ")");
-		bool exists;
-		//DataSnapshot snapshot = task.Result;
-      //  exists = snapshot.Child("movie0" + dice2.ToString()).Exists();		
+		bool exists = false;		
+	 
+	  
+  
+  
 		if (exists){
 			print ("movie0" + dice2.ToString() + " exists - (" + Time.deltaTime.ToString() + ")");
 			dbRoot.Child("movie0" + dice2.ToString() + "/phrase").SetValueAsync(testString);
@@ -80,18 +96,20 @@ public class DatabaseScript : MonoBehaviour {
 			dbTest1.SetValueAsync(testString);
 			dbTest2.SetValueAsync(testString2);
 		}
+		*/
 	}
 
 	
 	protected void StartListener() {
 		print ("StartListener()");
-		dbTest1.ValueChanged += (
+		dbRoot.ValueChanged += (
 		object sender2, ValueChangedEventArgs e2) => { if (e2.DatabaseError != null) {
 			Debug.LogError(e2.DatabaseError.Message);
 			return;
 		}
 		Debug.Log("ValueChangedEventArgs");
 		if (e2.Snapshot != null || e2.Snapshot.Value != null){
+			dbSnapshot = e2.Snapshot;
 			string newString = (string) e2.Snapshot.Value;
 			print ("DATABASE TEST: " + newString);
 		}

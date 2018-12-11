@@ -61,6 +61,11 @@ public class GameplayScript : MonoBehaviour{
     public bool showAnswer;
 	// public int numberOfPointItems;
 	// public int numberOfPointItemsAnswered;
+	
+	// Debug
+	Text textPosX;
+	Text textPosY;
+	public bool debugPointPosition;
 
     void Start(){
         StartCoroutine(StartScene());
@@ -132,6 +137,11 @@ public class GameplayScript : MonoBehaviour{
         toMenuText.SetActive(false);
 		itemsCounter.SetActive(false);
         showAnswer = false;
+		
+		//Debug
+		textPosX = questionPoint.transform.Find("DebugWindow/Window/TextX").GetComponent<Text>();
+		textPosY = questionPoint.transform.Find("DebugWindow/Window/TextY").GetComponent<Text>();
+		if (debugPointPosition) questionPoint.transform.Find("DebugWindow").gameObject.SetActive(true);
        
         if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
             float x = 256f / Screen.width;
@@ -453,6 +463,8 @@ public class GameplayScript : MonoBehaviour{
 				Vector3 mouseInput = Input.mousePosition;
 				clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
 				clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+				/* Debug */ textPosX.text = "pos X: " + clickX.ToString();
+				/* Debug */ textPosY.text = "pos Y: " + clickY.ToString();
 				bool black = false;
 				Color pixelColor = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].source.GetPixel(clickX, clickY);
 				clickedColor = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
@@ -514,6 +526,8 @@ public class GameplayScript : MonoBehaviour{
 					mouseInput = Input.mousePosition;
 					clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
 					clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+					/* Debug */ textPosX.text = "pos X: " + clickX.ToString();
+					/* Debug */ textPosY.text = "pos Y: " + clickY.ToString();
 					black = false;
 					pixelColor = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].source.GetPixel(clickX, clickY);
 					clickedColor = new Vector3(pixelColor.r, pixelColor.g, pixelColor.b);
