@@ -72,7 +72,8 @@ public class TextEditorClass : MonoBehaviour {
 	
 	 public List <bool> subjectSelected;	// SELECTED IN EDITOR // REMOVE LATER
 	 
-	 // Firebase & DataBase
+	 // Firebase & Database
+	 DatabaseScript databaseScript;
 
 
 
@@ -245,6 +246,10 @@ public class TextEditorClass : MonoBehaviour {
 		OrderListOfQuestion();
 		OrderSubjectEditor();
 		OrderUserGroupEditor();
+		
+		// Firebase & Database
+		databaseScript = GameObject.Find("Firebase").GetComponent<DatabaseScript>();
+		databaseScript.enabled = true;
 		
 		
 		Log("Welcome to Question DataBase Editor");

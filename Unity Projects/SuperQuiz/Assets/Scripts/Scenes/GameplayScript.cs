@@ -65,6 +65,7 @@ public class GameplayScript : MonoBehaviour{
 	// Debug
 	Text textPosX;
 	Text textPosY;
+	Text textName;
 	public bool debugPointPosition;
 
     void Start(){
@@ -141,6 +142,7 @@ public class GameplayScript : MonoBehaviour{
 		//Debug
 		textPosX = questionPoint.transform.Find("DebugWindow/Window/TextX").GetComponent<Text>();
 		textPosY = questionPoint.transform.Find("DebugWindow/Window/TextY").GetComponent<Text>();
+		textName = questionPoint.transform.Find("DebugWindow/Window/TextName").GetComponent<Text>();
 		if (debugPointPosition) questionPoint.transform.Find("DebugWindow").gameObject.SetActive(true);
        
         if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
@@ -536,6 +538,7 @@ public class GameplayScript : MonoBehaviour{
 							if (clickedColor.z <= 0.05f){
 								black = true;
 								SessionScript.ButtonAudioLow(SessionScript.subtle);
+								/* Debug */ textName.text = "obj: ";
 							}
 						}
 					}
@@ -547,6 +550,7 @@ public class GameplayScript : MonoBehaviour{
 							if (clickedColorString == itemColorString){
 								clickedItemIndex = i;	// compares colors to find which item was clicked
 								print ("Found item clicked: " + i + "(clickedItemIndex = " + clickedItemIndex + ")");
+								/* Debug */ textName.text = "obj: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[i];
 							}
 							/*if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].x == clickedColor.x){
 								if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].y == clickedColor.y){
@@ -557,20 +561,28 @@ public class GameplayScript : MonoBehaviour{
 								}
 							}*/
 						}
-						bool repeatedItem = false;
-						if (pointQuestionAnswerIndex.Count > 0){
-							for (int i = 0; i < pointQuestionAnswerIndex.Count; i++){
-								if (clickedItemIndex == i){
-									print ("QuestionPointCheckPixel() repeatedItem = true");
-									SessionScript.ButtonAudioLow(SessionScript.subtle);
-									repeatedItem = true;
-									break;
+						if (clickedItemIndex == -1){	// clickedItemIndex == -1 => item não identificado
+							print ("QuestionPointCheckPixel() clickedItemIndex == -1");
+							SessionScript.ButtonAudioLow(SessionScript.subtle);
+							/* Debug */ textName.text = "obj: unknown";
+							return;
+						}
+						if (clickedItemIndex != -1){
+							bool repeatedItem = false;
+							if (pointQuestionAnswerIndex.Count > 0){
+								for (int i = 0; i < pointQuestionAnswerIndex.Count; i++){
+									if (clickedItemIndex == i){
+										print ("QuestionPointCheckPixel() repeatedItem = true");
+										SessionScript.ButtonAudioLow(SessionScript.subtle);
+										repeatedItem = true;
+										break;
+									}
 								}
 							}
-						}
-						if (!repeatedItem){
-							SessionScript.ButtonAudio(SessionScript.subtle);
-							Invoke("ToPointConfirm", 0.25f);
+							if (!repeatedItem){
+								SessionScript.ButtonAudio(SessionScript.subtle);
+								Invoke("ToPointConfirm", 0.25f);
+							}
 						}
 					}
 				}

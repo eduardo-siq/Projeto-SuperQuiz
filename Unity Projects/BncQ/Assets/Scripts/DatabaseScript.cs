@@ -109,7 +109,10 @@ public class DatabaseScript : MonoBehaviour {
 		}
 		Debug.Log("ValueChangedEventArgs");
 		if (e2.Snapshot != null || e2.Snapshot.Value != null){
-			dbSnapshot = e2.Snapshot;
+			if (dbSnapshot == null){
+				dbSnapshot = e2.Snapshot;
+				print ("StartListener() new data snapshot");
+			} else print ("StartListener() data snapshot already exists");
 			string newString = (string) e2.Snapshot.Value;
 			print ("DATABASE TEST: " + newString);
 		}
