@@ -26,7 +26,7 @@ public class SessionScript : MonoBehaviour{
     public static List<Answer> answersList;
     public static int numberOfQuestionsDemanded = 11;
     //public static int pointsByQuestion = 50;	// maybe redundant
-    public static float questionTime = 30f; // locally defined, maybe defined by BncQ later
+    public static float questionTime = 300f; // locally defined, maybe defined by BncQ later
     public static List<string> subjectName;
     public static List<string> userGroupName;   // maybe unecessary
     public static bool singleRun = true;
@@ -190,41 +190,14 @@ public class SessionScript : MonoBehaviour{
         item1TierIndex = new Vector3(0, 0, 0);
         item2TierIndex = new Vector3(0, 0, 0);
         item3TierIndex = new Vector3(0, 0, 0);
-        LoadAvatarAssets();
+		Invoke("LoadAvatarAssets", 0.25f);
 		customizationStage = 1;
 
 
         //Sound
         songAudio = this.gameObject.AddComponent<AudioSource>();
         buttonAudio = this.gameObject.AddComponent<AudioSource>();
-        positive = Resources.Load("Sound/positive_sound", typeof(AudioClip)) as AudioClip;
-        negative = Resources.Load("Sound/negative_sound", typeof(AudioClip)) as AudioClip;
-        neutral = Resources.Load("Sound/neutral_sound", typeof(AudioClip)) as AudioClip;
-        popUp = Resources.Load("Sound/neutral_popUp", typeof(AudioClip)) as AudioClip;
-        popUpOut = Resources.Load("Sound/neutral_popUpOut", typeof(AudioClip)) as AudioClip;
-        blop = Resources.Load("Sound/neutral_blop", typeof(AudioClip)) as AudioClip;
-        subtle = Resources.Load("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
-        song1 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
-        song2 = Resources.Load("Sound/trilhaSuperQuiz2", typeof(AudioClip)) as AudioClip;
-		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
-		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
-		photography = Resources.Load("Sound/photography_sound", typeof(AudioClip)) as AudioClip;
-		if (error == null) print ("ERROR NOT FOUND");
-		if (error == null) print ("ERROR NOT FOUND");
-		if (error == null) print ("ERROR NOT FOUND");
-		if (error == null) print ("ERROR NOT FOUND");
-		if (error == null) print ("ERROR NOT FOUND");
-		if (error == null) print ("ERROR NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-		if (success == null) print ("SUCCESS NOT FOUND");
-        currentSong = song1;
-        soundOn = true;
-        soundVolume = 0.5f;
-		fadeOutSong = false;
+        Invoke("LoadAudioAssets", 0.5f);
 
         // Score
         rightScore = 10;
@@ -246,7 +219,38 @@ public class SessionScript : MonoBehaviour{
 		//AuthenticationScript.StartAuthenticationScript();
 
     }
-
+	
+	void LoadAudioAssets(){
+		positive = Resources.Load("Sound/positive_sound", typeof(AudioClip)) as AudioClip;
+		negative = Resources.Load("Sound/negative_sound", typeof(AudioClip)) as AudioClip;
+		neutral = Resources.Load("Sound/neutral_sound", typeof(AudioClip)) as AudioClip;
+		popUp = Resources.Load("Sound/neutral_popUp", typeof(AudioClip)) as AudioClip;
+		popUpOut = Resources.Load("Sound/neutral_popUpOut", typeof(AudioClip)) as AudioClip;
+		blop = Resources.Load("Sound/neutral_blop", typeof(AudioClip)) as AudioClip;
+		subtle = Resources.Load("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
+		song1 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
+		song2 = Resources.Load("Sound/trilhaSuperQuiz2", typeof(AudioClip)) as AudioClip;
+		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
+		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
+		photography = Resources.Load("Sound/photography_sound", typeof(AudioClip)) as AudioClip;
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (error == null) print ("ERROR NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		if (success == null) print ("SUCCESS NOT FOUND");
+		currentSong = song1;
+		soundOn = true;
+		soundVolume = 0.5f;
+		fadeOutSong = false;
+	}
+	
     IEnumerator UpdateScene(){
         yield return null;
         questionsAskedListCount = questionsAskedList.Count;
@@ -383,12 +387,6 @@ public class SessionScript : MonoBehaviour{
 		if (numberOfQuestionsDemanded > questionList.Count)
 			numberOfQuestionsDemanded = questionList.Count;
 	}
-
-    public void LoadQuestions(){
-        for (int i = 0; i < questionListPreLoad.Count; i++){
-            questionList.Add(new Question(questionListPreLoad[i]));
-        }
-    }
 
     void LoadAvatarAssets(){
         bool loadItems = true;

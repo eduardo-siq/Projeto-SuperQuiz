@@ -538,19 +538,20 @@ public class GameplayScript : MonoBehaviour{
 							if (clickedColor.z <= 0.05f){
 								black = true;
 								SessionScript.ButtonAudioLow(SessionScript.subtle);
-								/* Debug */ textName.text = "obj: ";
+								/* Debug */ textName.text = "obj: none";
 							}
 						}
 					}
 					if (!black){
 						for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor.Count; i++){
-							print ("itemColor[" + i + "]: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i] + "/ clickedColor: " + clickedColor);
+							print ("itemColor[" + i + "]: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i] + "(" + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[i] + ")/ clickedColor: " + clickedColor);
 							string clickedColorString = clickedColor.ToString();
 							string itemColorString = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].ToString();
 							if (clickedColorString == itemColorString){
 								clickedItemIndex = i;	// compares colors to find which item was clicked
-								print ("Found item clicked: " + i + "(clickedItemIndex = " + clickedItemIndex + ")");
+								print ("Found item clicked: " + i + "(clickedItemIndex = " + clickedItemIndex + ") " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[i]);
 								/* Debug */ textName.text = "obj: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[i];
+								break;
 							}
 							/*if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].x == clickedColor.x){
 								if(SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i].y == clickedColor.y){
@@ -571,13 +572,17 @@ public class GameplayScript : MonoBehaviour{
 							bool repeatedItem = false;
 							if (pointQuestionAnswerIndex.Count > 0){
 								for (int i = 0; i < pointQuestionAnswerIndex.Count; i++){
-									if (clickedItemIndex == i){
+									if (clickedItemIndex == pointQuestionAnswerIndex[i]){
 										print ("QuestionPointCheckPixel() repeatedItem = true");
 										SessionScript.ButtonAudioLow(SessionScript.subtle);
 										repeatedItem = true;
 										break;
 									}
 								}
+								/* Debug */	print ("List of items clicked so far " + (pointQuestionAnswerIndex.Count).ToString() + " items");
+								/* Debug */	for (int i = 0; i < pointQuestionAnswerIndex.Count; i++){
+								/* Debug */		print (i + "º: " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[pointQuestionAnswerIndex[i]]);
+								/* Debug */	}
 							}
 							if (!repeatedItem){
 								SessionScript.ButtonAudio(SessionScript.subtle);
