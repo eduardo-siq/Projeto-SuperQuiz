@@ -14,9 +14,11 @@ public class Question {
 	public string answer4;
 	public List <bool> subjects;
 	public List <bool> userGroups;
+	public bool edited;
 	
 	public Question(){
 		index = 0;
+		questionType = 0;
 		text = "";
 		answer0 = "";
 		answer1 = "";
@@ -25,6 +27,7 @@ public class Question {
 		answer4 = "";
 		subjects = new List <bool>();
 		userGroups = new List <bool>();
+		edited = false;
 	}
 	
 	public Question (int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4){
@@ -40,6 +43,7 @@ public class Question {
 		//subjects = newSubjects;
 		userGroups = new List <bool>();
 		//userGroups = newUserGroups;
+		edited = false;
 	}
 
 	public Question (int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, List<bool> newSubjects, List<bool> newUserGroups){
@@ -55,6 +59,23 @@ public class Question {
 		subjects = newSubjects;
 		userGroups = new List <bool>();
 		userGroups = newUserGroups;
+		edited = false;
+	}
+	
+	public Question (int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, List<bool> newSubjects, List<bool> newUserGroups, bool newEdit){
+		index = newIndex;
+		questionType = newQuestionType;
+		text = newT;
+		answer0 = newA0;
+		answer1 = newA1;
+		answer2 = newA2;
+		answer3 = newA3;
+		answer4 = newA4;
+		subjects = new List <bool>();
+		subjects = newSubjects;
+		userGroups = new List <bool>();
+		userGroups = newUserGroups;
+		edited = newEdit;
 	}
 	
 	public void ClientSpecification (List<bool> newSubjects, List<bool> newUserGroups){
@@ -75,6 +96,7 @@ public class Question {
 		answer4 = baseQuestion.answer4;
 		subjects = new List <bool>();
 		userGroups = new List <bool>();
+		edited = false;
 	}
 	
 	public void Index(int newIndex){
@@ -88,6 +110,47 @@ public class Question {
 	public void LoadUserGroups (string userGroupsString){
 		
 	}
+	
+	public string GetSubjectsString(){
+		string subjectString = "";
+		if (subjects.Count == 0 || subjects == null){
+			subjectString = "X";
+		}else{
+			for (int y = 0; y < subjects.Count; y++){
+				if (y != 0){
+					subjectString = subjectString + " ";
+				}
+				if (subjects[y]){
+					subjectString = subjectString + "T";
+				}
+				if (!subjects[y]){
+					subjectString = subjectString + "F";
+				}
+			}
+		}
+		return subjectString;
+	}
+	
+	public string GetUserGroupString(){
+		string userGroupString = "";
+		if (userGroups.Count == 0 || userGroups == null){
+			userGroupString = "X";
+		}else{
+			for (int y = 0; y < userGroups.Count; y++){
+				if (y != 0){
+					userGroupString = userGroupString + " ";
+				}
+				if (userGroups[y]){
+					userGroupString = userGroupString + "T";
+				}
+				if (!userGroups[y]){
+					userGroupString = userGroupString + "F";
+				}
+			}
+		}
+		return userGroupString;
+	}
+
 }
 
 public class QuestionButton {

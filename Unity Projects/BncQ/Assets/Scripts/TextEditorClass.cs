@@ -47,6 +47,7 @@ public class TextEditorClass : MonoBehaviour {
 	GameObject buttonLoadBncQ;
 	GameObject buttonSaveBncQ;
 	GameObject buttonDeleteBncQ;
+	GameObject buttonUploadBncQ;
 	GameObject log;
 	//Data
 	int currentInputField = 0;
@@ -113,6 +114,7 @@ public class TextEditorClass : MonoBehaviour {
 		buttonLoadBncQ = this.gameObject.transform.Find("Button - Load BncQ").gameObject;
 		buttonSaveBncQ = this.gameObject.transform.Find("Button - Save BncQ").gameObject;
 		buttonDeleteBncQ = this.gameObject.transform.Find("Button - Delete BncQ").gameObject;
+		buttonUploadBncQ = this.gameObject.transform.Find("Button - Upload BncQ").gameObject;
 		log = this.gameObject.transform.Find("Log").gameObject;
 		textFieldI.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 - Screen.width/6, Screen.height/2 + Screen.height/3 + Screen.height/15);
 		textFieldI.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width/9, Screen.height/15);
@@ -217,6 +219,8 @@ public class TextEditorClass : MonoBehaviour {
 		buttonLoadBncQ.GetComponent<RectTransform>().sizeDelta = new Vector2((Screen.width/3 - Screen.width/15)/3, Screen.height/15);
 		buttonDeleteBncQ.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 + Screen.width/6 + Screen.width/30 + 2 * (Screen.width/3 - Screen.width/15)/3, Screen.height/15);
 		buttonDeleteBncQ.GetComponent<RectTransform>().sizeDelta = new Vector2((Screen.width/3 - Screen.width/15)/3, Screen.height/15);
+		buttonUploadBncQ.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 + Screen.width/6 + Screen.width/30, Screen.height/15);
+		buttonUploadBncQ.GetComponent<RectTransform>().sizeDelta = new Vector2((Screen.width/3 - Screen.width/15), Screen.height/15);
 		log.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.height/60, Screen.height/60);
 		log.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - Screen.height/30, Screen.height/30);
 
@@ -248,8 +252,14 @@ public class TextEditorClass : MonoBehaviour {
 		OrderUserGroupEditor();
 		
 		// Firebase & Database
+		DatabaseScript.bncQ = this;
 		databaseScript = GameObject.Find("Firebase").GetComponent<DatabaseScript>();
 		databaseScript.enabled = true;
+		DatabaseScript.GetQuestionsReference();
+		DatabaseScript.GetLocalQuestionList();
+		
+		// First Question
+		if (questionList.Count > 0) ChooseQuestion(0);
 		
 		
 		Log("Welcome to Question DataBase Editor");
@@ -456,19 +466,19 @@ public class TextEditorClass : MonoBehaviour {
 		List <bool> userGroupSelected = NewUserGroupSelectedInQuestion ();
 		if (newQuestion){
 			if (currentQuestionType == 0){
-				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected));
+				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected, true));
 			}
 			if (currentQuestionType == 1){
-				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, "", "", "", "", subjectSelected, userGroupSelected));
+				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, "", "", "", "", subjectSelected, userGroupSelected, true));
 			}
 			if (currentQuestionType == 2){
-				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, "", subjectSelected, userGroupSelected));
+				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, "", subjectSelected, userGroupSelected, true));
 			}
 			if (currentQuestionType == 3){
-				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected));
+				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected, true));
 			}
 			if (currentQuestionType == 4){
-				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected));
+				AddQuestion(new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected, true));
 			}
 		}
 		if (!newQuestion){
@@ -493,10 +503,36 @@ public class TextEditorClass : MonoBehaviour {
 			if (currentQuestionType == 4){
 				questionList[currentQuestionIndex].question = new Question(currentQuestionIndex, currentQuestionType, q, a, b, c, d, e, subjectSelected, userGroupSelected);
 			}
+			questionList[currentQuestionIndex].question.edited = true;
 			questionList[currentQuestionIndex].button.gameObject.transform.Find("Text").GetComponent<Text>().text = "Questão " + currentQuestionIndex.ToString()  + ": " + questionList[currentQuestionIndex].question.text;
 		}
 		NextQuestion();
 		OrderListOfQuestion();
+	}
+	
+	public void UploadQuestions(){
+		print ("UploadQuestions()");
+		for (int i = 0; i < questionList.Count; i++){
+			print ("i = " + i);
+			if (questionList[i].question.edited){
+				print ("upload: " + i);
+				DatabaseScript.UploadQuestion(
+					DatabaseScript.currentClient,
+					questionList[i].question.index,
+					questionList[i].question.questionType,
+					questionList[i].question.GetUserGroupString(),
+					questionList[i].question.GetSubjectsString(),
+					questionList[i].question.text,
+					questionList[i].question.answer0,
+					questionList[i].question.answer1,
+					questionList[i].question.answer2,
+					questionList[i].question.answer3,
+					questionList[i].question.answer4);
+					
+					questionList[i].question.edited = false;
+			}
+		}
+		DatabaseScript.RemoveSpecifiedQuestions();
 	}
 	
 	public List <bool> NewUserGroupSelectedInQuestion (){
@@ -679,7 +715,7 @@ public class TextEditorClass : MonoBehaviour {
         newButton.transform.SetParent(this.gameObject.transform.Find("Question List/Viewport/Content"), false);
 		newButton.name = currentQuestionIndex.ToString();
 		questionList.Add(new QuestionButton(newQuestion, newButton));
-		currentQuestionIndex = questionList.Count;
+		currentQuestionIndex = GetNextQuestionListIndex();
 		newButton.GetComponent<Button>().onClick.AddListener(delegate{ChooseQuestion(newQuestion.index);});
 		OrderListOfQuestion();
 	}
@@ -709,34 +745,32 @@ public class TextEditorClass : MonoBehaviour {
 	public void ChooseQuestion(int index){
 		ClearInputFieldIndex();
 		newQuestion = false;
-		currentQuestionIndex = index;
-		currentQuestionType = questionList[index].question.questionType;
+		int newIndex = GetQuestionListIndex(index);
+		currentQuestionIndex = newIndex;
+		currentQuestionType = questionList[newIndex].question.questionType;
 		SetChangeTypeButton();
-		textFieldI.GetComponent<InputField>().text = "Questão nº " + questionList[index].question.index.ToString();
-		textFieldQ.GetComponent<InputField>().text = questionList[index].question.text;
-		textFieldA.GetComponent<InputField>().text = questionList[index].question.answer0;
-		textFieldB.GetComponent<InputField>().text = questionList[index].question.answer1;
-		textFieldC.GetComponent<InputField>().text = questionList[index].question.answer2;
-		textFieldD.GetComponent<InputField>().text = questionList[index].question.answer3;
-		textFieldE.GetComponent<InputField>().text = questionList[index].question.answer4;
+		textFieldI.GetComponent<InputField>().text = "Questão nº " + questionList[newIndex].question.index.ToString();
+		textFieldQ.GetComponent<InputField>().text = questionList[newIndex].question.text;
+		textFieldA.GetComponent<InputField>().text = questionList[newIndex].question.answer0;
+		textFieldB.GetComponent<InputField>().text = questionList[newIndex].question.answer1;
+		textFieldC.GetComponent<InputField>().text = questionList[newIndex].question.answer2;
+		textFieldD.GetComponent<InputField>().text = questionList[newIndex].question.answer3;
+		textFieldE.GetComponent<InputField>().text = questionList[newIndex].question.answer4;
 		if (userGroup.Count > 0){
 			for (int i = 0; i < userGroup.Count; i++){
-				userGroup[i].questionButton.GetComponent<Toggle>().isOn = questionList[index].question.userGroups[i];
+				userGroup[i].questionButton.GetComponent<Toggle>().isOn = questionList[newIndex].question.userGroups[i];
 			}
 		}
 		if (subject.Count > 0){
 			for (int i = 0; i < subject.Count; i++){
-				subject[i].questionButton.GetComponent<Toggle>().isOn = questionList[index].question.subjects[i];
+				subject[i].questionButton.GetComponent<Toggle>().isOn = questionList[newIndex].question.subjects[i];
 			}
 		}
 		Log("Opened question #" + currentQuestionIndex.ToString());
 		QuestionEditorWindow();
 		
 		//test
-		print ("question " + index + ", " + questionList[index].question.subjects.Count + " subjects");
-		for (int i = 0; i < questionList[index].question.subjects.Count; i++){
-			print (subject[i].name + ": " + questionList[index].question.subjects[i]);
-		}
+		print ("question list index:" + newIndex + ", question nº" + questionList[newIndex].question.index);
 	}
 	
 	public void NewQuestion(){
@@ -750,7 +784,7 @@ public class TextEditorClass : MonoBehaviour {
 	
 	public void NextQuestion(){
 		ClearInputFieldIndex();
-		currentQuestionIndex = questionList.Count;
+		currentQuestionIndex = GetNextQuestionListIndex();
 		newQuestion = true;
 		ClearQuestion ();
 	}
@@ -764,96 +798,12 @@ public class TextEditorClass : MonoBehaviour {
 		questionList.Remove(questionList[currentQuestionIndex]);
 		for (int i = currentQuestionIndex; i < questionList.Count; i++){
 			questionList[i].question.index = i;
+			questionList[i].question.edited = true;
 		}
+		DatabaseScript.FindAndDeleteQuestion(currentQuestionIndex);
 		Log("Deleted question #" + currentQuestionIndex.ToString());
 		OrderListOfQuestion();
 		NewQuestion();
-	}
-	
-	public void SaveFile(){
-		ClearInputFieldIndex();
-		if (questionList.Count < 1){
-			Log("There are no questions to be saved!");
-			return;
-		}
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream fileStream;
-		if (!File.Exists(Application.persistentDataPath + "/" + fileName)){
-			fileStream = File.Create(Application.persistentDataPath + "/" + fileName);
-		} else {
-			fileStream = File.Open(Application.persistentDataPath + "/" + fileName, FileMode.Open);
-		}
-		BncQFile qdbFile = new BncQFile();
-		
-		// info saved - start
-		// question
-		qdbFile.t = new List<string>();		// Text
-		qdbFile.tp = new List<int>();		// Type
-		qdbFile.a = new List<string>();		// Item A
-		qdbFile.b = new List<string>();		// Item B
-		qdbFile.c = new List<string>();		// Item C
-		qdbFile.d = new List<string>();		// Item D
-		qdbFile.e = new List<string>();		// Item E
-		qdbFile.u = new List<string>();		// User Group
-		qdbFile.s = new List<string>();		// Subject
-		for (int i = 0; i < questionList.Count; i++){
-			qdbFile.t.Add(questionList[i].question.text);
-			qdbFile.tp.Add(questionList[i].question.questionType);
-			qdbFile.a.Add(questionList[i].question.answer0);
-			qdbFile.b.Add(questionList[i].question.answer1);
-			qdbFile.c.Add(questionList[i].question.answer2);
-			qdbFile.d.Add(questionList[i].question.answer3);
-			qdbFile.e.Add(questionList[i].question.answer4);
-			string u = "";
-			string s = "";
-			if (userGroup.Count > 0){
-				for (int y = 0; y < questionList[i].question.userGroups.Count; y++){
-					if (y != 0){
-						u = u + " ";
-					}
-					if (questionList[i].question.userGroups[y]){
-						u = u + "T";
-					}
-					if (!questionList[i].question.userGroups[y]){
-						u = u + "F";
-					}
-				}
-				qdbFile.u.Add(u);
-			} if (userGroup.Count == 0){
-				qdbFile.u.Add("X");
-			}
-			if (subject.Count > 0){
-				for (int y = 0; y < questionList[i].question.subjects.Count; y++){
-					if (y != 0){
-						s = s + " ";
-					}
-					if (questionList[i].question.subjects[y]){
-						s = s + "T";
-					}
-					if (!questionList[i].question.subjects[y]){
-						s = s + "F";
-					}
-				}
-				qdbFile.s.Add(s);
-			} if (subject.Count == 0){
-				qdbFile.s.Add("X");
-			}
-		}
-		// client
-		qdbFile.client = client;
-		qdbFile.uName = new List<string>();
-		qdbFile.sName = new List<string>();
-		for (int i = 0; i < userGroup.Count; i++){
-			qdbFile.uName.Add(userGroup[i].name);
-		}
-		for (int i = 0; i < subject.Count; i++){
-			qdbFile.sName.Add(subject[i].name);
-		}
-		// info saved - end	
-		
-		bf.Serialize(fileStream, qdbFile);
-		fileStream.Close();
-		Log("Saved BncQ file, at " + Application.persistentDataPath);
 	}
 	
 	public void ClientEditorWindow(){
@@ -877,11 +827,6 @@ public class TextEditorClass : MonoBehaviour {
 		}
 	}
 	
-	public void SetClientName(string name){
-		client = name;
-		fileName = "BncQ_" + client + ".dat";
-	}
-	
 	public void AddUserGroup(){
 		string newName = "grupo " + userGroup.Count.ToString();
 		int nextIndex = userGroup.Count;
@@ -901,24 +846,6 @@ public class TextEditorClass : MonoBehaviour {
 		}
 		OrderUserGroupEditor();
 		clientWindow.transform.Find("User Groups Set").GetComponent<InputField>().text = userGroup.Count.ToString();	
-	}
-	
-	public void LoadUserGroup(){	// Same as Add, but does not expand the "questionList[i].question.userGroups" list
-		string newName = "grupo " + userGroup.Count.ToString();
-		int nextIndex = userGroup.Count;
-		GameObject newInput = Instantiate(inputField) as GameObject;
-		newInput.transform.SetParent(this.gameObject.transform.Find("Client Window/User Groups Scroll/Viewport/Content"), false);
-		newInput.transform.Find("Placeholder").GetComponent<Text>().text = "grupo " +  userGroup.Count.ToString();
-		newInput.GetComponent<InputField>().onEndEdit.AddListener(delegate{SetUserGroup();});
-		GameObject newFilterButton = Instantiate(checkbox) as GameObject;
-		newFilterButton.transform.SetParent(this.gameObject.transform.Find("Filter Window/User Groups Scroll/Viewport/Content"), false);
-		newFilterButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectUserGroupFilter(nextIndex);});
-		GameObject newQuestionButton = Instantiate(checkbox) as GameObject;
-		newQuestionButton.transform.SetParent(this.gameObject.transform.Find("Question Buttons/TG Window/User Groups Scroll/Viewport/Content"), false);
-		newQuestionButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectUserGroupInQuestion(nextIndex);});
-		userGroup.Add(new UserGroup(newName, newInput, newFilterButton, newQuestionButton));
-		OrderUserGroupEditor();
-		clientWindow.transform.Find("User Groups Set").GetComponent<InputField>().text = userGroup.Count.ToString();
 	}
 	
 	public void SetUserGroup(){
@@ -994,23 +921,7 @@ public class TextEditorClass : MonoBehaviour {
 		clientWindow.transform.Find("Subjects Set").GetComponent<InputField>().text = subject.Count.ToString();	
 	}
 	
-	public void LoadSubject(){	// Same as Add, but does not expand the "questionList[i].question.userGroups" list
-		string newName = "tópico " + subject.Count.ToString();
-		int nextIndex = subject.Count;
-		GameObject newInput = Instantiate(inputField) as GameObject;
-		newInput.transform.SetParent(this.gameObject.transform.Find("Client Window/Subjects Scroll/Viewport/Content"), false);
-		newInput.transform.Find("Placeholder").GetComponent<Text>().text = "tópico " +  subject.Count.ToString();
-		newInput.GetComponent<InputField>().onEndEdit.AddListener(delegate{SetSubject();});
-		GameObject newFilterButton = Instantiate(checkbox) as GameObject;
-		newFilterButton.transform.SetParent(this.gameObject.transform.Find("Filter Window/Subjects Scroll/Viewport/Content"), false);
-		newFilterButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectSubjectFilter(nextIndex);});
-		GameObject newQuestionButton = Instantiate(checkbox) as GameObject;
-		newQuestionButton.transform.SetParent(this.gameObject.transform.Find("Question Buttons/TG Window/Subjects Scroll/Viewport/Content"), false);
-		newQuestionButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectSubjectInQuestion(nextIndex);});
-		subject.Add(new Subject(newName, newInput, newFilterButton, newQuestionButton));
-		OrderSubjectEditor();
-		clientWindow.transform.Find("Subjects Set").GetComponent<InputField>().text = subject.Count.ToString();
-	}
+	
 	
 	public void SetSubject(){
 		for (int i = 0; i < subject.Count; i++){
@@ -1123,6 +1034,131 @@ public class TextEditorClass : MonoBehaviour {
 			questionOptions.SetActive(true);
 			return;
 		}
+	}
+	
+	int GetQuestionListIndex(int index){
+		int newIndex = 0;
+		for (int i = 0; i < questionList.Count; i++){
+			if (questionList[i].question.index == index){
+				newIndex = i;
+			}
+		}
+		return newIndex;
+	}
+	
+	int GetNextQuestionListIndex(){
+		print ("GetNextQuestionListIndex");
+		int newIndex = 0;
+		if (questionList.Count == 1){
+			print ("questionList.Count == 1");
+			if (questionList[0].question.index > 0) newIndex = 0;
+			if (questionList[0].question.index == 0) newIndex = 1;
+		}
+		if (questionList.Count > 1){
+			print ("questionList.Count > 1");
+			bool done = false;
+			int checkInt = 0;
+			List<int> checkedInt = new List<int>();
+			int t = 0;						// Infinite loop failsafe
+			do{
+				print ("do-loop: " + t);
+				for (int i = 0; i < questionList.Count; i++){
+					if (questionList[i].question.index > i){
+						if (checkedInt.Count == 0){
+							checkInt = i;
+							checkedInt.Add(i);
+							print ("check: " + i);
+							break;
+						} else {	// checkedInt.Count > 0
+							bool newIntToCheck = true;
+							for (int y = 0 ; y < checkedInt.Count; y++){
+								if (checkedInt[y] == i){
+									newIntToCheck = false;
+									print (i + " already checked");
+								}
+							}
+							if (newIntToCheck){
+								checkInt = i;
+								checkedInt.Add(i);
+								print ("check: " + i);
+								break;
+							}
+						}
+					}
+					if (i == questionList.Count - 1 && questionList[i].question.index <= i){
+						checkInt = i + 1;
+						checkedInt.Add(i + 1);
+						print ("check: " + (i + 1));
+					}
+				}
+				done = true;
+				for (int i = 0; i < questionList.Count; i++){
+					if (questionList[i].question.index == checkInt){
+						done = false;
+						break;
+					}
+				}
+				if (done) newIndex = checkInt;
+				t = t + 1;					// Infinite loop failsafe
+				if (t > 250) done = true;	// Infinite loop failsafe
+			} while (!done);
+		}
+		return newIndex;
+	}
+	
+	
+	
+	void Log (string newString){
+		log.GetComponent<InputField>().text = DateTime.Now + " : " + newString;
+	}
+	
+	public void Restart(){
+		SceneManager.LoadScene("BncQ", LoadSceneMode.Single);
+	}
+	
+	public void Quit (){
+		Log ("Quit!");
+		Application.Quit();
+	}
+	
+	
+	
+	// Deprecated
+	
+	public void LoadSubject(){	// Same as Add, but does not expand the "questionList[i].question.userGroups" list
+		string newName = "tópico " + subject.Count.ToString();
+		int nextIndex = subject.Count;
+		GameObject newInput = Instantiate(inputField) as GameObject;
+		newInput.transform.SetParent(this.gameObject.transform.Find("Client Window/Subjects Scroll/Viewport/Content"), false);
+		newInput.transform.Find("Placeholder").GetComponent<Text>().text = "tópico " +  subject.Count.ToString();
+		newInput.GetComponent<InputField>().onEndEdit.AddListener(delegate{SetSubject();});
+		GameObject newFilterButton = Instantiate(checkbox) as GameObject;
+		newFilterButton.transform.SetParent(this.gameObject.transform.Find("Filter Window/Subjects Scroll/Viewport/Content"), false);
+		newFilterButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectSubjectFilter(nextIndex);});
+		GameObject newQuestionButton = Instantiate(checkbox) as GameObject;
+		newQuestionButton.transform.SetParent(this.gameObject.transform.Find("Question Buttons/TG Window/Subjects Scroll/Viewport/Content"), false);
+		newQuestionButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectSubjectInQuestion(nextIndex);});
+		subject.Add(new Subject(newName, newInput, newFilterButton, newQuestionButton));
+		OrderSubjectEditor();
+		clientWindow.transform.Find("Subjects Set").GetComponent<InputField>().text = subject.Count.ToString();
+	}
+	
+	public void LoadUserGroup(){	// Same as Add, but does not expand the "questionList[i].question.userGroups" list
+		string newName = "grupo " + userGroup.Count.ToString();
+		int nextIndex = userGroup.Count;
+		GameObject newInput = Instantiate(inputField) as GameObject;
+		newInput.transform.SetParent(this.gameObject.transform.Find("Client Window/User Groups Scroll/Viewport/Content"), false);
+		newInput.transform.Find("Placeholder").GetComponent<Text>().text = "grupo " +  userGroup.Count.ToString();
+		newInput.GetComponent<InputField>().onEndEdit.AddListener(delegate{SetUserGroup();});
+		GameObject newFilterButton = Instantiate(checkbox) as GameObject;
+		newFilterButton.transform.SetParent(this.gameObject.transform.Find("Filter Window/User Groups Scroll/Viewport/Content"), false);
+		newFilterButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectUserGroupFilter(nextIndex);});
+		GameObject newQuestionButton = Instantiate(checkbox) as GameObject;
+		newQuestionButton.transform.SetParent(this.gameObject.transform.Find("Question Buttons/TG Window/User Groups Scroll/Viewport/Content"), false);
+		newQuestionButton.GetComponent<Toggle>().onValueChanged.AddListener(delegate{SelectUserGroupInQuestion(nextIndex);});
+		userGroup.Add(new UserGroup(newName, newInput, newFilterButton, newQuestionButton));
+		OrderUserGroupEditor();
+		clientWindow.transform.Find("User Groups Set").GetComponent<InputField>().text = userGroup.Count.ToString();
 	}
 	
 	public void LoadFile (){
@@ -1305,6 +1341,97 @@ public class TextEditorClass : MonoBehaviour {
 		} else Log("There was no BncQ file to be reloaded");
 	}
 	
+	public void SaveFile(){
+		ClearInputFieldIndex();
+		if (questionList.Count < 1){
+			Log("There are no questions to be saved!");
+			return;
+		}
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream fileStream;
+		if (!File.Exists(Application.persistentDataPath + "/" + fileName)){
+			fileStream = File.Create(Application.persistentDataPath + "/" + fileName);
+		} else {
+			fileStream = File.Open(Application.persistentDataPath + "/" + fileName, FileMode.Open);
+		}
+		BncQFile qdbFile = new BncQFile();
+		
+		// info saved - start
+		// question
+		qdbFile.t = new List<string>();		// Text
+		qdbFile.tp = new List<int>();		// Type
+		qdbFile.a = new List<string>();		// Item A
+		qdbFile.b = new List<string>();		// Item B
+		qdbFile.c = new List<string>();		// Item C
+		qdbFile.d = new List<string>();		// Item D
+		qdbFile.e = new List<string>();		// Item E
+		qdbFile.u = new List<string>();		// User Group
+		qdbFile.s = new List<string>();		// Subject
+		for (int i = 0; i < questionList.Count; i++){
+			qdbFile.t.Add(questionList[i].question.text);
+			qdbFile.tp.Add(questionList[i].question.questionType);
+			qdbFile.a.Add(questionList[i].question.answer0);
+			qdbFile.b.Add(questionList[i].question.answer1);
+			qdbFile.c.Add(questionList[i].question.answer2);
+			qdbFile.d.Add(questionList[i].question.answer3);
+			qdbFile.e.Add(questionList[i].question.answer4);
+			string u = "";
+			string s = "";
+			if (userGroup.Count > 0){
+				for (int y = 0; y < questionList[i].question.userGroups.Count; y++){
+					if (y != 0){
+						u = u + " ";
+					}
+					if (questionList[i].question.userGroups[y]){
+						u = u + "T";
+					}
+					if (!questionList[i].question.userGroups[y]){
+						u = u + "F";
+					}
+				}
+				qdbFile.u.Add(u);
+			} if (userGroup.Count == 0){
+				qdbFile.u.Add("X");
+			}
+			if (subject.Count > 0){
+				for (int y = 0; y < questionList[i].question.subjects.Count; y++){
+					if (y != 0){
+						s = s + " ";
+					}
+					if (questionList[i].question.subjects[y]){
+						s = s + "T";
+					}
+					if (!questionList[i].question.subjects[y]){
+						s = s + "F";
+					}
+				}
+				qdbFile.s.Add(s);
+			} if (subject.Count == 0){
+				qdbFile.s.Add("X");
+			}
+		}
+		// client
+		qdbFile.client = client;
+		qdbFile.uName = new List<string>();
+		qdbFile.sName = new List<string>();
+		for (int i = 0; i < userGroup.Count; i++){
+			qdbFile.uName.Add(userGroup[i].name);
+		}
+		for (int i = 0; i < subject.Count; i++){
+			qdbFile.sName.Add(subject[i].name);
+		}
+		// info saved - end	
+		
+		bf.Serialize(fileStream, qdbFile);
+		fileStream.Close();
+		Log("Saved BncQ file, at " + Application.persistentDataPath);
+	}
+	
+	public void SetClientName(string name){
+		client = name;
+		fileName = "BncQ_" + client + ".dat";
+	}
+	
 	public void DeleteFile (){
 		ClearInputFieldIndex();
 		if (File.Exists(Application.persistentDataPath + "/" + fileName)){
@@ -1312,19 +1439,6 @@ public class TextEditorClass : MonoBehaviour {
 			File.Delete (Application.persistentDataPath + "/" + fileName);
 		}
 		else Log("There was no BncQ file to be deleted");
-	}
-	
-	void Log (string newString){
-		log.GetComponent<InputField>().text = DateTime.Now + " : " + newString;
-	}
-	
-	public void Restart(){
-		SceneManager.LoadScene("BncQ", LoadSceneMode.Single);
-	}
-	
-	public void Quit (){
-		Log ("Quit!");
-		Application.Quit();
 	}
 	
 	public void DeleteAllClientePreferencesAndSaveAndRestart(){

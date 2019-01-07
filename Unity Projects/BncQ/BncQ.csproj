@@ -376,8 +376,10 @@
     <Compile Include="Assets\Scripts\BncQCFile.cs" />
     <Compile Include="Assets\Scripts\BncQFile.cs" />
     <Compile Include="Assets\Scripts\ButtonMouseOver.cs" />
+    <Compile Include="Assets\Scripts\ChatScript.cs" />
     <Compile Include="Assets\Scripts\ClickSelect.cs" />
     <Compile Include="Assets\Scripts\DatabaseScript.cs" />
+    <Compile Include="Assets\Scripts\DatabaseSelectionScript.cs" />
     <Compile Include="Assets\Scripts\FadeOut.cs" />
     <Compile Include="Assets\Scripts\LoginScript.cs" />
     <Compile Include="Assets\Scripts\QuestionClass.cs" />

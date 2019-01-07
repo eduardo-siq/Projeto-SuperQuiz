@@ -18,6 +18,10 @@ public class LoginScript : MonoBehaviour {
 	public static bool loginSucess;
 	public static bool loginFail;
 	
+	// Miscellaneous
+	float timer = 0;
+	bool wait = false;
+	
 	void Start () {
 		//UI Elements
 		this.gameObject.transform.Find("Background").GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);	// Main background
@@ -41,15 +45,15 @@ public class LoginScript : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (startLogin){ StartLogin(); startLogin = false;}
-		if (loginSucess){ LoginSuccessful(); loginSucess = false;}
-		if (loginFail){ LoginUnsuccessful(); loginFail = false;}
+		if (wait){ timer = timer + Time.deltaTime; if (timer > 0.5f) { wait = false;}}
+		if (startLogin && !wait){ StartLogin(); startLogin = false; wait = true; timer = 0; return;}
+		if (loginSucess && !wait){ Invoke ("LoginSuccessful", 0.5f); loginSucess = false; wait = true; timer = 0; return;}
+		if (loginFail && !wait){ LoginUnsuccessful(); loginFail = false; wait = true; timer = 0; return;}
 	}
 	
 	public void StartLogin(){
 		// sound
 		waitingWindow.SetActive(true);
-		waitingWindow.SetActive(false);
 		welcomeWindow.SetActive(false);
 		textFieldUser.SetActive(false);
 		textFieldPassword.SetActive(false);
@@ -59,7 +63,6 @@ public class LoginScript : MonoBehaviour {
 	public void LoginUnsuccessful(){
 		// sound
 		waitingWindow.SetActive(false);	
-		waitingWindow.SetActive(true);
 		welcomeWindow.SetActive(true);
 		textFieldUser.SetActive(true);
 		textFieldPassword.SetActive(true);
@@ -77,7 +80,7 @@ public class LoginScript : MonoBehaviour {
 	}
 	
 	public void NextScene(){
-		SceneManager.LoadScene("BncQ", LoadSceneMode.Single);
+		SceneManager.LoadScene("DatabaseSelection", LoadSceneMode.Single);
 	}
 	
 	public void Quit (){

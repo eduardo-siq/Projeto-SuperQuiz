@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AuthenticationScript : MonoBehaviour {
 	
-	public static AuthenticationScript instance = null;
+	public static AuthenticationScript authentication = null;
 	
 	// Scripts
 	DatabaseScript databaseScript;
@@ -14,6 +14,9 @@ public class AuthenticationScript : MonoBehaviour {
 	//UI Elements
 	string userInput;
 	string passwordInput;
+	
+	// User Data
+	public static string userName;
 
 	// Firebase variables
 	static Firebase.Auth.FirebaseAuth auth;
@@ -33,13 +36,13 @@ public class AuthenticationScript : MonoBehaviour {
 	protected bool signInAndFetchProfile = false;
 	
 	void Awake(){
-        if (instance == null){
-            instance = this;
+        if (authentication == null){
+            authentication = this;
             DontDestroyOnLoad(this.gameObject);
         }
         else{
-            if (instance != this){
-                Destroy(gameObject);
+            if (authentication != this){
+                Destroy(this);
             }
         }
     }	
@@ -207,6 +210,7 @@ public class AuthenticationScript : MonoBehaviour {
 				}
 				Debug.Log(authErrorCode + exception.ToString());
 			}
+			LoginScript.loginFail = true;
 		} else if (task.IsCompleted) {
 			Debug.Log(operation + " completed");
 			complete = true;
@@ -228,9 +232,17 @@ public class AuthenticationScript : MonoBehaviour {
 	}
 	
 	public void LoginButton(){
+		SetUserName();	// Sets user name for public chat
 		SigninWithEmailAsync(userInput, passwordInput);
-		LoginScript.startLogin = true;
-		
+		LoginScript.startLogin = true;	
+	}
+	
+	void SetUserName(){
+		// check if there are local user files. if not, use email as userName
+		string[] emailSplit;
+		string[] space = new string[] { "@" };
+		emailSplit = userInput.Split(space, System.StringSplitOptions.None);
+		userName = emailSplit[0];
 	}
 	
 	
