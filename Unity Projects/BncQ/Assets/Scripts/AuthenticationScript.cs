@@ -35,6 +35,9 @@ public class AuthenticationScript : MonoBehaviour {
 	private bool fetchingToken = false;
 	protected bool signInAndFetchProfile = false;
 	
+	// Miscellaneous
+	public static bool fadeOut;
+	
 	void Awake(){
         if (authentication == null){
             authentication = this;
@@ -60,6 +63,9 @@ public class AuthenticationScript : MonoBehaviour {
 			Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
 			}
 		});
+		
+		// Miscellaneous
+		fadeOut = true;
 	}
 	
 	// Handle initialization of the necessary firebase modules:

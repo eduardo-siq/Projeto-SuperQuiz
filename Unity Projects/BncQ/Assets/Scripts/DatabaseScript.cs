@@ -10,19 +10,9 @@ public class DatabaseScript : MonoBehaviour {
 	
 	public static DatabaseScript database = null;
 	public static TextEditorClass bncQ;
+	public static UserEditorClass userEditor;
 	
-	public DatabaseReference dbTest1;
-	public DatabaseReference dbTest2;
-	//public ValueEventListener dbvel1;
-	
-	
-	string testString = "";
-	string testString2 = "";
-	
-	float timer = 0;
 	bool setValues = false;
-	
-	public static string thisScene;
 	
 	// Database variables
 	public static DatabaseReference dbRoot;
@@ -37,14 +27,12 @@ public class DatabaseScript : MonoBehaviour {
 	public static DatabaseReference dbUsers;
 	public static List<LocalDatabaseEntry> questionListLocal;
 	public static List<LocalDatabaseEntry> usersListLocal;
-	
-	// Chat
-	static DatabaseReference dbChat;
-	
-	// TEST
-	int dice1;
-	int dice2;
 	public static DataSnapshot dbSnapshot;
+	
+	
+	// Miscellaneous
+	float timer = 0;
+	public static string thisScene;
 	
 	void Awake(){
         if (database == null){
@@ -59,76 +47,24 @@ public class DatabaseScript : MonoBehaviour {
     }	
 	
 	void Start(){
-		dice1 = UnityEngine.Random.Range(0, 5);
-		if (dice1 == 0){ testString = "These are not the droids we are looking for."; testString2 = "Star Wars";}
-		if (dice1 == 1){ testString = "Say 'hello' to my little friend!"; testString2 = "Scarface";}
-		if (dice1 == 2){ testString = "I will strike down upon thee with great vengeance and furious anger!"; testString2 = "Pulp Fiction";}
-		if (dice1 == 3){ testString = "Get to the chopper!"; testString2 = "Predator";}
-		if (dice1 == 4){ testString = "Quiet an experience to live in fear, isn't it? That's what it is to be a slave."; testString2 = "Blade Runner";}
-		print ("DatabaseScript: " + testString);
-		
-		// dbRoot = FirebaseDatabase.DefaultInstance.GetReference("");	// set by timer in Update
-		// dbTest1 = dbRoot.Child("test1");
-		// dbTest2 = dbRoot.Child("test2");
-		
-		// Add event listeners to references
-		
-		// dbTest1.SetValueAsync(testString);	// set by timer in Update
-		// dbTest2.SetValueAsync(testString2);
-		
-		// Use event listeners to retrieve data from firebase
 		Invoke("SetRerefences", 0.5f);
 		Invoke("StartListener", 0.75f);
-		// Invoke("StartListenerChat", 0.75f);
-		// Invoke("TestDatabase", 1.5f);
-		
-	}
-	
-	void Update(){
 	}
 	
 	void SetRerefences(){
 		dbRoot = FirebaseDatabase.DefaultInstance.GetReference("");
 		GetQuestionsReference();
-		
-		// Test
-		dbTest1 = dbRoot.Child("test1");
-		dbTest2 = dbRoot.Child("test2");
-		
-		// Test Chat
-		dbChat = dbRoot.Child("Chat");
 	}
 	
 	public static void GetQuestionsReference(){
-		DatabaseReference dbQuestions = dbRoot.Child("client_" + currentClient.ToString() + "/questions");
+		DatabaseReference dbQuestions = dbRoot.Child("questions/client_" + currentClient.ToString());
 	}
 	
 	public static void GetUsersReference(){
-		DatabaseReference dbUsers = dbRoot.Child("client_" + currentClient.ToString() + "/userss");
+		DatabaseReference dbUsers = dbRoot.Child("users/client_" + currentClient.ToString());
 	}
 	
-	// Test	//
-		// Test	//
-			// Test	//
-	void TestDatabase(){
-		dice2 = UnityEngine.Random.Range(0,9);
-		dbRoot.Child("movie0" + dice2.ToString() + "/phrase").SetValueAsync(testString);
-		dbRoot.Child("movie0" + dice2.ToString() + "/title").SetValueAsync(testString2);
-		dbTest1.SetValueAsync(testString);
-		dbTest2.SetValueAsync(testString2);
-		dbTest1.SetValueAsync(testString);
-		dbTest2.SetValueAsync(testString2);		
-		//
-		if (dbSnapshot.HasChild("test1")) print ("dbSnapshot.HasChild('test1')"); else print ("!dbSnapshot.HasChild('test1')");
-		if (dbSnapshot.HasChild("test2")) print ("dbSnapshot.HasChild('test2')"); else print ("!dbSnapshot.HasChild('test2')");
-		if (dbSnapshot.HasChild("test3")) print ("dbSnapshot.HasChild('test3')"); else print ("!dbSnapshot.HasChild('test3')");
-	}
-			// Test	//
-		// Test	//
-	// Test	//
-
-	
-	protected void StartListener() {
+	public void StartListener() {
 		print ("StartListener()");
 		dbRoot.ValueChanged += (object sender, ValueChangedEventArgs e2) => {
 			if (e2.DatabaseError != null) {
@@ -157,79 +93,84 @@ public class DatabaseScript : MonoBehaviour {
 		};
 	}
 	
-	// Chat test //
-		// Chat test //
-			// Chat test //
-	void StartListenerChat(){
-		dbChat.ValueChanged += (object sender, ValueChangedEventArgs e2) => {
-			if (e2.DatabaseError != null) {
-				print ("ERROR");
-				Debug.LogError(e2.DatabaseError.Message);
-				return;
-			}
-			if (e2.Snapshot != null || e2.Snapshot.Value != null){
-				string newString = (string) e2.Snapshot.Value;
-				ChatScript.chat.NewMessage(newString);
-			}
-		};
-	}
-	
-	public static void SendMessage(string message){
-		dbChat.SetValueAsync(message);
-	}
-			// Chat test //
-		// Chat test //
-	// Chat test //
-	
-	public static List<DatabaseEntry> GetAllClients(){
+	// public static List<DatabaseEntry> GetAllClients(){	// REMOVE LATER
 		// Gets a list of 20 clients;
-		print ("CheckAllClients()");
+		// print ("GetAllClients()");
+		// List <DatabaseEntry> clientList = new List<DatabaseEntry>();
+		// for (int i = 0; i < 20; i++){
+			// if (dbSnapshot.HasChild("clients/client_" + i.ToString())){
+				// string newClient = (string) dbSnapshot.Child("clients/client_" + i.ToString() + "/name").Value;
+				// clientList.Add(new DatabaseEntry(newClient, i));
+				// print ("clientList.Add(" + clientList[i].entry + ")");
+			// } else { print ("index " + i + " is empty");}
+		// }
+		// return clientList;
+	// }
+	
+
+	public static List<DatabaseEntry> GetAllClients(){
+		print ("GetAllClients()");
 		List <DatabaseEntry> clientList = new List<DatabaseEntry>();
-		for (int i = 0; i < 20; i++){
-			if (dbSnapshot.HasChild("client_" + i.ToString())){
-				string newClient = (string) dbSnapshot.Child("client_" + i.ToString() + "/name").Value;
+		// Replicates the snapshot in order to keep track of edits
+		int i = 0;
+		int target = 20;
+		bool hasTarget = false;;
+		bool done = false;	
+		bool exists;
+		do {
+			string path = "clients/client_" + i.ToString() + "/name";
+			exists = ValueExistsAsString(path);
+			print ("ValueExistsAsString " + i + " " + exists);
+			if (exists){
+				string newClient = (string) dbSnapshot.Child(path).Value;
+				print ("newClient: " + newClient);
 				clientList.Add(new DatabaseEntry(newClient, i));
-				print ("clientList.Add(" + clientList[i].entry + ")");
-			} else { print ("index " + i + " is empty");}
-		}
+				if (hasTarget){
+					hasTarget = false;
+				}
+			}
+			else {
+				if (!hasTarget){
+					hasTarget = true;
+					target = i + 20;
+				}
+			}
+			if (i == target) done = true;
+			i = i + 1;
+		} while (!done);
+		print ("GetAllClients: " + clientList.Count + " entries");
 		return clientList;
 	}
 	
 	public static void AddClient(string newName){
 		print ("AddClient: " + newName);
 		int nextIndex = GetNextClientIndex();
-		dbRoot.Child("client_" + nextIndex.ToString() + "/name").SetValueAsync(newName);
-		dbRoot.Child("client_" + nextIndex.ToString() + "/questions/question_dummy").SetValueAsync("dummy");
-		dbRoot.Child("client_" + nextIndex.ToString() + "/users/user_dummy").SetValueAsync("dummy");
+		dbRoot.Child("clients/client_" + nextIndex.ToString() + "/name").SetValueAsync(newName);
+		dbRoot.Child("clients/client_" + nextIndex.ToString() + "/userGroups").SetValueAsync("X");
+		dbRoot.Child("clients/client_" + nextIndex.ToString() + "/subjects").SetValueAsync("X");
 	}
 	
-	public void UploadAllQuestions(){
-		for (int i = 0; i < questionListLocal.Count; i++){
-			if (!questionListLocal[i].delete){
-				int questionIndex = questionListLocal[i].index;
-				//UploadQuestion(currentClient, questionIndex, questions[questionIndex].text etc...);
-			}
+	public static string GetSubjectsFromFirebase(){
+		string newString;
+		newString = (string) dbSnapshot.Child("clients/client_" + currentClient.ToString() + "/subjects").Value;
+		if (newString == null){
+			newString = "X";
 		}
-		RemoveSpecifiedQuestions();
+		return newString;
 	}
 	
-	public void UploadAllUsers(){
-		for (int i = 0; i < usersListLocal.Count; i++){
-			if (!usersListLocal[i].delete){
-				int userIndex = usersListLocal[i].index;
-				UploadUser(currentClient);
-			}
-		}
-		RemoveSpecifiedUsers();
+	public static string GetUsersFromFirebase(){
+		string newString;
+		newString = (string) dbSnapshot.Child("clients/client_" + currentClient.ToString() + "/userGroups").Value;
+		return newString;
 	}
 	
 	public static void UploadQuestion(int client, int index, int type, string userGroup, string subjects, string question, string alt0, string alt1, string alt2, string alt3, string alt4){
 		// Checks if question with this index already exists, if so edits it, if not adds a new one
 		print ("UploadQuestion() ");
-	
 		int databaseEntryIndex = 0;
 		bool editQuestion = false;
-		DatabaseReference node = dbRoot.Child("client_" + client.ToString() + "/questions");
+		DatabaseReference node = dbRoot.Child("questions/client_" + client.ToString());
 		if (questionListLocal.Count > 0){
 			for (int i = 0; i < questionListLocal.Count; i ++){
 				print ("for (int i = 0; i < questionListLocal.Count; i ++): " + i);
@@ -244,76 +185,111 @@ public class DatabaseScript : MonoBehaviour {
 		if (editQuestion){
 			EditQuestion(databaseEntryIndex, client, index, type, userGroup, subjects, question, alt0, alt1, alt2, alt3, alt4);
 			print ("EditQuestion");
-			}
+		}
 		if (!editQuestion){
 			AddQuestion(client, index, type, userGroup, subjects, question, alt0, alt1, alt2, alt3, alt4);
 			print ("AddQuestion");
-			}
+		}
 	}
 	
-	public static void UploadUser(int client){
+	public static void UploadUser(int client, int index, string name, string email, /*string password,*/ string telephone, string cpf, /*string department,*/ string localization, bool firstLogin, string answers, string time, int score, string userGroups){
 		int databaseEntryIndex = 0;
 		bool editUser = false;
-		
+		DatabaseReference node = dbRoot.Child("users/client_" + client.ToString());
+		if (usersListLocal.Count > 0){
+			for (int i = 0; i < usersListLocal.Count; i ++){
+				print ("for (int i = 0; i < usersListLocal.Count; i ++): " + i);
+				if (usersListLocal[i].index == index){
+					editUser = true;
+					print ("editUser = true;");
+					databaseEntryIndex = i;
+					break;
+				}
+			}
+		}
 		if (editUser){
-			EditUser();
+			EditUser(databaseEntryIndex, client, index, name, email, /*password,*/ telephone, cpf, /*department,*/ localization, firstLogin, answers, time, score, userGroups);
 			print ("EditUser");
 		}
 		if (!editUser){
-			AddUser();
+			AddUser(client, index, name, email, /*password,*/ telephone, cpf, /*department,*/ localization, firstLogin, answers, time, score, userGroups);
 			print ("AddUser");
 		}
 		print ("UploadQuestion() ");
 	}
 	
 	public static void AddQuestion(int client, int index, int type, string userGroup, string subjects, string question, string alt0, string alt1, string alt2, string alt3, string alt4){
-		// int databaseEntryIndex = GetNextQuestionIndex(client);
 		int databaseEntryIndex = questionListLocal.Count;
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/type").SetValueAsync(type);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/userGroup").SetValueAsync(userGroup);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/subjects").SetValueAsync(subjects);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/question").SetValueAsync(question);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt0").SetValueAsync(alt0);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt1").SetValueAsync(alt1);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt2").SetValueAsync(alt2);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt3").SetValueAsync(alt3);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt4").SetValueAsync(alt4);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/type").SetValueAsync(type);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/userGroup").SetValueAsync(userGroup);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/subjects").SetValueAsync(subjects);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/question").SetValueAsync(question);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt0").SetValueAsync(alt0);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt1").SetValueAsync(alt1);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt2").SetValueAsync(alt2);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt3").SetValueAsync(alt3);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt4").SetValueAsync(alt4);
 		questionListLocal.Add(new LocalDatabaseEntry(databaseEntryIndex, index));
 	}
 	
 	public static void EditQuestion(int databaseEntryIndex, int client, int index, int type, string userGroup, string subjects, string question, string alt0, string alt1, string alt2, string alt3, string alt4){
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/type").SetValueAsync(type);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/userGroup").SetValueAsync(userGroup);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/subjects").SetValueAsync(subjects);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/question").SetValueAsync(question);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt0").SetValueAsync(alt0);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt1").SetValueAsync(alt1);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt2").SetValueAsync(alt2);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt3").SetValueAsync(alt3);
-		dbRoot.Child("client_" + client.ToString() + "/questions/question_" + databaseEntryIndex.ToString() + "/alt4").SetValueAsync(alt4);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/type").SetValueAsync(type);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/userGroup").SetValueAsync(userGroup);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/subjects").SetValueAsync(subjects);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/question").SetValueAsync(question);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt0").SetValueAsync(alt0);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt1").SetValueAsync(alt1);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt2").SetValueAsync(alt2);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt3").SetValueAsync(alt3);
+		dbRoot.Child("questions/client_" + client.ToString() + "/question_" + databaseEntryIndex.ToString() + "/alt4").SetValueAsync(alt4);
 	}
 	
-	public static void AddUser(){
-		
+	public static void AddUser(int client, int index, string name, string email, /*string password,*/ string telephone, string cpf, /*string department,*/ string localization, bool firstLogin, string answers, string time, int score, string userGroups){
+		int databaseEntryIndex = usersListLocal.Count;
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/name").SetValueAsync(name);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/email").SetValueAsync(email);
+		// dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/password").SetValueAsync(password);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/telephone").SetValueAsync(telephone);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/cpf").SetValueAsync(cpf);
+		// dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/department").SetValueAsync(department);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/localization").SetValueAsync(localization);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/firstLogin").SetValueAsync(firstLogin);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/answers").SetValueAsync(answers);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/time").SetValueAsync(time);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/score").SetValueAsync(score);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/userGroups").SetValueAsync(userGroups);
+		usersListLocal.Add(new LocalDatabaseEntry(databaseEntryIndex, index));
 	}
 	
-	public static void EditUser(){
-		
+	public static void EditUser(int databaseEntryIndex, int client, int index, string name, string email, /*string password,*/ string telephone, string cpf, /*string department,*/ string localization, bool firstLogin, string answers, string time, int score, string userGroups){
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/index").SetValueAsync(index);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/name").SetValueAsync(name);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/email").SetValueAsync(email);
+		// dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/password").SetValueAsync(password);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/telephone").SetValueAsync(telephone);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/cpf").SetValueAsync(cpf);
+		// dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/department").SetValueAsync(department);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/localization").SetValueAsync(localization);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/firstLogin").SetValueAsync(firstLogin);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/answers").SetValueAsync(answers);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/time").SetValueAsync(time);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/score").SetValueAsync(score);
+		dbRoot.Child("users/client_" + client.ToString() + "/user_" + databaseEntryIndex.ToString() + "/userGroups").SetValueAsync(userGroups);
 	}
 	
 	public static void GetLocalQuestionList(){
 		questionListLocal = new List<LocalDatabaseEntry>();
 		// Replicates the snapshot in order to keep track of edits
-		int numberOfQuestions = 0;
 		int i = 0;
 		int target = 20;
 		bool hasTarget = false;;
 		bool done = false;	
 		bool exists;
 		do {
-			string path = "client_" + currentClient.ToString() + "/questions/question_" + i.ToString() + "/index";
+			string path = "questions/client_" + currentClient.ToString() + "/question_" + i.ToString() + "/index";
 			exists = ValueExistsAsLong(path);
 			print ("ValueExistsAsLong " + i + " " + exists);
 			if (exists){
@@ -339,23 +315,28 @@ public class DatabaseScript : MonoBehaviour {
 		print ("GetLocalQuestionList: " + questionListLocal.Count);
 	}
 	
-	public static void GetLocalClientList(){	// MAYBE REVIEW LATER	// MAYBE REVIEW LATER	// MAYBE REVIEW LATER	
+	public static void GetLocalUserList(){	// MAYBE REVIEW LATER	// MAYBE REVIEW LATER	// MAYBE REVIEW LATER	
 		usersListLocal = new List<LocalDatabaseEntry>();
 		// Replicates the snapshot in order to keep track of edits
-		int numberOfQuestions = 0;
 		int i = 0;
-		int target;
+		int target = 20;
 		bool hasTarget = false;;
-		bool done = false;
-		DataSnapshot node = dbSnapshot.Child(currentClient + "/questions");
+		bool done = false;	
+		bool exists;
 		do {
-			target = 20;
-			if (node.HasChild("question_" + i.ToString())){
-				int y = (int) node.Child("question_" + i.ToString() + "/index").Value;
+			string path = "users/client_" + currentClient.ToString() + "/user_" + i.ToString() + "/index";
+			exists = ValueExistsAsLong(path);
+			print ("ValueExistsAsLong " + i + " " + exists);
+			if (exists){
+				long newValue = (long) dbSnapshot.Child(path).Value;
+				int y = Convert.ToInt32(newValue);
 				usersListLocal.Add(new LocalDatabaseEntry(i, y));
+				print ("usersListLocal.Add(new LocalDatabaseEntry(" + i + ", " + y + "));");
 				if (hasTarget){
 					hasTarget = false;
 				}
+				User newUser = LoadUser(currentClient, i);
+				userEditor.AddUser(newUser);
 			}
 			else {
 				if (!hasTarget){
@@ -366,7 +347,7 @@ public class DatabaseScript : MonoBehaviour {
 			if (i == target) done = true;
 			i = i + 1;
 		} while (!done);
-		print ("GetLocalUsersList: " + usersListLocal.Count);
+		print ("GetLocalUserList: " + usersListLocal.Count);
 	}
 	
 	public static int GetNextClientIndex(){
@@ -385,7 +366,7 @@ public class DatabaseScript : MonoBehaviour {
 		int nextIndex = 0;
 		bool done = false;
 		do {
-			if (!dbSnapshot.HasChild("client_" + client.ToString() + "/questions/question_" + nextIndex.ToString())) done = true;
+			if (!dbSnapshot.HasChild("questions/client_" + client.ToString() + "/question_" + nextIndex.ToString())) done = true;
 			else nextIndex = nextIndex + 1;
 			if (nextIndex > 1000) done = true;	// Infinity loop safety check
 		} while (!done);
@@ -405,12 +386,39 @@ public class DatabaseScript : MonoBehaviour {
 		return nextIndex;
 	}
 	
+	public int GetQuestionEntryIndexByIndex(int index){
+		int entryIndex = -1;
+		for (int i = 0; i < questionListLocal.Count; i++){
+			if (questionListLocal[i].index == index){
+				entryIndex = i;
+			}
+		}
+		if (entryIndex == -1){
+			entryIndex = 0;
+			print ("Entry Index not found. Set to zero");
+		}
+		return entryIndex;
+	}
+
+	public int GetUserEntryIndexByIndex(int index){
+		int entryIndex = -1;
+		for (int i = 0; i < usersListLocal.Count; i++){
+			if (usersListLocal[i].index == index){
+				entryIndex = i;
+			}
+		}
+		if (entryIndex == -1){
+			entryIndex = 0;
+			print ("Entry Index not found. Set to zero");
+		}
+		return entryIndex;
+	}
+	
 	public static void RemoveSpecifiedQuestions(){	// FIX LATER
 		for (int i = 0; i < questionListLocal.Count; i++){
 			if (questionListLocal[i].delete){
 				//firebase method for deleting entries
-				// dbQuestions.Child("question_" + questionListLocal[i].entry).Remove();
-				getNewSnapshot = true;
+				DeleteQuestionFromFirebase(i);
 			}
 		}
 	}
@@ -419,7 +427,7 @@ public class DatabaseScript : MonoBehaviour {
 		for (int i = 0; i < usersListLocal.Count; i++){
 			if (usersListLocal[i].delete){
 				//firebase method for deleting entries
-				//dbQuestions.Child("question_" + usersListLocal[i].entry).Remove();
+				DeleteUserFromFirebase(i);
 				getNewSnapshot = true;
 			}
 		}
@@ -429,6 +437,14 @@ public class DatabaseScript : MonoBehaviour {
 		for (int i = 0; i < questionListLocal.Count; i++){
 			if (questionListLocal[i].index == index){
 				questionListLocal[i].Delete();
+			}
+		}
+	}
+	
+	public static void FindAndDeleteUser(int index){
+		for (int i = 0; i < usersListLocal.Count; i++){
+			if (usersListLocal[i].index == index){
+				usersListLocal[i].Delete();
 			}
 		}
 	}
@@ -457,7 +473,7 @@ public class DatabaseScript : MonoBehaviour {
 
 	public static Question LoadQuestion(int client, int entryIndex){
 		Question newQuestion = new Question();
-		string path = "client_" + currentClient.ToString() + "/questions/question_" + entryIndex.ToString();
+		string path = "questions/client_" + currentClient.ToString() + "/question_" + entryIndex.ToString();
 		long newIndex = (long) dbSnapshot.Child(path + "/index").Value;
 		newQuestion.index = Convert.ToInt32(newIndex);
 		long newType = (long)dbSnapshot.Child(path + "/type").Value;
@@ -501,24 +517,85 @@ public class DatabaseScript : MonoBehaviour {
 		return newQuestion;
 	}
 	
-	// Test //
-		// Test //
-			// Test //
-	public static void DeleteTest(int databaseEntryIndex){
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/index").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/type").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/userGroup").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/subjects").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/question").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/alt0").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/alt1").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/alt2").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/alt3").RemoveValueAsync();
-		dbRoot.Child("client_" + currentClient + "/questions/question_" + databaseEntryIndex.ToString() + "/alt4").RemoveValueAsync();
+	public static User LoadUser(int client, int entryIndex){
+		User newUser = new User();
+		string path = "users/client_" + currentClient.ToString() + "/user_" + entryIndex.ToString();
+		long newIndex = (long) dbSnapshot.Child(path + "/index").Value;
+		newUser.index = Convert.ToInt32(newIndex);
+		newUser.name = (string) dbSnapshot.Child(path + "/name").Value;
+		newUser.email = (string) dbSnapshot.Child(path + "/email").Value;
+		// newUser.password = (string) dbSnapshot.Child(path + "/password").Value;
+		newUser.telephone = (string) dbSnapshot.Child(path + "/telephone").Value;
+		newUser.cpf = (string) dbSnapshot.Child(path + "/cpf").Value;
+		// newUser.departament = (string) dbSnapshot.Child(path + "/departament").Value;
+		newUser.localization = (string) dbSnapshot.Child(path + "/localization").Value;
+		newUser.firstLogin = (bool) dbSnapshot.Child(path + "/firstLogin").Value;
+		newUser.answers = (string) dbSnapshot.Child(path + "/answers").Value;
+		newUser.time = (string) dbSnapshot.Child(path + "/time").Value;
+		// string newScore = (string) dbSnapshot.Child(path + "/score").Value;
+		long newScore = (long) dbSnapshot.Child(path + "/score").Value;
+		newUser.score = Convert.ToInt32(newScore);
+		newUser.userGroups = new List <bool>();
+		string newUserGroups = (string) dbSnapshot.Child(path + "/userGroup").Value;
+		if (newUserGroups != "" && newUserGroups != null){
+			string[] userUserGroups;
+			string[] space = new string[] {" "};
+			userUserGroups = newUserGroups.Split(space, StringSplitOptions.None);
+			for (int y = 0; y < userUserGroups.Length; y++){
+				if (userUserGroups[y] == "T"){
+					newUser.userGroups.Add(true);
+				}
+				if (userUserGroups[y] == "F"){
+					newUser.userGroups.Add(false);
+				}
+			}
+		}
+		if (newUserGroups == "" || newUserGroups == null){
+			print ("no user groups");
+		}
+		print ("new user created:");
+		print (newUser.index);
+		print (newUser.name);
+		print (newUser.email);
+		print (newUser.telephone);
+		print (newUser.cpf);
+		print (newUser.localization);
+		print (newUser.firstLogin);
+		print (newUser.answers);
+		print (newUser.time);
+		print (newUser.score);
+		print (newUserGroups);
+		return newUser;
 	}
-			// Test //
-		// Test //
-	// Test //
+	
+	public static void DeleteQuestionFromFirebase(int databaseEntryIndex){
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/index").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/type").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/userGroup").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/subjects").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/question").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/alt0").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/alt1").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/alt2").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/alt3").RemoveValueAsync();
+		dbRoot.Child("questions/client_" + currentClient + "/question_" + databaseEntryIndex.ToString() + "/alt4").RemoveValueAsync();
+	}
+	
+	public static void DeleteUserFromFirebase(int databaseEntryIndex){	// CHANGE LATER
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/index").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/name").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/email").RemoveValueAsync();
+		// dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/password").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/telephone").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/cpf").RemoveValueAsync();
+		// dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/department").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/localization").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/firstLogin").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/answers").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/time").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/score").RemoveValueAsync();
+		dbRoot.Child("users/client_" + currentClient + "/user_" + databaseEntryIndex.ToString() + "/userGroups").RemoveValueAsync();
+	}
 	
 	public static bool ValueExistsAsLong(string path){
 		// Checks if a value in a node exists and returns true or false;
@@ -526,7 +603,9 @@ public class DatabaseScript : MonoBehaviour {
 		string message = "";
 		try{
 			long newValue = (long) dbSnapshot.Child(path).Value;
-			exists = true;
+			if (newValue != null){
+				exists = true;
+			}
 		}
 		catch (InvalidCastException exception){
 			exists = false;
@@ -541,12 +620,14 @@ public class DatabaseScript : MonoBehaviour {
 	}
 	
 	public static bool ValueExistsAsString(string path){
-		// Checks if a value in a node exists and returns true or false;
+		// Checks if a value in a node exists and it's not null and returns true or false;
 		bool exists = false;
 		string message = "";
 		try{
 			string newValue = (string) dbSnapshot.Child(path).Value;
-			exists = true;
+			if (newValue != null && newValue != ""){
+				exists = true;
+			}
 		}
 		catch (InvalidCastException exception){
 			exists = false;

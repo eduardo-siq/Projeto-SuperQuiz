@@ -48,6 +48,7 @@ public class TextEditorClass : MonoBehaviour {
 	GameObject buttonSaveBncQ;
 	GameObject buttonDeleteBncQ;
 	GameObject buttonUploadBncQ;
+	GameObject waitingWindow;
 	GameObject log;
 	//Data
 	int currentInputField = 0;
@@ -75,6 +76,10 @@ public class TextEditorClass : MonoBehaviour {
 	 
 	 // Firebase & Database
 	 DatabaseScript databaseScript;
+	 
+	 // Miscellaneous
+	 string nextScene;
+	 bool changesToUpload;
 
 
 
@@ -115,6 +120,7 @@ public class TextEditorClass : MonoBehaviour {
 		buttonSaveBncQ = this.gameObject.transform.Find("Button - Save BncQ").gameObject;
 		buttonDeleteBncQ = this.gameObject.transform.Find("Button - Delete BncQ").gameObject;
 		buttonUploadBncQ = this.gameObject.transform.Find("Button - Upload BncQ").gameObject;
+		waitingWindow = this.gameObject.transform.Find("Waiting Window").gameObject;
 		log = this.gameObject.transform.Find("Log").gameObject;
 		textFieldI.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 - Screen.width/6, Screen.height/2 + Screen.height/3 + Screen.height/15);
 		textFieldI.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width/9, Screen.height/15);
@@ -221,6 +227,9 @@ public class TextEditorClass : MonoBehaviour {
 		buttonDeleteBncQ.GetComponent<RectTransform>().sizeDelta = new Vector2((Screen.width/3 - Screen.width/15)/3, Screen.height/15);
 		buttonUploadBncQ.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 + Screen.width/6 + Screen.width/30, Screen.height/15);
 		buttonUploadBncQ.GetComponent<RectTransform>().sizeDelta = new Vector2((Screen.width/3 - Screen.width/15), Screen.height/15);
+		waitingWindow.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width/2 - Screen.height/9, Screen.height/2 - Screen.height/9);
+		waitingWindow.transform.Find("Window").GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.height/4.5f, Screen.height/4.5f);
+		waitingWindow.SetActive(false);
 		log.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.height/60, Screen.height/60);
 		log.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - Screen.height/30, Screen.height/30);
 
@@ -247,6 +256,7 @@ public class TextEditorClass : MonoBehaviour {
 		ClearQuestion();
 		
 		// Set-up dynamic interface
+		GetUsersAndSubjects();
 		OrderListOfQuestion();
 		OrderSubjectEditor();
 		OrderUserGroupEditor();
@@ -263,6 +273,10 @@ public class TextEditorClass : MonoBehaviour {
 		
 		
 		Log("Welcome to Question DataBase Editor");
+		
+		// Miscellaneous
+		nextScene = "";
+		changesToUpload = false;
 	}
 	
 	void Update () {
@@ -328,6 +342,10 @@ public class TextEditorClass : MonoBehaviour {
 			}
 			if (Input.GetKeyDown(KeyCode.Z)){
 				ClearQuestion();
+				return;
+			}
+			if (Input.GetKeyDown(KeyCode.Delete)){
+				DeleteQuestion();
 				return;
 			}
 		}
@@ -402,6 +420,29 @@ public class TextEditorClass : MonoBehaviour {
 		currentInputField = 0;
 	}
 	
+	void GetUsersAndSubjects(){
+		string subjectString = DatabaseScript.GetSubjectsFromFirebase();
+		string usersString = DatabaseScript.GetUsersFromFirebase();
+		if (subjectString != "X"){
+			string[] questionSubjects;
+			string[] space = new string[] {" "};
+			questionSubjects = subjectString.Split(space, StringSplitOptions.None);
+			for (int i = 0; i < questionSubjects.Length; i++){
+				LoadSubject();
+				subject[i].name = questionSubjects[i];
+			}
+		}
+		if (usersString != "X"){
+			string[] questionUsers;
+			string[] space = new string[] {" "};
+			questionUsers = usersString.Split(space, StringSplitOptions.None);
+			for (int i = 0; i < questionUsers.Length; i++){
+				LoadUserGroup();
+				userGroup[i].name = questionUsers[i];
+			}
+		}
+	}
+	
 	public void AcceptQuestion (){
 		ClearInputFieldIndex();
 		string q = textFieldQ.GetComponent<InputField>().text;
@@ -420,6 +461,7 @@ public class TextEditorClass : MonoBehaviour {
 				return;
 			}
 		}
+		changesToUpload = true;
 		if (currentQuestionType == 1){	
 			if (q == "" && a == ""){
 				Log("Question is empty!");
@@ -512,8 +554,15 @@ public class TextEditorClass : MonoBehaviour {
 	
 	public void UploadQuestions(){
 		print ("UploadQuestions()");
+		if (!changesToUpload){
+			Log("There is no new information to be uploaded!");
+			return;
+		}
 		for (int i = 0; i < questionList.Count; i++){
 			print ("i = " + i);
+			if (i + 1 == questionList.Count){
+				DatabaseScript.getNewSnapshot = true;
+			}
 			if (questionList[i].question.edited){
 				print ("upload: " + i);
 				DatabaseScript.UploadQuestion(
@@ -532,7 +581,10 @@ public class TextEditorClass : MonoBehaviour {
 					questionList[i].question.edited = false;
 			}
 		}
+		Log("Questions uploaded");
+		changesToUpload = false;
 		DatabaseScript.RemoveSpecifiedQuestions();
+		FinishScene();
 	}
 	
 	public List <bool> NewUserGroupSelectedInQuestion (){
@@ -706,6 +758,7 @@ public class TextEditorClass : MonoBehaviour {
 			textFieldC.GetComponent<InputField>().text = questionList[currentQuestionIndex].question.answer2;
 			textFieldD.GetComponent<InputField>().text = questionList[currentQuestionIndex].question.answer3;
 			textFieldE.GetComponent<InputField>().text = questionList[currentQuestionIndex].question.answer4;
+			questionList[currentQuestionIndex].question.edited = false;
 		}
 		SetChangeTypeButton();
 	}
@@ -758,7 +811,7 @@ public class TextEditorClass : MonoBehaviour {
 		textFieldE.GetComponent<InputField>().text = questionList[newIndex].question.answer4;
 		if (userGroup.Count > 0){
 			for (int i = 0; i < userGroup.Count; i++){
-				userGroup[i].questionButton.GetComponent<Toggle>().isOn = questionList[newIndex].question.userGroups[i];
+				userGroup[i].button.GetComponent<Toggle>().isOn = questionList[newIndex].question.userGroups[i];
 			}
 		}
 		if (subject.Count > 0){
@@ -794,6 +847,7 @@ public class TextEditorClass : MonoBehaviour {
 		if (newQuestion){
 			return;
 		}
+		changesToUpload = true;
 		Destroy(questionList[currentQuestionIndex].button);
 		questionList.Remove(questionList[currentQuestionIndex]);
 		for (int i = currentQuestionIndex; i < questionList.Count; i++){
@@ -877,8 +931,8 @@ public class TextEditorClass : MonoBehaviour {
 			rectFilter.sizeDelta = new Vector2( Screen.width/6, Screen.height/15);
 			rectFilter.anchoredPosition = new Vector2(0, - Screen.height/15 * (i));
 			filterWindow.transform.Find("User Groups Scroll/Viewport/Content").GetComponent<RectTransform>().sizeDelta = new Vector2(0, (1 + i) * Screen.height/15);
-			RectTransform rectQuestion = userGroup[i].questionButton.GetComponent<RectTransform>();
-			userGroup[i].questionButton.transform.Find("Label").GetComponent<Text>().text = userGroup[i].name;
+			RectTransform rectQuestion = userGroup[i].button.GetComponent<RectTransform>();
+			userGroup[i].button.transform.Find("Label").GetComponent<Text>().text = userGroup[i].name;
 			rectQuestion.sizeDelta = new Vector2( Screen.width/6, Screen.height/15);
 			rectQuestion.anchoredPosition = new Vector2(0, - Screen.height/15 * (i));
 			questionTGWindows.transform.Find("User Groups Scroll/Viewport/Content").GetComponent<RectTransform>().sizeDelta = new Vector2(0, (1 + i) * Screen.height/15);
@@ -1110,6 +1164,21 @@ public class TextEditorClass : MonoBehaviour {
 	
 	void Log (string newString){
 		log.GetComponent<InputField>().text = DateTime.Now + " : " + newString;
+	}
+	
+	void FinishScene(){
+		waitingWindow.SetActive(true);
+		databaseScript.StartListener();
+		nextScene = "DatabaseSelection";
+		Invoke("NextScene", 0.75f);
+		Invoke("NextScene", 5f);	// failsafe
+		Invoke("NextScene", 10f);	// failsafe
+	}
+	
+	
+	
+	public void NextScene(){
+		SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
 	}
 	
 	public void Restart(){

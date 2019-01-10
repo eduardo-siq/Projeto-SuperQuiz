@@ -376,8 +376,8 @@
     <Compile Include="Assets\Scripts\BncQCFile.cs" />
     <Compile Include="Assets\Scripts\BncQFile.cs" />
     <Compile Include="Assets\Scripts\ButtonMouseOver.cs" />
-    <Compile Include="Assets\Scripts\ChatScript.cs" />
     <Compile Include="Assets\Scripts\ClickSelect.cs" />
+    <Compile Include="Assets\Scripts\ClickSelectUser.cs" />
     <Compile Include="Assets\Scripts\DatabaseScript.cs" />
     <Compile Include="Assets\Scripts\DatabaseSelectionScript.cs" />
     <Compile Include="Assets\Scripts\FadeOut.cs" />
@@ -385,6 +385,8 @@
     <Compile Include="Assets\Scripts\QuestionClass.cs" />
     <Compile Include="Assets\Scripts\Subject.cs" />
     <Compile Include="Assets\Scripts\TextEditorClass.cs" />
+    <Compile Include="Assets\Scripts\UserClass.cs" />
+    <Compile Include="Assets\Scripts\UserEditorClass.cs" />
     <Compile Include="Assets\Scripts\UserGroup.cs" />
     <Compile Include="Assets\Scripts\WaitingSpin.cs" />
   </ItemGroup>
