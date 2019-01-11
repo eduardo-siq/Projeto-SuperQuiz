@@ -132,7 +132,7 @@ d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 e765c60703e1d2470ee601d503ef86b2 Assembly-CSharp.dll:.AnimErrorScript
 ce47473ba25eb58b4f1a9052e110e314 Assembly-CSharp.dll:.AvatarScript
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AuthenticationScript
+4d3f1beb2f33433631ed568187d9ca59 Assembly-CSharp.dll:.AuthenticationScript
 629e84bd13b5c32d10eb6197d6cdfed5 Assembly-CSharp.dll:.AnimSuccessScript
 7505d560bde54c8fa387b36b8c318bcc Assembly-CSharp.dll:.GameplayCrosswordScript
 32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
@@ -161,7 +161,7 @@ cdec38c5f6970f166127f650234e7363 Assembly-CSharp.dll:.LoginLockedScript
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
-32ffab1ac22bfcddf8f55305b8c439ec Assembly-CSharp.dll:.GameplayScript
+b96d28d8453dfc624873e16dc0cfae41 Assembly-CSharp.dll:.GameplayScript
 8286a70b1d6037525a238b74db43b0bc Assembly-CSharp.dll:.AvatarPortrait
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
@@ -175,5 +175,4 @@ a1695fa85674deeb3fba1f12222413b3 Assembly-CSharp.dll:.SessionScript
 1592fec7d569d9d3eb2a33c65187f6af Assembly-CSharp.dll:.LoadScript
 89efefc7da574ef228a57c9be8a47871 Assembly-CSharp.dll:.LoginScript
 da040dcf419d94291a11b94c9745e4d3 Assembly-CSharp.dll:.ResultScript
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Firebase.Sample.Database.DatabaseScript
 41cc74ff68fbeef5112809fae6bff2a1 Assembly-CSharp.dll:.TransitionScript

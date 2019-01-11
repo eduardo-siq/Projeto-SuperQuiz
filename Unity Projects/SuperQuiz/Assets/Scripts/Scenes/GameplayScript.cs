@@ -44,6 +44,11 @@ public class GameplayScript : MonoBehaviour{
     public GameObject correctAnswer;
 	public GameObject itemsCounter;
 	public Text itemsCounterText;
+	public int alternativeA;
+	public int alternativeB;
+	public int alternativeC;
+	public int alternativeD;
+	public int alternativeE;
     //public GameObject result;
 
     // Question Variables
@@ -241,6 +246,7 @@ public class GameplayScript : MonoBehaviour{
 				questionWriteText.transform.Find("Text").GetComponent<Text>().text = currentQuestion.text;
 				writtenAnswer.GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
 				writtenAnswer.ActivateInputField();
+				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 2: // Point-and-click
 				questionImage.SetActive(false);
@@ -264,6 +270,7 @@ public class GameplayScript : MonoBehaviour{
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				print("StartNewQuestion() point-and-click");
 				print ("currentPointQuestionIndex: " + currentPointQuestionIndex);
+				SessionScript.questionTime = SessionScript.questionTimeLong;
 				break;
 			case 3: // Long
 				questionImage.SetActive(false);
@@ -277,22 +284,28 @@ public class GameplayScript : MonoBehaviour{
 				questionLongText.transform.Find("Question/Text").GetComponent<Text>().text = currentQuestion.text;
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
+				alternativeA = a0;
 				a1 = Random.Range(0, 5);
 				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
+				alternativeB = a1;
 				a2 = Random.Range(0, 5);
 				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
+				alternativeC = a2;
 				a3 = Random.Range(0, 5);
 				while (a3 == a0 || a3 == a1 || a3 == a2){
 					a3 = Random.Range(0, 5);
 				}
+				alternativeD = a3;
 				a4 = Random.Range(0, 5);
 				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
+				alternativeE = a4;
+				
 
 				questionLongAnswers[a0].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer0;
 				questionLongAnswers[0].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
@@ -310,6 +323,7 @@ public class GameplayScript : MonoBehaviour{
 				questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text;
 				questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text;
 				questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text;
+				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 4: // Image
 				questionMultiple.SetActive(true);
@@ -323,23 +337,28 @@ public class GameplayScript : MonoBehaviour{
 				questionMultipleText.transform.Find("Text").GetComponent<Text>().alignment = TextAnchor.UpperCenter;
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
+				alternativeA = a0;
 				a1 = Random.Range(0, 5);
 				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
+				alternativeB = a1;
 				a2 = Random.Range(0, 5);
 				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
+				alternativeC = a2;
 				a3 = Random.Range(0, 5);
 				while (a3 == a0 || a3 == a1 || a3 == a2){
 					a3 = Random.Range(0, 5);
 				}
+				alternativeD = a3;
 				a4 = Random.Range(0, 5);
 				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
-
+				alternativeE = a4;
+				
 				answers[a0].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer0;
 				answers[0].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
 				answers[a1].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer1;
@@ -357,6 +376,7 @@ public class GameplayScript : MonoBehaviour{
 				answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
 				answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
 				StartCoroutine("DoubleCheckQuestionImage");
+				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 5:	// Point-and-click multiple items
 				questionImage.SetActive(false);
@@ -383,6 +403,7 @@ public class GameplayScript : MonoBehaviour{
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				print("StartNewQuestion() point-and-click multiple items");
 				print ("currentPointQuestionIndex : " + currentPointQuestionIndex);
+				SessionScript.questionTime = SessionScript.questionTimeLong;
 				break;
 			default:    // Multiple answer
 				questionMultiple.SetActive(true);
@@ -394,23 +415,27 @@ public class GameplayScript : MonoBehaviour{
 				questionMultipleText.transform.Find("Text").GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
 				a0 = Random.Range(0, 5);    // Randomly chooses which option would be the correct one
 				rightAnswer = a0;
+				alternativeA = a0;
 				a1 = Random.Range(0, 5);
 				while (a1 == a0){
 					a1 = Random.Range(0, 5);
 				}
+				alternativeB = a1;
 				a2 = Random.Range(0, 5);
 				while (a2 == a0 || a2 == a1){
 					a2 = Random.Range(0, 5);
 				}
+				alternativeC = a2;
 				a3 = Random.Range(0, 5);
-				while (a3 == a0 || a3 == a1 || a3 == a2)
-				{
+				while (a3 == a0 || a3 == a1 || a3 == a2){
 					a3 = Random.Range(0, 5);
 				}
+				alternativeD = a3;
 				a4 = Random.Range(0, 5);
 				while (a4 == a0 || a4 == a1 || a4 == a2 || a4 == a3){
 					a4 = Random.Range(0, 5);
 				}
+				alternativeE = a4;
 
 				answers[a0].transform.Find("Text").GetComponent<Text>().text = currentQuestion.answer0;
 				answers[0].GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
@@ -428,8 +453,19 @@ public class GameplayScript : MonoBehaviour{
 				answers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + answers[2].transform.Find("Text").GetComponent<Text>().text;
 				answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
 				answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
+				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 		}
+	}
+	
+	int GetActualAnswer(int answerGiven){
+		int actualAnswer = 0;
+		if (answerGiven == alternativeA) actualAnswer = 0;
+		if (answerGiven == alternativeB) actualAnswer = 1;
+		if (answerGiven == alternativeC) actualAnswer = 2;
+		if (answerGiven == alternativeD) actualAnswer = 3;
+		if (answerGiven == alternativeE) actualAnswer = 4;
+		return actualAnswer;
 	}
 
     public void AnswerQuestion(int answer){
@@ -458,6 +494,7 @@ public class GameplayScript : MonoBehaviour{
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
+				AuthenticationScript.SaveAnswers();
                 answerPermitted = false;
                 Invoke("EndQuestion", 2.25f);
                 break;
@@ -485,40 +522,44 @@ public class GameplayScript : MonoBehaviour{
                 }
                 break;
             case 3:     // Long
+					int actualAnswer = GetActualAnswer(answer);
                 if (answer == rightAnswer){
                     questionLongAnswers[answer].GetComponent<Image>().color = Color.green;
                     successAnimation.PlayAnimation();
                     SessionScript.QuestionAudio(SessionScript.success);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, true, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswer, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
                 else{
                     errorAnimation.PlayAnimation();
                     questionLongAnswers[answer].GetComponent<Image>().color = Color.red;
                     SessionScript.QuestionAudio(SessionScript.error);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, false, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswer, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
+				AuthenticationScript.SaveAnswers();
                 answerPermitted = false;
                 Invoke("EndQuestion", 2.25f);
                 break;
             case 4:     // Image
+				int actualAnswerB = GetActualAnswer(answer);
                 if (answer == rightAnswer){
                     answers[answer].GetComponent<Image>().color = Color.green;
                     successAnimation.PlayAnimation();
                     SessionScript.QuestionAudio(SessionScript.success);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, true, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswerB, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
                 else{
                     answers[answer].GetComponent<Image>().color = Color.red;
                     errorAnimation.PlayAnimation();
                     SessionScript.QuestionAudio(SessionScript.error);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, false, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswerB, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
+				AuthenticationScript.SaveAnswers();
                 answerPermitted = false;
                 Invoke("EndQuestion", 2.25f);
                 break;
@@ -593,21 +634,23 @@ public class GameplayScript : MonoBehaviour{
 				}
 				break;
             default:    // Multiple answer
+				int actualAnswerC = GetActualAnswer(answer);
                 if (answer == rightAnswer){
                     answers[answer].GetComponent<Image>().color = Color.green;
                     successAnimation.PlayAnimation();
                     SessionScript.QuestionAudio(SessionScript.success);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, true, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswerC, true, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.rightScore;   // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score // PLACEHOLDER player.score 
                 }
                 else{
                     answers[answer].GetComponent<Image>().color = Color.red;
                     errorAnimation.PlayAnimation();
                     SessionScript.QuestionAudio(SessionScript.error);
-                    SessionScript.answersList.Add(new Answer(currentQuestion.index, answer, false, false, currentQuestion.subject, currentQuestionTimeSpent));
+                    SessionScript.answersList.Add(new Answer(currentQuestion.index, actualAnswerC, false, false, currentQuestion.subject, currentQuestionTimeSpent));
                     SessionScript.player.score = SessionScript.player.score + SessionScript.wrongScore;
                     showAnswer = true;
                 }
+				AuthenticationScript.SaveAnswers();
                 answerPermitted = false;
                 Invoke("EndQuestion", 2.25f);
                 break;
@@ -645,6 +688,7 @@ public class GameplayScript : MonoBehaviour{
 					SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 					showAnswer = true;
 				}
+				AuthenticationScript.SaveAnswers();
 				answerPermitted = false;
 				Invoke("EndQuestion", 2.25f);
 				break;
@@ -655,6 +699,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
+				AuthenticationScript.SaveAnswers();
 				Invoke("EndQuestion", 2.25f);
 				break;
 			case 3:     // Long
@@ -664,6 +709,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
+				AuthenticationScript.SaveAnswers();
 				Invoke("EndQuestion", 2.25f);
 				break;
 			case 4:     // Image
@@ -673,6 +719,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
+				AuthenticationScript.SaveAnswers();
 				Invoke("EndQuestion", 2.25f);
 				break;
 			case 5:	// Point-and-click multiple items
@@ -682,6 +729,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
+				AuthenticationScript.SaveAnswers();
 				Invoke("EndQuestion", 2.25f);
 				break;
 			default:    // Multiple answer
@@ -691,6 +739,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.player.score = SessionScript.player.score + SessionScript.timeoutScore;
 				answerPermitted = false;
 				showAnswer = true;
+				AuthenticationScript.SaveAnswers();
 				Invoke("EndQuestion", 2.25f);
 				break;
 		}
@@ -726,6 +775,7 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.answersList.Add(new Answer(currentQuestion.index, 1, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 				showAnswer = true;
 			}
+			AuthenticationScript.SaveAnswers();
 			answerPermitted = false;
 			Invoke("EndQuestion", 2.25f);
 		}
@@ -765,6 +815,7 @@ public class GameplayScript : MonoBehaviour{
 					SessionScript.answersList.Add(new Answer(currentQuestion.index, 1, false, false, currentQuestion.subject, currentQuestionTimeSpent));
 					showAnswer = true;
 				}
+				AuthenticationScript.SaveAnswers();
 				answerPermitted = false;
 				Invoke("EndQuestion", 2.25f);
 			} else{	// Not all items have been selected
@@ -1218,7 +1269,7 @@ public class GameplayScript : MonoBehaviour{
     // }
 
     public void QuestionCounter(){
-        questionCounter.text = SessionScript.questionsAskedList.Count.ToString() + " / " + SessionScript.questionList.Count.ToString();
+        questionCounter.text = SessionScript.questionsAskedList.Count.ToString() + " / " + SessionScript.numberOfQuestionsDemanded.ToString();
     }
 
     public void NextScene(){

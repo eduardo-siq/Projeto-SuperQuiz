@@ -21,6 +21,8 @@ public class MenuScript : MonoBehaviour{
 
     IEnumerator StartScene(){
         yield return null;
+		AuthenticationScript.FirstLoginCompleted();
+		AuthenticationScript.GetOtherPlayers();
         menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
         avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
 		if (SessionScript.player.avatar.skin == -1){

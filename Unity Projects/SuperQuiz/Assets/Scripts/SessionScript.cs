@@ -19,14 +19,17 @@ public class SessionScript : MonoBehaviour{
     public bool getBuiltInQuestions;
 
     // Questions
+	public static bool getQuestionListNow;
     //public static bool loadQuestions = true;	// If the demo script is enabled, enable this 		// DEPRECATED
     public static List<QuestionPreLoad> questionListPreLoad;
     public static List<Question> questionList;
     public static List<int> questionsAskedList;
     public static List<Answer> answersList;
-    public static int numberOfQuestionsDemanded = 11;
+    public static int numberOfQuestionsDemanded = 5;
     //public static int pointsByQuestion = 50;	// maybe redundant
-    public static float questionTime = 300f; // locally defined, maybe defined by BncQ later
+    public static float questionTime = 150f; // locally defined, maybe defined by BncQ later
+	public static float questionTimeShort = 150f; //same
+	public static float questionTimeLong =  300f;	// same
     public static List<string> subjectName;
     public static List<string> userGroupName;   // maybe unecessary
     public static bool singleRun = true;
@@ -97,6 +100,7 @@ public class SessionScript : MonoBehaviour{
     public static bool startAnimationNextScene;
     [SerializeField] string bncQFileNameEditor;
 	public static List<Player> playerList;
+	public static bool instantiateDummyPlayers;
 
     // Score
     public static int rightScore;
@@ -133,7 +137,7 @@ public class SessionScript : MonoBehaviour{
         // Auxiliary
         missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		playerList = new List<Player>();
-		InstantiateDummyPlayers();
+		// InstantiateDummyPlayers(); // Now resolved when entering menu
 		// SortPlayerListByScore();
 
         // Questions
@@ -205,14 +209,14 @@ public class SessionScript : MonoBehaviour{
         wrongScore = -10;
 
         StartCoroutine(UpdateScene());
-        if (!getBuiltInQuestions){
-            print("load questions");
-            StartCoroutine(LoadFile());
-        }
-        if (getBuiltInQuestions){
-            print("load built-in questions");
-            StartCoroutine(LoadBuiltInQuestions());
-        }
+		// if (!getBuiltInQuestions){						// DUMMY QUESTIONS
+			// print("load questions");						// DUMMY QUESTIONS
+			// StartCoroutine(LoadFile());					// DUMMY QUESTIONS
+		// }												// DUMMY QUESTIONS	
+		// if (getBuiltInQuestions){						// DUMMY QUESTIONS
+			// print("load built-in questions");			// DUMMY QUESTIONS
+			// StartCoroutine(LoadBuiltInQuestions());		// DUMMY QUESTIONS
+		// }
 		
 		// Authentication & Database
 		//authentication = gameObject.GetComponent<AuthenticationScript>();	// MAYBE OBSOLETE
@@ -265,6 +269,10 @@ public class SessionScript : MonoBehaviour{
             // currentSong = currentSong + 1;
             // if (currentSong > 2) { currentSong = 1; }
         // }
+		if (getQuestionListNow){
+			GetQuestionListFromPreLoad();
+			getQuestionListNow = false;
+		}
 		if (fadeOutSong){
 			songAudio.volume = songAudio.volume - (Time.deltaTime);
 			if (songAudio.volume <= 0){
@@ -334,16 +342,11 @@ public class SessionScript : MonoBehaviour{
     }
 
 	public static void GetQuestionListFromPreLoad(){
-		print("GetQuestionListFromPreLoad");
 		Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		Sprite texture;
 		if (userGroup == -1) return;
-		print("GetQuestionListFromPreLoad OK");
-		print("questionListPreLoad.Count " + questionListPreLoad.Count);
 		for (int i = 0; i < questionListPreLoad.Count; i++){
-			print("GetQuestionListFromPreLoad " + i);
 			if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
-				print("get question " + i + "(i = " + i + ")");
 				questionList.Add(new Question(questionListPreLoad[i]));
 				if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
 					pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
@@ -543,6 +546,8 @@ public class SessionScript : MonoBehaviour{
     }
 	
 	public static void InstantiateDummyPlayers(){
+		if (!instantiateDummyPlayers)
+			return;
 		int numberOfPlayers = 15;
 		for (int i = 0; i < numberOfPlayers; i++){
 			Player newPlayer = new Player(Player.RandomPlayer());

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
 
 public class AuthenticationScript : MonoBehaviour {
 	
 	public static AuthenticationScript instance = null;
+	public SessionScript sessionScript;
 
 	// Firebase variables
 	static Firebase.Auth.FirebaseAuth auth;
@@ -24,6 +28,30 @@ public class AuthenticationScript : MonoBehaviour {
 	private bool fetchingToken = false;
 	protected bool signInAndFetchProfile = false;
 	
+	// Database
+	public DatabaseReference dbRoot;
+	public static DatabaseReference dbRefClientUsers;		
+	public static DatabaseReference dbRefClientQuestions;	// OBSOLETE?
+	public static DatabaseReference dbRefClientDetail;		// OBSOLETE?
+
+	// This User
+	public static int client;	// client Database entry
+	public static int userEntry;	// user Database entry
+	public static string email;
+	public static int user;	// user ID
+	public static bool userError = false;
+	
+	// Event Listener Holder
+	public static UserListenerHolderScript usersEventHolder;
+	public static QuestionListenerHolderScript questionsEventHolder;
+	public static ClientListenerHolderScript clientEventHolder;
+	
+	// SnapShot
+	// public static DataSnapshot dbSnapshot;
+	public static DataSnapshot dbUsers;
+	public static DataSnapshot dbQuestions;
+	public static DataSnapshot dbClient;
+	
 	void Awake(){
         if (instance == null){
             instance = this;
@@ -38,6 +66,7 @@ public class AuthenticationScript : MonoBehaviour {
 	
 	 
 	public virtual void Start(){
+		sessionScript = GameObject.Find("Session").GetComponent<SessionScript>();
 		Debug.Log ("Start AuthenticationScript");
 		Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
 			dependencyStatus = task.Result;
@@ -168,6 +197,7 @@ public class AuthenticationScript : MonoBehaviour {
 		if (LogTaskCompletion(task, "Sign-in (HandleSignInWithSignInResult)")) {
 			DisplaySignInResult(task.Result, 1);
 			LoginScript.loginSucess = true;	// On Update, LoginScript checks if login was made and, if so, moves on with game
+			GetUserSnapshot();
 		} else{
 			LoginScript.loginFail = true;	// Same, for failure
 		}
@@ -178,9 +208,15 @@ public class AuthenticationScript : MonoBehaviour {
 		if (LogTaskCompletion(task, "Sign-in (HandleSignInWithUser)")) {
 			Debug.Log(String.Format("{0} signed in", task.Result.DisplayName));
 			LoginScript.loginSucess = true;	// On Update, LoginScript checks if login was made and, if so, moves on with game
+			GetUserSnapshot();
 		} else{
 			LoginScript.loginFail = true;	// Same, for failure
 		}
+	}
+	
+	void GetUserSnapshot(){
+		usersEventHolder = new UserListenerHolderScript();
+		usersEventHolder.StartListener();
 	}
 	
 	protected bool LogTaskCompletion(Task task, string operation) {	// Log the result of the specified task, returning true if the task, completed successfully, false otherwise.
@@ -208,8 +244,503 @@ public class AuthenticationScript : MonoBehaviour {
 		Debug.Log("Signing out.");
 		auth.SignOut();
 	}
+
+	// Database
 	
+	public static void FindThisUser(){
+		print ("FindThisUser FindThisUser FindThisUser");
+		int y = 0;
+		int targetY = 5;
+		bool hasTargetY = false;
+		bool done = false;	
+		bool clientExists = false;
+		userError = true;
+		do {
+			string pathY = "client_" + y.ToString() + "/dummy";
+			clientExists = ValueExistsAsString(dbUsers, pathY);
+			if (clientExists){
+				print ("client " + y + " exists");
+				if (hasTargetY){
+					hasTargetY = false;
+				}
+				bool doneUser = false;
+				int i = 0;
+				int targetI = 20;
+				bool hasTargetI = false;
+				bool userExists = false;
+				do{
+					string pathI = "client_" + y.ToString() + "/user_" + i.ToString() + "/index";
+					userExists = ValueExistsAsLong(dbUsers, pathI);
+					if (userExists){
+						print ("user " + i + " exists");
+						string thatUser = (string) dbUsers.Child("client_" + y.ToString() + "/user_" + i.ToString() + "/email").Value;
+						if (thatUser == email){
+							print ("user found!");
+							userEntry = i;
+							long longIndex = (long) dbUsers.Child(pathI).Value;
+							print ("longIndex: " + longIndex);
+							user = Convert.ToInt32(longIndex);
+							client = y;
+							print ("user: " + user);
+							doneUser = true;
+							done = true;
+							userError = false;
+							GetUserInfo();
+							GetClientInfo();
+							GetQuestions();
+							dbRefClientUsers = FirebaseDatabase.DefaultInstance.GetReference("users/client_" + y.ToString() + "/user_" + i.ToString());
+						}
+						if (hasTargetI){
+							hasTargetI = false;
+						}
+					}
+					else {
+						print ("user " + i + " does not exist");
+						if (!hasTargetI){
+							hasTargetI = true;
+							targetI = i + 20;
+						}
+					}
+					if (i == targetI){
+						doneUser = true;
+					}
+					i = i + 1;
+				} while(!doneUser);
+			}
+			else{ // client does not exist
+				print ("y = " + y);
+				if (!hasTargetY){
+					hasTargetY = true;
+					targetY = y + 5;
+					print ("new target: " + targetY + ", has target: " + hasTargetY);
+				}
+			}
+			if (y == targetY){
+				done = true;
+			}
+			y = y + 1;
+		} while (!done);
+		if (userError){
+			// ERROR MESSAGE
+			print ("ERROR ERROR ERROR ERROR");
+		}
+	}
 	
+	public static void FindThisUser(int setClient){
+		bool doneUser = false;
+		int i = 0;
+		int targetI = 20;
+		bool hasTargetI = false;
+		bool userExists = false;
+		string clientString = setClient.ToString();
+		do{
+			string pathI = "client_" + clientString + "/user_" + i.ToString() + "/index";
+			userExists = ValueExistsAsLong(dbUsers, pathI);
+			if (userExists){
+				print ("user " + i + " exists");
+				string thatUser = (string) dbUsers.Child("client_" + clientString + "/user_" + i.ToString() + "/email").Value;
+				if (thatUser == email){
+					print ("user found!");
+					userEntry = i;
+					long longIndex = (long) dbUsers.Child(pathI).Value;
+					print ("longIndex: " + longIndex);
+					user = Convert.ToInt32(longIndex);
+					print ("user: " + user);
+					doneUser = true;
+					userError = false;
+					GetUserInfo();
+					GetClientInfo();
+					GetQuestions();
+					dbRefClientUsers = FirebaseDatabase.DefaultInstance.GetReference("users/client_" + clientString + "/user_" + i.ToString());
+				}
+				if (hasTargetI){
+					hasTargetI = false;
+				}
+			}
+			else {
+				print ("user " + i + " does not exist");
+				if (!hasTargetI){
+					hasTargetI = true;
+					targetI = i + 20;
+				}
+			}
+			if (i == targetI){
+				doneUser = true;
+			}
+			i = i + 1;
+		} while(!doneUser);
+		if (userError){
+			// ERROR MESSAGE
+			print ("ERROR ERROR ERROR ERROR");
+		}
+	}
+	
+	public static void GetClientInfo(){
+		print ("GetClientInfo");
+		clientEventHolder = new ClientListenerHolderScript();
+		clientEventHolder.StartListener();
+	}
+	
+	public static void GetClientInfoFromSnapshot(){
+		print ("GetClientInfoFromSnapshot");
+		// Client Info
+		bool rightScoreExist = ValueExistsAsLong(dbClient, "rightScore");
+		if (rightScoreExist){
+			long longValue = (long) dbClient.Child("rightScore").Value;
+			SessionScript.rightScore = Convert.ToInt32(longValue);
+		} else SessionScript.rightScore = 10;
+		bool timeoutScoreExist = ValueExistsAsLong(dbClient, "timeoutScore");
+		if (timeoutScoreExist){
+			long longValue = (long) dbClient.Child("timeoutScore").Value;
+			SessionScript.timeoutScore = Convert.ToInt32(longValue);
+		} else SessionScript.timeoutScore = 10;
+		bool wrongScoreExist = ValueExistsAsLong(dbClient, "wrongScore");
+		if (wrongScoreExist){
+			long longValue = (long) dbClient.Child("wrongScore").Value;
+			SessionScript.wrongScore = Convert.ToInt32(longValue);
+		} else SessionScript.wrongScore = 10;
+		bool questionTimeExist = ValueExistsAsLong(dbClient, "questionTime");
+		if (questionTimeExist){
+			long longValue = (long) dbClient.Child("questionTime").Value;
+			SessionScript.questionTimeShort = Convert.ToInt32(longValue);
+		} else SessionScript.wrongScore = 30;
+		bool questionTimeLongExist = ValueExistsAsLong(dbClient, "questionTimeLong");
+		if (questionTimeLongExist){
+			long longValue = (long) dbClient.Child("questionTimeLong").Value;
+			SessionScript.questionTimeLong = Convert.ToInt32(longValue);
+		} else SessionScript.wrongScore = 60;
+		bool questionDemandedExist = ValueExistsAsLong(dbClient, "numberOfQuestionsDemanded");
+		if (questionDemandedExist){
+			long longValue = (long) dbClient.Child("numberOfQuestionsDemanded").Value;
+			SessionScript.numberOfQuestionsDemanded = Convert.ToInt32(longValue);
+		} else SessionScript.numberOfQuestionsDemanded = 5;
+		// bool singleRunExists = ValueExistsAsString (dbClient, "singleRun");
+		// if (singleRunExists){
+			// string newValue = (string) dbClient.Child("singleRun").Value;
+			// if (newValue == "false"){
+				// SessionScript.singleRun = false;
+			// } else SessionScript.singleRun = true;
+		// } else SessionScript.singleRun = true;
+		bool thresholdTier1Exist = ValueExistsAsLong(dbClient, "thresholdTier1");
+		if (thresholdTier1Exist){
+			long longValue = (long) dbClient.Child("thresholdTier1").Value;
+			SessionScript.thresholdTier1 = Convert.ToInt32(longValue);
+		} else SessionScript.thresholdTier1 = 20;
+		bool thresholdTier2Exist = ValueExistsAsLong(dbClient, "thresholdTier2");
+		if (thresholdTier2Exist){
+			long longValue = (long) dbClient.Child("thresholdTier2").Value;
+			SessionScript.thresholdTier2 = Convert.ToInt32(longValue);
+		} else SessionScript.thresholdTier2 = 40;
+	}
+		
+	public static void GetUserInfo(){
+		print ("GetUserInfo");
+		// User Info
+		SessionScript.player = new Player();
+		SessionScript.player.name = "você";
+		SessionScript.player.id = user;
+		string clientString = client.ToString();
+		print ("clientString " + clientString);
+		string userString = userEntry.ToString();
+		print ("userString " + userString);
+		// User Group
+		bool userGrpoupExists = ValueExistsAsLong (dbUsers, "/client_" + clientString + "/user_" +  userString + "/userGroups");
+		if (userGrpoupExists){
+			long newValue = (long) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/userGroups").Value;
+			SessionScript.userGroup = Convert.ToInt32(newValue);
+		} else SessionScript.userGroup = 0;
+		// First Login
+		bool firstLoginExists = ValueExistsAsString (dbUsers, "/client_" + clientString + "/user_" +  userString + "/firstLogin");
+		if (firstLoginExists){
+			string newValue = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/firstLogin").Value;
+			if (newValue == "F" || newValue == "f" || newValue == "false" || newValue == "FALSE"){
+				SessionScript.firstLogIn = false;
+			} else SessionScript.firstLogIn = true;
+		} else SessionScript.firstLogIn = true;
+		// Score
+		bool scoreExists = ValueExistsAsLong (dbUsers, "/client_" + clientString + "/user_" +  userString + "/score");
+		if (scoreExists){
+			long newValue = (long) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/score").Value;
+			SessionScript.player.score = Convert.ToInt32(newValue);
+		} else SessionScript.player.score = 0;
+		// Avatar
+		SessionScript.player.avatar = new Avatar();
+		bool avatarExists = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/avatar");
+		if (avatarExists){
+			string avatarRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/avatar").Value;
+			if (avatarRawString != "X" && avatarRawString != null && avatarRawString != ""){
+				string[] avatarString;
+				string[] space = new string[] {" "};
+				avatarString = avatarRawString.Split(space, StringSplitOptions.None);
+				if (avatarString.Length > 5){
+					SessionScript.player.avatar.skin = Convert.ToInt32(avatarString[0]);
+					SessionScript.player.avatar.hair = Convert.ToInt32(avatarString[1]);
+					SessionScript.player.avatar.item0 = Convert.ToInt32(avatarString[2]);
+					SessionScript.player.avatar.item1 = Convert.ToInt32(avatarString[3]);
+					SessionScript.player.avatar.item2 = Convert.ToInt32(avatarString[4]);
+					SessionScript.player.avatar.item3 = Convert.ToInt32(avatarString[5]);
+					if (SessionScript.player.avatar.skin > -1){
+						SessionScript.customizationStage = 2;
+					}
+				}
+			} else {
+				SessionScript.player.avatar.skin = -1;
+			}
+		} else {
+			SessionScript.player.avatar.skin = -1;
+		}
+		bool answersExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/answers");
+		bool answersIndexExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/answersIndex");
+		bool timeExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/time");
+		if (answersExist && answersIndexExist && timeExist){
+			string answersRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/answers").Value;
+			string answersIndexRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/answersIndex").Value;
+			string timeRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/time").Value;
+			if (answersRawString != "X" && answersIndexRawString != "X" && timeRawString != "X" && answersRawString != "" && answersIndexRawString != "" && timeRawString != ""){
+				string[] space = new string[] {" "};
+				string[] answersString;
+				string[] answersIndexString;
+				string[] timeString;
+				answersString = answersRawString.Split(space, StringSplitOptions.None);
+				answersIndexString = answersIndexRawString.Split(space, StringSplitOptions.None);
+				timeString = timeRawString.Split(space, StringSplitOptions.None);
+				for (int i = 0; i < answersString.Length; i++){
+					SessionScript.answersList.Add(new Answer(int.Parse(answersString[i]), int.Parse(answersIndexString[i]), float.Parse(timeString[i])));
+					SessionScript.questionsAskedList.Add(int.Parse(answersIndexString[i]));
+				}
+			}
+		}
+	}
+	
+	public static void SaveAnswers(){
+		string answersString = "";
+		string answersIndexString = "";
+		string timeString = "";
+		for (int i = 0; i < SessionScript.answersList.Count; i++){
+			if (i != 0){
+				answersString = answersString + " ";
+				answersIndexString = answersIndexString + " ";
+				timeString = timeString + " ";
+			}
+			answersString = answersString + SessionScript.answersList[i].alternative.ToString();
+			answersIndexString = answersIndexString + SessionScript.answersList[i].index.ToString();
+			timeString = timeString + SessionScript.answersList[i].time.ToString("0.00");
+		}
+		dbRefClientUsers.Child("answers").SetValueAsync(answersString);
+		dbRefClientUsers.Child("answersIndex").SetValueAsync(answersIndexString);
+		dbRefClientUsers.Child("time").SetValueAsync(timeString);
+		dbRefClientUsers.Child("time").SetValueAsync(SessionScript.player.score);
+		
+	}
+	
+	public static void FirstLoginCompleted(){
+		string f = "F";
+		dbRefClientUsers.Child("firstLogin").SetValueAsync(f);	
+	}
+	
+	public static void SaveAvatar(){
+		string avatarString = "";
+		avatarString = avatarString + SessionScript.player.avatar.skin.ToString() + " ";
+		avatarString = avatarString + SessionScript.player.avatar.hair.ToString() + " ";
+		avatarString = avatarString + SessionScript.player.avatar.item0.ToString() + " ";
+		avatarString = avatarString + SessionScript.player.avatar.item1.ToString() + " ";
+		avatarString = avatarString + SessionScript.player.avatar.item2.ToString() + " ";
+		avatarString = avatarString + SessionScript.player.avatar.item3.ToString();
+		dbRefClientUsers.Child("avatar").SetValueAsync(avatarString);
+	}
+	
+	public static void GetQuestions(){
+		print ("GetClientInfo");
+		questionsEventHolder = new QuestionListenerHolderScript();
+		questionsEventHolder.StartListener();
+	}
+	
+	public static void GetQuestionsFromSnapshot(){
+		SessionScript.questionListPreLoad = new List<QuestionPreLoad>();
+		int i = 0;
+		int target = 20;
+		bool hasTarget = false;;
+		bool done = false;	
+		do {
+			string path = "/question_" + i.ToString();
+			bool questionExists = ValueExistsAsLong(dbQuestions, path + "/index");
+			if (questionExists){
+				long newValue = (long) dbQuestions.Child(path + "/index").Value;
+				int newIndex = Convert.ToInt32(newValue);
+				int newType = 0;
+				string newQuestion = "ERRO - NÃO CARREGADA!";
+				string newAlt0 = "ERRO - NÃO CARREGADA!";
+				string newAlt1 = "ERRO - NÃO CARREGADA!";
+				string newAlt2 = "ERRO - NÃO CARREGADA!";
+				string newAlt3 = "ERRO - NÃO CARREGADA!";
+				string newAlt4 = "ERRO - NÃO CARREGADA!";
+				string newUserGroups = "X";
+				string newSubjects = "X";
+				
+				// Type
+				bool typeExists = ValueExistsAsLong (dbQuestions, path + "/type");
+				if (typeExists){
+					long newTypeLong = (long) dbQuestions.Child(path + "/type").Value;
+					newType = Convert.ToInt32(newTypeLong);
+				}
+				// Question Text
+				bool questionTextExists = ValueExistsAsString (dbQuestions, path + "/question");
+				if (questionTextExists){
+					newQuestion = (string) dbQuestions.Child(path + "/question").Value;
+				}
+				// Alternative a)
+				bool aExists = ValueExistsAsString (dbQuestions, path + "/alt0");
+				if (aExists){
+					newAlt0 = (string) dbQuestions.Child(path + "/alt0").Value;
+				}
+				// Alternative b)
+				bool bExists = ValueExistsAsString (dbQuestions, path + "/alt0");
+				if (bExists){
+					newAlt1 = (string) dbQuestions.Child(path + "/alt1").Value;
+				}
+				// Alternative c)
+				bool cExists = ValueExistsAsString (dbQuestions, path + "/alt0");
+				if (cExists){
+					newAlt2 = (string) dbQuestions.Child(path + "/alt2").Value;
+				}
+				// Alternative d)
+				bool dExists = ValueExistsAsString (dbQuestions, path + "/alt0");
+				if (dExists){
+					newAlt3 = (string) dbQuestions.Child(path + "/alt3").Value;
+				}
+				// Alternative e)
+				bool eExists = ValueExistsAsString (dbQuestions, path + "/alt0");
+				if (eExists){
+					newAlt4 = (string) dbQuestions.Child(path + "/alt4").Value;
+				}
+				// User Groups
+				bool userGroupsExists = ValueExistsAsString (dbQuestions, path + "/userGroups");
+				if (userGroupsExists){
+					newUserGroups = (string) dbQuestions.Child(path + "/userGroups").Value;
+				}
+				// Subjetcs
+				bool subjectsExists = ValueExistsAsString (dbQuestions, path + "/subjects");
+				if (subjectsExists){
+					newSubjects = (string) dbQuestions.Child(path + "/subjects").Value;
+				}				
+				if (hasTarget){
+					hasTarget = false;
+				}
+				SessionScript.questionListPreLoad.Add(new QuestionPreLoad(newIndex, newType, newQuestion, newAlt0, newAlt1, newAlt2, newAlt3, newAlt4, newUserGroups, newSubjects));
+			}
+			else {
+				if (!hasTarget){
+					hasTarget = true;
+					target = i + 20;
+				}
+			}
+			if (i == target) done = true;
+			i = i + 1;
+		} while (!done);
+		SessionScript.getQuestionListNow = true;
+		print ("SessionScript.questionListPreLoad.Count = " + SessionScript.questionListPreLoad.Count);
+	}
+	
+	public static void GetOtherPlayers(){
+		print ("GetOtherPlayers");
+		bool doneUser = false;
+		int i = 0;
+		int targetI = 20;
+		bool hasTargetI = false;
+		bool userExists = false;
+		string clientString = client.ToString();
+		do{
+			string pathI = "client_" + clientString + "/user_" + i.ToString() + "/index";
+			userExists = ValueExistsAsLong(dbUsers, pathI);
+			if (userExists){
+				print ("user entry found: " + i);
+				if (i != userEntry){
+					AddOtherPlayer(i);
+				}
+				if (hasTargetI){
+					hasTargetI = false;
+				}
+			}
+			else {
+				print ("user " + i + " does not exist");
+				if (!hasTargetI){
+					hasTargetI = true;
+					targetI = i + 20;
+				}
+			}
+			if (i == targetI){
+				doneUser = true;
+			}
+			i = i + 1;
+		} while(!doneUser);
+	}
+	
+	static void AddOtherPlayer(int entry){
+		print ("AddOtherPlayer(" + entry + ")");
+		string path = "/client_" + client.ToString() + "/user_" + entry.ToString();
+		int newId;
+		string newName;
+		string avatarRawString;
+		int newScore;
+		bool indexExists = ValueExistsAsLong (dbUsers, path + "/index");
+		if (indexExists){
+			long newValue = (long) dbUsers.Child(path + "/index").Value;
+			newId = Convert.ToInt32(newValue);
+		} else return;
+		bool nameExists = ValueExistsAsString (dbUsers, path + "/name");
+		if (nameExists){
+			newName = (string) dbUsers.Child(path + "/name").Value;
+		} else return;	
+		bool avatarExists = ValueExistsAsString (dbUsers, path + "/avatar");
+		if (avatarExists){
+			avatarRawString = (string) dbUsers.Child(path + "/avatar").Value;
+		} else return;
+		bool scoreExists = ValueExistsAsLong (dbUsers, path + "/score");
+		if (scoreExists){
+			long newValue = (long) dbUsers.Child(path + "/score").Value;
+			newScore = Convert.ToInt32(newValue);
+		} else return;
+		Player newPlayer = new Player(newId, newName, avatarRawString, newScore);
+		SessionScript.playerList.Add(newPlayer);
+	}
+	
+	public static bool ValueExistsAsLong(DataSnapshot dbRef, string path){
+		// Checks if a value in a node exists and returns true or false;
+		bool exists = false;
+		try{
+			long newValue = (long) dbRef.Child(path).Value;
+			if (newValue != null){
+				exists = true;
+			}
+		}
+		catch (InvalidCastException exception){
+			exists = false;
+		}
+		catch (NullReferenceException exception){
+			exists = false;
+		}
+		return exists;
+	}
+	
+	public static bool ValueExistsAsString(DataSnapshot dbRef, string path){
+		// Checks if a value in a node exists and it's not null and returns true or false;
+		bool exists = false;
+		try{
+			string newValue = (string) dbRef.Child(path).Value;
+			if (newValue != null && newValue != ""){
+				exists = true;
+			}
+		}
+		catch (InvalidCastException exception){
+			print ("InvalidCastException");
+			exists = false;
+		}
+		catch (NullReferenceException exception){
+			print ("NullReferenceException");
+			exists = false;
+		}
+		return exists;
+	}
 	
 	// INTERFACE DE TESTE
 	

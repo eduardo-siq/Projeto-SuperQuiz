@@ -30,7 +30,7 @@ public class QuestionPreLoad{
         subject = "";
     }
 
-    public QuestionPreLoad(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, string newUserGroup, string newSubject)    {
+    public QuestionPreLoad(int newIndex, int newQuestionType, string newT, string newA0, string newA1, string newA2, string newA3, string newA4, string newUserGroup, string newSubject){
         index = newIndex;
         questionType = newQuestionType;
         text = newT;

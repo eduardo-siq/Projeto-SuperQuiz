@@ -29,5 +29,16 @@ public class Answer {
 		subject = newSubject;
 		time = newTime;
 	}
+	
+	public Answer(int newIndex, int newAlternative, float newTime){
+		index = newIndex;
+		alternative = newAlternative;
+		if (newAlternative == 0){
+		right = true;
+		} else right = false;
+		timeout = false;
+		subject = new List <bool>();
+		time = newTime;
+	}
 }
 

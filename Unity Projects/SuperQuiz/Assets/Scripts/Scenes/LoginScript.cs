@@ -30,7 +30,6 @@ public class LoginScript : MonoBehaviour{
 	// Authentication
 	AuthenticationScript authenticationScript;
 
-
 	void Start(){
 		StartCoroutine(StartScene());
 		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/User").GetComponent<InputField>();
@@ -77,13 +76,14 @@ public class LoginScript : MonoBehaviour{
 	
 	public void LoginButton(){	// FUNCTIONAL LOGIN
 		SessionScript.ButtonAudio(SessionScript.neutral);
+		AuthenticationScript.email = userInput;
 		authenticationScript.SigninWithEmailAsync(userInput, passwordInput);
 	}
 	
 	void LoginValidated(){
-		SessionScript.userGroup = 0;					// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
-		print("userGroup " + SessionScript.userGroup);	// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
-		SessionScript.GetQuestionListFromPreLoad();		// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
+		//SessionScript.userGroup = 0;					// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
+		//print("userGroup " + SessionScript.userGroup);	// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
+		//SessionScript.GetQuestionListFromPreLoad();		// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
 		Invoke("ToggleAcceptTerms", 0.25f);
 	}
 	

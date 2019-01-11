@@ -33,8 +33,7 @@ public class LowerMenuScript : MonoBehaviour
     string thisScene;
     string nextScene;
 
-    void Start()
-    {
+    void Start(){
         instance = this;
 
         print("START LOWER SCRIPT MENU");
@@ -46,8 +45,7 @@ public class LowerMenuScript : MonoBehaviour
 
         // Scripts
         thisScene = SceneManager.GetActiveScene().name;
-        if (thisScene == "about")
-        {
+        if (thisScene == "about"){
             aboutScript = GameObject.FindWithTag("SceneManager").GetComponent<AboutScript>();
             infoButton.GetComponent<Button>().interactable = false;
         }
@@ -73,25 +71,19 @@ public class LowerMenuScript : MonoBehaviour
         SetButtonItens();
     }
 
-    void Update()
-    {
-        if (quit)
-        {
-            if (SessionScript.soundOn)
-            {
+    void Update(){
+        if (quit){
+            if (SessionScript.soundOn){
                 SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
             }
         }
     }
 
-    public void SetButtonItens()
-    {
-        if (SessionScript.soundOn)
-        {
+    public void SetButtonItens(){
+        if (SessionScript.soundOn){
             soundButton.GetComponent<Image>().sprite = soundOnSprite;
         }
-        if (!SessionScript.soundOn)
-        {
+        if (!SessionScript.soundOn){
             soundButton.GetComponent<Image>().sprite = soundOffSprite;
         }
     }
@@ -108,6 +100,9 @@ public class LowerMenuScript : MonoBehaviour
             SessionScript.ButtonAudio(SessionScript.subtle);
             return;
         }
+		if (thisScene == "avatar"){
+			AuthenticationScript.SaveAvatar();
+		}
         print("CHANGE SCENE");
         instance.lockScene = true;
         SessionScript.ButtonAudio(SessionScript.neutral);

@@ -382,9 +382,9 @@
     <Compile Include="Assets\Scripts\BncQFile.cs" />
     <Compile Include="Assets\Scripts\BuiltInCrossword.cs" />
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />
+    <Compile Include="Assets\Scripts\ClientListenerHolderScript.cs" />
     <Compile Include="Assets\Scripts\CrosswordClass.cs" />
     <Compile Include="Assets\Scripts\CrosswordLine.cs" />
-    <Compile Include="Assets\Scripts\DatabaseScript.cs" />
     <Compile Include="Assets\Scripts\GlowScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -392,6 +392,7 @@
     <Compile Include="Assets\Scripts\PopUpScript.cs" />
     <Compile Include="Assets\Scripts\QuestionClass.cs" />
     <Compile Include="Assets\Scripts\QuestionClassPreLoad.cs" />
+    <Compile Include="Assets\Scripts\QuestionListenerHolderScript.cs" />
     <Compile Include="Assets\Scripts\RandomPlayerScript.cs" />
     <Compile Include="Assets\Scripts\RankingWindow.cs" />
     <Compile Include="Assets\Scripts\ResultLine.cs" />
@@ -411,6 +412,7 @@
     <Compile Include="Assets\Scripts\Simple.cs" />
     <Compile Include="Assets\Scripts\TestButton.cs" />
     <Compile Include="Assets\Scripts\TransitionScript.cs" />
+    <Compile Include="Assets\Scripts\UserListenerHolderScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Firebase\Editor\AppDependencies.xml" />
