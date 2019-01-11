@@ -258,6 +258,11 @@ MonoBehaviour:
   correctAnswer: {fileID: 0}
   itemsCounter: {fileID: 0}
   itemsCounterText: {fileID: 0}
+  alternativeA: 0
+  alternativeB: 0
+  alternativeC: 0
+  alternativeD: 0
+  alternativeE: 0
   rightAnswer: 0
   currentQuestionTime: 0
   currentQuestionTimeSpent: 0
@@ -269,7 +274,7 @@ MonoBehaviour:
   clickY: 0
   clickedColor: {x: 0, y: 0, z: 0}
   showAnswer: 0
-  debugPointPosition: 1
+  debugPointPosition: 0
 --- !u!4 &20500982
 Transform:
   m_ObjectHideFlags: 0
