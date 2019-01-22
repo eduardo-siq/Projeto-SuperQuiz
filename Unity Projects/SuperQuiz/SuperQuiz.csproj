@@ -399,6 +399,7 @@
     <Compile Include="Assets\Scripts\Scenes\AboutScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AvatarScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\ErrorLoginScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameplayCrosswordScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameplayScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScript.cs" />

@@ -123,8 +123,13 @@ public class LowerMenuScript : MonoBehaviour
     }
 
     void Quit(){
-        Application.Quit();
+		AuthenticationScript.SignOut();
+		AplicationQuit();
     }
+	
+	void AplicationQuit(){
+		 Application.Quit();
+	}
 
     public void NextScene(){
         instance.lockScene = true;

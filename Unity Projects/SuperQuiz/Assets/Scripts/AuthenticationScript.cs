@@ -30,7 +30,8 @@ public class AuthenticationScript : MonoBehaviour {
 	
 	// Database
 	public DatabaseReference dbRoot;
-	public static DatabaseReference dbRefClientUsers;		
+	public static DatabaseReference dbRefClientUsers;
+	public static DatabaseReference dbTrackRecord;
 	public static DatabaseReference dbRefClientQuestions;	// OBSOLETE?
 	public static DatabaseReference dbRefClientDetail;		// OBSOLETE?
 
@@ -63,7 +64,6 @@ public class AuthenticationScript : MonoBehaviour {
             }
         }
     }
-	
 	 
 	public virtual void Start(){
 		sessionScript = GameObject.Find("Session").GetComponent<SessionScript>();
@@ -289,6 +289,8 @@ public class AuthenticationScript : MonoBehaviour {
 							GetClientInfo();
 							GetQuestions();
 							dbRefClientUsers = FirebaseDatabase.DefaultInstance.GetReference("users/client_" + y.ToString() + "/user_" + i.ToString());
+							dbTrackRecord = FirebaseDatabase.DefaultInstance.GetReference("tracking/client_" + y.ToString() + "/user_" + i.ToString());
+							AuthenticationScript.TrackRecord("Signed in");
 						}
 						if (hasTargetI){
 							hasTargetI = false;
@@ -321,7 +323,8 @@ public class AuthenticationScript : MonoBehaviour {
 			y = y + 1;
 		} while (!done);
 		if (userError){
-			// ERROR MESSAGE
+			LoginScript.userDoesNotExist = true;
+			LoginScript.stopAtLogin = true;
 			print ("ERROR ERROR ERROR ERROR");
 		}
 	}
@@ -352,6 +355,8 @@ public class AuthenticationScript : MonoBehaviour {
 					GetClientInfo();
 					GetQuestions();
 					dbRefClientUsers = FirebaseDatabase.DefaultInstance.GetReference("users/client_" + clientString + "/user_" + i.ToString());
+					dbTrackRecord = FirebaseDatabase.DefaultInstance.GetReference("tracking/client_" + clientString + "/user_" + i.ToString());
+					AuthenticationScript.TrackRecord("Signed in");
 				}
 				if (hasTargetI){
 					hasTargetI = false;
@@ -370,7 +375,8 @@ public class AuthenticationScript : MonoBehaviour {
 			i = i + 1;
 		} while(!doneUser);
 		if (userError){
-			// ERROR MESSAGE
+			LoginScript.userDoesNotExist = true;
+			LoginScript.stopAtLogin = true;
 			print ("ERROR ERROR ERROR ERROR");
 		}
 	}
@@ -492,21 +498,39 @@ public class AuthenticationScript : MonoBehaviour {
 		bool answersExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/answers");
 		bool answersIndexExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/answersIndex");
 		bool timeExist = ValueExistsAsString(dbUsers, "/client_" + clientString + "/user_" +  userString + "/time");
-		if (answersExist && answersIndexExist && timeExist){
-			string answersRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/answers").Value;
+		if (answersIndexExist){
 			string answersIndexRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/answersIndex").Value;
-			string timeRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/time").Value;
-			if (answersRawString != "X" && answersIndexRawString != "X" && timeRawString != "X" && answersRawString != "" && answersIndexRawString != "" && timeRawString != ""){
+			if (answersIndexRawString != "X" && answersIndexRawString != ""){
 				string[] space = new string[] {" "};
-				string[] answersString;
 				string[] answersIndexString;
-				string[] timeString;
-				answersString = answersRawString.Split(space, StringSplitOptions.None);
 				answersIndexString = answersIndexRawString.Split(space, StringSplitOptions.None);
-				timeString = timeRawString.Split(space, StringSplitOptions.None);
-				for (int i = 0; i < answersString.Length; i++){
-					SessionScript.answersList.Add(new Answer(int.Parse(answersString[i]), int.Parse(answersIndexString[i]), float.Parse(timeString[i])));
+				for (int i = 0; i < answersIndexString.Length; i++){
+					SessionScript.answersList.Add(new Answer(int.Parse(answersIndexString[i]), -1, -1f));
 					SessionScript.questionsAskedList.Add(int.Parse(answersIndexString[i]));
+					print ("answersIndexString[" + i + "]: " + answersIndexString[i]);
+				}
+				if (answersExist){
+					string answersRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/answers").Value;
+					if (answersRawString != "X" && answersRawString != ""){
+						string[] answersString;
+						answersString = answersRawString.Split(space, StringSplitOptions.None);
+						for (int i = 0; i < answersString.Length && i < answersIndexString.Length; i++){
+							SessionScript.answersList[i].SetAlternative(int.Parse(answersString[i]));
+							print ("answersString[" + i + "]: " + answersString[i]);
+						}
+					}			
+				}
+				if (timeExist){
+					string timeRawString = (string) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/time").Value;
+					if (timeRawString != "X" && timeRawString != ""){
+						string[] timeString;
+						timeString = timeRawString.Split(space, StringSplitOptions.None);
+						print ("timeString.Length: " + timeString.Length + ", answersIndexString.Length: " +  answersIndexString.Length);
+						for (int i = 0; i < timeString.Length && i < answersIndexString.Length; i++){
+							SessionScript.answersList[i].SetTime(float.Parse(timeString[i]));
+							print ("timeString[" + i + "]: " + timeString[i]);
+						}
+					}			
 				}
 			}
 		}
@@ -529,13 +553,15 @@ public class AuthenticationScript : MonoBehaviour {
 		dbRefClientUsers.Child("answers").SetValueAsync(answersString);
 		dbRefClientUsers.Child("answersIndex").SetValueAsync(answersIndexString);
 		dbRefClientUsers.Child("time").SetValueAsync(timeString);
-		dbRefClientUsers.Child("time").SetValueAsync(SessionScript.player.score);
+		dbRefClientUsers.Child("score").SetValueAsync(SessionScript.player.score);
 		
 	}
 	
 	public static void FirstLoginCompleted(){
 		string f = "F";
-		dbRefClientUsers.Child("firstLogin").SetValueAsync(f);	
+		dbRefClientUsers.Child("firstLogin").SetValueAsync(f);
+		SessionScript.firstLogIn = false;
+		TrackRecord("First Login");
 	}
 	
 	public static void SaveAvatar(){
@@ -740,6 +766,12 @@ public class AuthenticationScript : MonoBehaviour {
 			exists = false;
 		}
 		return exists;
+	}
+	
+	public static void TrackRecord(string trackString){
+		string newKey = "Date: ";
+		newKey = newKey + DateTime.Now.ToString("yyyy-MM-dd") + "_Time:_" + DateTime.Now.ToString("HH-mm-ss") + "'" + DateTime.Now.ToString("ffffff");
+		dbTrackRecord.Child(newKey).SetValueAsync(trackString);
 	}
 	
 	// INTERFACE DE TESTE

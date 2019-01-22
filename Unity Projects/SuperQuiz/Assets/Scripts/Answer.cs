@@ -40,5 +40,17 @@ public class Answer {
 		subject = new List <bool>();
 		time = newTime;
 	}
+	
+	public void SetAlternative(int newAlternative){
+		alternative = newAlternative;
+		if (newAlternative == 0){
+		right = true;
+		} else right = false;
+	}
+	
+	public void SetTime(float newTime){
+		Debug.Log ("NEW TIME: " + newTime);
+		time = newTime;
+	}
 }
 

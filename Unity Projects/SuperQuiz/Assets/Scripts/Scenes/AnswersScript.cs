@@ -65,7 +65,20 @@ public class AnswersScript : MonoBehaviour{
 					}
 					GameObject newAnswerLine = Instantiate(answerLinePrefab);
 					newAnswerLine.transform.SetParent(answerLinesViewport.transform, true);
-					newAnswerLine.transform.Find("Text").GetComponent<Text>().text = "Questão " + index.ToString() + ": " + thisAnswer + " (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
+					string answerLineText = "";
+					if (SessionScript.answersList[i].alternative != -1 && SessionScript.answersList[i].time != -1f){
+						answerLineText = "Questão " + index.ToString() + ": " + thisAnswer + " (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
+					}
+					if (SessionScript.answersList[i].alternative == -1 && SessionScript.answersList[i].time == -1f){
+						answerLineText = "Questão " + index.ToString() + ": ERRO no download da resposta e tempo";
+					}
+					if (SessionScript.answersList[i].alternative != -1 && SessionScript.answersList[i].time == -1f){
+						answerLineText = "Questão " + index.ToString() + ": " + thisAnswer + " (ERRO no download do tempo)";
+					}
+					if (SessionScript.answersList[i].alternative == -1 && SessionScript.answersList[i].time != -1f){
+						answerLineText = "Questão " + index.ToString() + ": ERRO no downlaod da resposta (" + SessionScript.answersList[i].time.ToString("0.#") + "s)";
+					}
+					newAnswerLine.transform.Find("Text").GetComponent<Text>().text = answerLineText;
 					newAnswerLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f - 30 * i, 0f);
 					if (variation1){
 						newAnswerLine.GetComponent<Image>().sprite = answerLineTexture1;

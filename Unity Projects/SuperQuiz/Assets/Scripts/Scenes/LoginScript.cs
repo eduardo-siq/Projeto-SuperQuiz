@@ -26,6 +26,8 @@ public class LoginScript : MonoBehaviour{
 	public bool block;
 	public static bool loginSucess = false;
 	public static bool loginFail = false;
+	public static bool userDoesNotExist = false;
+	public static bool stopAtLogin = false;
 	
 	// Authentication
 	AuthenticationScript authenticationScript;
@@ -60,6 +62,13 @@ public class LoginScript : MonoBehaviour{
 		if (loginFail){	// Same, for failure
 			OpenErrorMessage();
 			loginFail = false;
+		}
+		if (userDoesNotExist){	// Same, for failure
+			ErrorLogin();
+			userDoesNotExist = false;
+		}
+		if (stopAtLogin){
+			acceptWindow.SetActive(false);
 		}
 		if (quit){
 			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
@@ -151,6 +160,7 @@ public class LoginScript : MonoBehaviour{
 		// Invoke("EndScene", 1.2f);
 		// Invoke("NextScene", 0.2f);
 		// TransitionScript.EndAnimation();
+		AuthenticationScript.TrackRecord("Declined terms of service");
 	}
 
 	public void NextScene(){
@@ -162,6 +172,10 @@ public class LoginScript : MonoBehaviour{
 		}
 	}
 	
+	public void ErrorLogin(){
+		SessionScript.ButtonAudio(SessionScript.negative);
+		SceneManager.LoadScene("errorLogin", LoadSceneMode.Single);
+	}
 
 	void EndScene(){
 		endScene = true;

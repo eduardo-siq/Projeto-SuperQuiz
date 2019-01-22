@@ -100,6 +100,7 @@ public class SessionScript : MonoBehaviour{
     public static bool startAnimationNextScene;
     [SerializeField] string bncQFileNameEditor;
 	public static List<Player> playerList;
+	public static bool getOtherPlayers;
 	public static bool instantiateDummyPlayers;
 
     // Score
@@ -137,6 +138,7 @@ public class SessionScript : MonoBehaviour{
         // Auxiliary
         missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		playerList = new List<Player>();
+		getOtherPlayers = true;
 		// InstantiateDummyPlayers(); // Now resolved when entering menu
 		// SortPlayerListByScore();
 

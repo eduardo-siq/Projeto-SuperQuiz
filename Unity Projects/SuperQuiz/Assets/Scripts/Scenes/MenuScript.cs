@@ -21,8 +21,11 @@ public class MenuScript : MonoBehaviour{
 
     IEnumerator StartScene(){
         yield return null;
-		AuthenticationScript.FirstLoginCompleted();
-		AuthenticationScript.GetOtherPlayers();
+		if (SessionScript.firstLogIn) AuthenticationScript.FirstLoginCompleted();
+		if (SessionScript.getOtherPlayers){
+			AuthenticationScript.GetOtherPlayers();
+			SessionScript.getOtherPlayers = false;
+		}
         menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
         avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
 		if (SessionScript.player.avatar.skin == -1){
@@ -47,6 +50,11 @@ public class MenuScript : MonoBehaviour{
 			SessionScript.PlaySong();
 		}
 		Invoke ("CheckSong", 1f);
+		
+		// Easter Egg
+		if (AuthenticationScript.email == "rocketprogames@gmail.com"){
+			PopUpScript.InstantiatePopUp("Bem-vindo de volta, Mestre. Como posso servi-lo?", ">>");
+		}
     }
 
 

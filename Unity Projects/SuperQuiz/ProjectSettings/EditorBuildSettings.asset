@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/loginLocked.unity
     guid: fab58d67ed88ac0468c117cb4fec929e
   - enabled: 1
+    path: Assets/errorLogin.unity
+    guid: d97e1c87960c0aa40858acd5fbb67530
+  - enabled: 1
     path: Assets/menu.unity
     guid: fbbd502b7176ddf4796d4c63288ed716
   - enabled: 1
