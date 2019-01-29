@@ -214,6 +214,7 @@ public class AvatarScript : MonoBehaviour{
             default:
                 break;
         }
+		print ("NEXT ITEM: " + item);
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
     }
@@ -251,6 +252,7 @@ public class AvatarScript : MonoBehaviour{
             default:
                 break;
         }
+		print ("PREVIOUS ITEM: " + item);
         SessionScript.ButtonAudio(SessionScript.subtle);
         Portrait();
     }

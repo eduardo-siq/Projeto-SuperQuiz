@@ -5,7 +5,7 @@ using UnityEngine;
 public class Question{
 
     public int index;
-    public int questionType;    // 0: multiple answer, 1: fill the blanks, 2: point-and-click, 3: longa, 4: image, 5: point-and-click multiple items
+    public int questionType;    // 0: multiple answer, 1: fill the blanks, 2: point-and-click single item, 3: longa, 4: image, 5: point-and-click multiple items
     public string text;
     public string answer0;  // Right answer
     public string answer1;

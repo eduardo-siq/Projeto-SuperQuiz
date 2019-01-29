@@ -771,8 +771,10 @@ public class GameplayScript : MonoBehaviour{
 			string itemName = "";
 			for (int i = 0; i < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor.Count; i++){
 				if (clickedColor == SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemColor[i]){
-					rightItem = true;
 					itemName = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemName[i];
+					if (i == SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex[0]){
+						rightItem = true;
+					}
 					break;
 				}
 			}

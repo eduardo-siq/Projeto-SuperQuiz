@@ -21,7 +21,12 @@ public class MenuScript : MonoBehaviour{
 
     IEnumerator StartScene(){
         yield return null;
-		if (SessionScript.firstLogIn) AuthenticationScript.FirstLoginCompleted();
+		if (SessionScript.justStartedSession && SessionScript.firstLogIn) AuthenticationScript.FirstLoginCompleted();
+		if (SessionScript.resetAnswersAutomatically){
+			AuthenticationScript.ResetAnswers();
+			SessionScript.questionsAskedList = new List<int>();
+			SessionScript.answersList = new List<Answer>();
+		}
 		if (SessionScript.getOtherPlayers){
 			AuthenticationScript.GetOtherPlayers();
 			SessionScript.getOtherPlayers = false;
@@ -52,9 +57,12 @@ public class MenuScript : MonoBehaviour{
 		Invoke ("CheckSong", 1f);
 		
 		// Easter Egg
-		if (AuthenticationScript.email == "rocketprogames@gmail.com"){
+		if (SessionScript.justStartedSession && AuthenticationScript.email == "rocketprogames@gmail.com"){
 			PopUpScript.InstantiatePopUp("Bem-vindo de volta, Mestre. Como posso servi-lo?", ">>");
 		}
+		
+		// Just Started Session
+		SessionScript.justStartedSession = false;
     }
 
 

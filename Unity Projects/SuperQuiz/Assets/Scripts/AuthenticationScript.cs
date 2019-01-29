@@ -537,6 +537,7 @@ public class AuthenticationScript : MonoBehaviour {
 	}
 	
 	public static void SaveAnswers(){
+		if (SessionScript.resetAnswersAutomatically) return; 	// If it's a demo run, does not save answers
 		string answersString = "";
 		string answersIndexString = "";
 		string timeString = "";
@@ -593,7 +594,7 @@ public class AuthenticationScript : MonoBehaviour {
 			if (questionExists){
 				long newValue = (long) dbQuestions.Child(path + "/index").Value;
 				int newIndex = Convert.ToInt32(newValue);
-				int newType = 0;
+				int newType = 0;	// If typeExists = false, question is set to multiple answer
 				string newQuestion = "ERRO - NÃO CARREGADA!";
 				string newAlt0 = "ERRO - NÃO CARREGADA!";
 				string newAlt1 = "ERRO - NÃO CARREGADA!";
@@ -701,6 +702,20 @@ public class AuthenticationScript : MonoBehaviour {
 		} while(!doneUser);
 	}
 	
+	public static void TrackRecord(string trackString){
+		string newKey = "Date: ";
+		newKey = newKey + DateTime.Now.ToString("yyyy-MM-dd") + "_Time:_" + DateTime.Now.ToString("HH-mm-ss") + "'" + DateTime.Now.ToString("ffffff");
+		dbTrackRecord.Child(newKey).SetValueAsync(trackString);
+	}
+	
+	public static void ResetAnswers(){
+		// For demo runs of the game, resets all answers in order to be playable soon after
+		dbRefClientUsers.Child("answers").SetValueAsync("X");
+		dbRefClientUsers.Child("answersIndex").SetValueAsync("X");
+		dbRefClientUsers.Child("time").SetValueAsync("X");
+		dbRefClientUsers.Child("score").SetValueAsync((long) 0);
+	}
+	
 	static void AddOtherPlayer(int entry){
 		print ("AddOtherPlayer(" + entry + ")");
 		string path = "/client_" + client.ToString() + "/user_" + entry.ToString();
@@ -766,12 +781,6 @@ public class AuthenticationScript : MonoBehaviour {
 			exists = false;
 		}
 		return exists;
-	}
-	
-	public static void TrackRecord(string trackString){
-		string newKey = "Date: ";
-		newKey = newKey + DateTime.Now.ToString("yyyy-MM-dd") + "_Time:_" + DateTime.Now.ToString("HH-mm-ss") + "'" + DateTime.Now.ToString("ffffff");
-		dbTrackRecord.Child(newKey).SetValueAsync(trackString);
 	}
 	
 	// INTERFACE DE TESTE

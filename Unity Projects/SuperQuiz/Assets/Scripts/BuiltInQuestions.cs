@@ -42,7 +42,7 @@ public class BuiltInQuestions {
 		"X"));
 		questionsPreLoad.Add(new QuestionPreLoad(
 		2,
-		5,
+		5,	//type
 		"Quais são os ingredientes de uma macarronada?",
 		"0_1_2",
 		"Macarrão_Molho_Sal_Frutas_Cereais",

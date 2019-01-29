@@ -102,6 +102,9 @@ public class SessionScript : MonoBehaviour{
 	public static List<Player> playerList;
 	public static bool getOtherPlayers;
 	public static bool instantiateDummyPlayers;
+	public static bool resetAnswersAutomatically;
+	public bool resetAnswersAutomaticallyEditor;
+	public static bool justStartedSession;
 
     // Score
     public static int rightScore;
@@ -139,6 +142,8 @@ public class SessionScript : MonoBehaviour{
         missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		playerList = new List<Player>();
 		getOtherPlayers = true;
+		if (resetAnswersAutomaticallyEditor) resetAnswersAutomatically = true; else resetAnswersAutomatically = false;
+		justStartedSession = true;
 		// InstantiateDummyPlayers(); // Now resolved when entering menu
 		// SortPlayerListByScore();
 
