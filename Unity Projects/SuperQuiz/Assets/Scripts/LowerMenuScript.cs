@@ -118,18 +118,13 @@ public class LowerMenuScript : MonoBehaviour
         SessionScript.ButtonAudio(SessionScript.neutral);
         //quit = true;
         print("QUIT");
-        SelectScene ("login");	// Exit button logs out the player and returns to login scene
 		AuthenticationScript.SignOut();
-    }
-
-    void Quit(){
-		AuthenticationScript.SignOut();
-		AplicationQuit();
+        SelectScene ("exit");	// Exit button logs out the player and moves on to exit scene
     }
 	
-	void AplicationQuit(){
-		 Application.Quit();
-	}
+	// void AplicationQuit(){
+		 // Application.Quit();
+	// }
 
     public void NextScene(){
         instance.lockScene = true;

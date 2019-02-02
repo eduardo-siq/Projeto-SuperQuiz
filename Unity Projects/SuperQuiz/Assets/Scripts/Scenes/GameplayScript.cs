@@ -49,6 +49,10 @@ public class GameplayScript : MonoBehaviour{
 	public int alternativeC;
 	public int alternativeD;
 	public int alternativeE;
+	public GameObject pointAndClickTurn;
+	public RectTransform turnSign;
+	public bool turnSignOn;
+	public float turnSignTimer;
     //public GameObject result;
 
     // Question Variables
@@ -143,6 +147,10 @@ public class GameplayScript : MonoBehaviour{
         toMenuText.SetActive(false);
 		itemsCounter.SetActive(false);
         showAnswer = false;
+		pointAndClickTurn = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/Turn").gameObject;
+		turnSign = pointAndClickTurn.transform.Find("Sign").GetComponent<RectTransform>();
+		turnSignOn = false;
+		turnSignTimer = 0f;
 		
 		//Debug
 		textPosX = questionPoint.transform.Find("DebugWindow/Window/TextX").GetComponent<Text>();
@@ -199,6 +207,18 @@ public class GameplayScript : MonoBehaviour{
 		if (Input.GetKeyDown(KeyCode.Return)){
 			if (currentQuestion.questionType == 1 && writtenAnswer.text != ""){   // Fill-the-blank timeout
 				//AcceptAnswer();
+			}
+		}
+		if (turnSignOn){
+			turnSignTimer = turnSignTimer + Time.deltaTime;
+			if (turnSignTimer > 0.5f){
+				if (turnSignTimer < 1.5f){
+					float spin = Mathf.Cos(turnSignTimer);
+					turnSign.Rotate(Vector3.forward * spin * -5);
+				}
+			}
+			if (turnSignTimer > 2.5f){
+				EndTurnSign();
 			}
 		}
 	}
@@ -271,6 +291,10 @@ public class GameplayScript : MonoBehaviour{
 				} 
 				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				pointAndClickTurn.SetActive(true);
+				turnSignOn = true;
+				turnSignTimer = 0;
+				Invoke ("TurnSignAudio", 0.66f);
 				print("StartNewQuestion() point-and-click");
 				print ("currentPointQuestionIndex: " + currentPointQuestionIndex);
 				SessionScript.questionTime = SessionScript.questionTimeLong;
@@ -404,6 +428,10 @@ public class GameplayScript : MonoBehaviour{
 				itemsCounterText.text = 0 + " / " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count;
 				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
+				pointAndClickTurn.SetActive(true);
+				turnSignOn = true;
+				turnSignTimer = 0;
+				Invoke ("TurnSignAudio", 0.66f);
 				print("StartNewQuestion() point-and-click multiple items");
 				print ("currentPointQuestionIndex : " + currentPointQuestionIndex);
 				SessionScript.questionTime = SessionScript.questionTimeLong;
@@ -459,6 +487,17 @@ public class GameplayScript : MonoBehaviour{
 				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 		}
+	}
+	
+	void EndTurnSign(){
+		turnSignTimer = 0;
+		turnSignOn = false;
+		pointAndClickTurn.SetActive(false);
+		turnSign.rotation = Quaternion.Euler(0, 0, 0);
+	}
+	
+	void TurnSignAudio(){
+		SessionScript.ButtonAudioLoud(SessionScript.swipe);
 	}
 	
 	int GetActualAnswer(int answerGiven){
@@ -1317,7 +1356,7 @@ public class GameplayScript : MonoBehaviour{
 	}
 	
 	IEnumerator DoubleCheckCorrectImage(){
-		yield return null;
+		yield return new WaitForSeconds(1f);
 		if (currentQuestion.questionType == 2){
 			float red = float.Parse(currentQuestion.answer1);
 			float green = float.Parse(currentQuestion.answer2);

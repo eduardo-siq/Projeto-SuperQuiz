@@ -11,6 +11,10 @@ public class LoadScript : MonoBehaviour{
 
 	public float fillBar;
 	public float maxProgress;
+	
+	public static bool loadedAvatarResources = false;
+	public static bool loadedSoundResources = true;
+	public static bool loading = false;
 
 	void Start(){
 		maxProgress = 0.25f;
@@ -18,7 +22,7 @@ public class LoadScript : MonoBehaviour{
 	
 		// loadingBar = GameObject.Find("Canvas/LoadingBar").GetComponent<Slider>();
 		bar = GameObject.Find("Canvas/Scroll View/Viewport/Load/LoadingBar2/Fill").GetComponent<Image>();
-		Invoke("StartLoading", 0.5f);
+		// Invoke("StartLoading", 0.5f);	// Process started by SessionScript
 	}
 
 	void StartLoading(){
@@ -27,8 +31,16 @@ public class LoadScript : MonoBehaviour{
 
 	void Update(){
 		fillBar = Mathf.Clamp01(fillBar + Time.deltaTime);
+		if (!loading){
+			if (fillBar > 0.5f) fillBar = 0.5f;
+		}
 		// loadingBar.value = fillBar;
 		bar.fillAmount = fillBar;
+		
+		if (loadedSoundResources && loadedAvatarResources && !loading){
+			loading = true;
+			StartCoroutine(LoadAsynchronously());
+		}
 	}
 
 	IEnumerator LoadAsynchronously(){

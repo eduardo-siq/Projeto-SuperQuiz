@@ -10,6 +10,7 @@ Assets/result.unity
 Assets/answers.unity
 Assets/about.unity
 Assets/tutorial.unity
+Assets/exit.unity
 SceneListEnd?
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 dbc29a6f2739d277c10da432d73adb6d UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
@@ -163,7 +164,7 @@ cdec38c5f6970f166127f650234e7363 Assembly-CSharp.dll:.LoginLockedScript
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
-b96d28d8453dfc624873e16dc0cfae41 Assembly-CSharp.dll:.GameplayScript
+7968ce60af5bf41fd435ab90168b371f Assembly-CSharp.dll:.GameplayScript
 8286a70b1d6037525a238b74db43b0bc Assembly-CSharp.dll:.AvatarPortrait
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
@@ -175,6 +176,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GlowScript
 b2502121ba75cf6cfab0773d6303f09c Assembly-CSharp.dll:.SessionScript
 1592fec7d569d9d3eb2a33c65187f6af Assembly-CSharp.dll:.LoadScript
-89efefc7da574ef228a57c9be8a47871 Assembly-CSharp.dll:.LoginScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ExitScript
+289a7c547b66e2d8be913caa7936c946 Assembly-CSharp.dll:.LoginScript
 da040dcf419d94291a11b94c9745e4d3 Assembly-CSharp.dll:.ResultScript
 41cc74ff68fbeef5112809fae6bff2a1 Assembly-CSharp.dll:.TransitionScript

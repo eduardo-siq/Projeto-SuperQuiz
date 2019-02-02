@@ -13,6 +13,7 @@ public class LoginScript : MonoBehaviour{
 	public InputField passwordInputField;
 	public int selectedInputField = 1;
 	public GameObject acceptWindow;
+	public RectTransform acceptWindowDocument;
 	public GameObject errorWindow;
 	private bool quit;
 
@@ -29,6 +30,10 @@ public class LoginScript : MonoBehaviour{
 	public static bool userDoesNotExist = false;
 	public static bool stopAtLogin = false;
 	
+	// Auxiliary
+	public bool acceptWindowOpen;
+	public float acceptWindowTimer;
+	
 	// Authentication
 	AuthenticationScript authenticationScript;
 
@@ -36,6 +41,8 @@ public class LoginScript : MonoBehaviour{
 		StartCoroutine(StartScene());
 		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/User").GetComponent<InputField>();
 		passwordInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/Password").GetComponent<InputField>();
+		acceptWindow = GameObject.Find("Canvas/Scroll View/Viewport/Accept").gameObject;
+		acceptWindowDocument = acceptWindow.transform.Find("Scroll View/Viewport/Document").GetComponent<RectTransform>();
 		errorWindow = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/ErrorWindow").gameObject;
 		userInputField.ActivateInputField();
 		
@@ -73,6 +80,13 @@ public class LoginScript : MonoBehaviour{
 		if (quit){
 			SessionScript.songAudio.volume = SessionScript.songAudio.volume - (Time.deltaTime * 2);
 		}
+		if (acceptWindowOpen){
+			acceptWindowTimer = acceptWindowTimer + Time.deltaTime;
+			if (acceptWindowTimer > 10f){
+				Vector2 pos = acceptWindowDocument.position;
+				acceptWindowDocument.position = new Vector2 (pos.x, pos.y + Time.deltaTime *10f);
+			}
+		}
 	}
 
 	public void UserInput(string input){
@@ -105,7 +119,8 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.ButtonAudio(SessionScript.positive);
 			SessionScript.userGroup = 0;
 			print("userGroup " + SessionScript.userGroup);
-			SessionScript.GetQuestionListFromPreLoad();
+			//SessionScript.GetQuestionListFromPreLoad();
+			SessionScript.getQuestionListNow = true;
 			Invoke("ToggleAcceptTerms", 0.5f);
 			// Invoke("EndScene", 1.2f);
 			// Invoke("NextScene", 0.2f);
@@ -116,7 +131,8 @@ public class LoginScript : MonoBehaviour{
 			SessionScript.ButtonAudio(SessionScript.positive);
 			SessionScript.userGroup = 1;
 			print("userGroup " + SessionScript.userGroup);
-			SessionScript.GetQuestionListFromPreLoad();
+			//SessionScript.GetQuestionListFromPreLoad();
+			SessionScript.getQuestionListNow = true;
 			Invoke("ToggleAcceptTerms", 0.5f);
 			// Invoke("EndScene", 1.2f);
 			// Invoke("NextScene", 0.2f);
@@ -144,6 +160,8 @@ public class LoginScript : MonoBehaviour{
 	
 	public void ToggleAcceptTerms(){
 		acceptWindow.SetActive(!acceptWindow.activeSelf);
+		acceptWindowOpen = !acceptWindowOpen;
+		acceptWindowTimer = 0f;
 	}
 	
 	public void SelectAcceptTerms(){
@@ -161,6 +179,11 @@ public class LoginScript : MonoBehaviour{
 		// Invoke("NextScene", 0.2f);
 		// TransitionScript.EndAnimation();
 		AuthenticationScript.TrackRecord("Declined terms of service");
+	}
+	
+	public void ResetAcceptWindowTime(){
+		print ("ResetAcceptWindowTime()");
+		acceptWindowTimer = 0;
 	}
 
 	public void NextScene(){

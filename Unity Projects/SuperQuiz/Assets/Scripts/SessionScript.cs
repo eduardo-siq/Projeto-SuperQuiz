@@ -87,6 +87,7 @@ public class SessionScript : MonoBehaviour{
 	public static AudioClip success;
 	public static AudioClip error;
 	public static AudioClip currentSong;
+	public static AudioClip swipe;
 	public static AudioClip photography;
 	public static bool soundOn;
 	public static float soundVolume;
@@ -201,14 +202,14 @@ public class SessionScript : MonoBehaviour{
         item1TierIndex = new Vector3(0, 0, 0);
         item2TierIndex = new Vector3(0, 0, 0);
         item3TierIndex = new Vector3(0, 0, 0);
-		Invoke("LoadAvatarAssets", 0.25f);
+		//Invoke("LoadAvatarAssets", 0.25f);	// Now it's a coroutine
+		StartCoroutine(LoadAvatarAssets());
 		customizationStage = 1;
-
 
         //Sound
         songAudio = this.gameObject.AddComponent<AudioSource>();
         buttonAudio = this.gameObject.AddComponent<AudioSource>();
-        Invoke("LoadAudioAssets", 0.5f);
+        //Invoke("LoadAudioAssets", 0.5f); // Now it's a coroutine, called by the previous item loaded
 
         // Score
         rightScore = 10;
@@ -231,19 +232,34 @@ public class SessionScript : MonoBehaviour{
 
     }
 	
-	void LoadAudioAssets(){
+	IEnumerator LoadAudioAssets(){
+		yield return null;
 		positive = Resources.Load("Sound/positive_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		negative = Resources.Load("Sound/negative_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		neutral = Resources.Load("Sound/neutral_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		popUp = Resources.Load("Sound/neutral_popUp", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		popUpOut = Resources.Load("Sound/neutral_popUpOut", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		blop = Resources.Load("Sound/neutral_blop", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		subtle = Resources.Load("Sound/subtle_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		song1 = Resources.Load("Sound/trilhaSuperQuiz", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		song2 = Resources.Load("Sound/trilhaSuperQuiz2", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		error = Resources.Load("Sound/error_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
 		photography = Resources.Load("Sound/photography_sound", typeof(AudioClip)) as AudioClip;
+			yield return null;
+		swipe = Resources.Load("Sound/swipe_sound", typeof(AudioClip)) as AudioClip;
+		
 		if (error == null) print ("ERROR NOT FOUND");
 		if (error == null) print ("ERROR NOT FOUND");
 		if (error == null) print ("ERROR NOT FOUND");
@@ -260,6 +276,8 @@ public class SessionScript : MonoBehaviour{
 		soundOn = true;
 		soundVolume = 0.5f;
 		fadeOutSong = false;
+		yield return null;
+		LoadScript.loadedSoundResources = true;
 	}
 	
     IEnumerator UpdateScene(){
@@ -277,11 +295,11 @@ public class SessionScript : MonoBehaviour{
             // if (currentSong > 2) { currentSong = 1; }
         // }
 		if (getQuestionListNow){
-			GetQuestionListFromPreLoad();
+			StartCoroutine(GetQuestionListFromPreLoad());
 			getQuestionListNow = false;
 		}
 		if (fadeOutSong){
-			songAudio.volume = songAudio.volume - (Time.deltaTime);
+			songAudio.volume = songAudio.volume - (Time.deltaTime * 0.75f);
 			if (songAudio.volume <= 0){
 				songAudio.Stop();
 				fadeOutSong = false;
@@ -348,57 +366,60 @@ public class SessionScript : MonoBehaviour{
         questionListPreLoad = BuiltInQuestions.GetBuildInQuestions();
     }
 
-	public static void GetQuestionListFromPreLoad(){
+	IEnumerator GetQuestionListFromPreLoad(){
 		Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
 		Sprite texture;
-		if (userGroup == -1) return;
-		for (int i = 0; i < questionListPreLoad.Count; i++){
-			if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
-				questionList.Add(new Question(questionListPreLoad[i]));
-				if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
-					pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
-					print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
-				}
-				if (questionList[i].questionType == 4){	// Question with image
-					print("loading texture");
-					texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-					if (texture != null){
-						questionList[i].questionImage = texture;
-						print("image loaded");
+		if (userGroup != -1){
+			for (int i = 0; i < questionListPreLoad.Count; i++){
+				yield return null;
+				if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
+					questionList.Add(new Question(questionListPreLoad[i]));
+					if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
+						pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
+						print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
 					}
-					if (texture == null){
-						questionList[i].questionImage = missingTexture;
-						print("image not found");
+					if (questionList[i].questionType == 4){	// Question with image
+						print("loading texture");
+						texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
+						if (texture != null){
+							questionList[i].questionImage = texture;
+							print("image loaded");
+						}
+						if (texture == null){
+							questionList[i].questionImage = missingTexture;
+							print("image not found");
+						}
+					}
+				}
+				if (questionListPreLoad[i].userGroupString != "X"){
+					for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++){
+						if (questionListPreLoad[i].userGroup[userGroup] == true){
+							print("get question " + i + "(y = " + y + ")");
+							questionList.Add(new Question(questionListPreLoad[i]));
+							if (questionList[i].questionType == 4){
+								print("loading texture");
+								texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
+								if (texture != null){
+									questionList[i].questionImage = texture;
+									print("image loaded");
+								}
+								if (texture == null){
+									questionList[i].questionImage = missingTexture;
+									print("image not found");
+								}
+							}
+							break;
+						}
 					}
 				}
 			}
-			if (questionListPreLoad[i].userGroupString != "X"){
-				for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++){
-					if (questionListPreLoad[i].userGroup[userGroup] == true){
-						print("get question " + i + "(y = " + y + ")");
-						questionList.Add(new Question(questionListPreLoad[i]));
-						if (questionList[i].questionType == 4){
-							print("loading texture");
-							texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-							if (texture != null){
-								questionList[i].questionImage = texture;
-								print("image loaded");
-							}
-							if (texture == null){
-								questionList[i].questionImage = missingTexture;
-								print("image not found");
-							}
-						}
-						break;
-					}
-				}
+			if (numberOfQuestionsDemanded > questionList.Count){
+				numberOfQuestionsDemanded = questionList.Count;
 			}
 		}
-		if (numberOfQuestionsDemanded > questionList.Count)
-			numberOfQuestionsDemanded = questionList.Count;
 	}
 
-    void LoadAvatarAssets(){
+    IEnumerator LoadAvatarAssets(){
         bool loadItems = true;
         bool loadHairFem = true;
         bool loadHairMasc = true;
@@ -481,6 +502,9 @@ public class SessionScript : MonoBehaviour{
             }
             i = i + 1;
         } while (loadBase);
+		yield return null;
+		LoadScript.loadedAvatarResources = true;
+		StartCoroutine(LoadAudioAssets());
     }
 
     void ItemTierIndex(int i, int r, int t){
