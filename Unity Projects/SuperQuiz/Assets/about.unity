@@ -367,7 +367,7 @@ Prefab:
     - target: {fileID: 224627598962913722, guid: f9a2badf88b467842bd6160ed8cf5363,
         type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224627598962913722, guid: f9a2badf88b467842bd6160ed8cf5363,
         type: 2}
@@ -639,6 +639,18 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: menu
       objectReference: {fileID: 0}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOnSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fee84146c01e4914cbd2a1ec81fbc4dc,
+        type: 3}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOffSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 63aaedbddae1a1e44a1d75680663c0e6,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 114576213654961120, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
@@ -980,7 +992,7 @@ RectTransform:
   - {fileID: 1321078242}
   - {fileID: 1698473977}
   m_Father: {fileID: 730309932}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1521,6 +1533,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1098861970}
   - {fileID: 2100500942}
   - {fileID: 840032418}
   - {fileID: 1992306490}
@@ -1732,7 +1745,7 @@ RectTransform:
   - {fileID: 1547784318}
   - {fileID: 368240306}
   m_Father: {fileID: 730309932}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1770,6 +1783,7 @@ MonoBehaviour:
   questionsAskedListCount: 0
   answersListCount: 0
   bncQFileNameEditor: 
+  resetAnswersAutomaticallyEditor: 0
 --- !u!4 &842651022
 Transform:
   m_ObjectHideFlags: 0
@@ -1914,7 +1928,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1881081996}
+    m_TransformParent: {fileID: 730309932}
     m_Modifications:
     - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
         type: 2}
@@ -1954,7 +1968,7 @@ Prefab:
     - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
         type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
         type: 2}
@@ -2843,7 +2857,7 @@ Prefab:
     - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
         type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224341544797332722, guid: c4c754badff041b408988a56986c8625,
         type: 2}
@@ -3201,7 +3215,6 @@ RectTransform:
   m_Children:
   - {fileID: 490379733}
   - {fileID: 730309932}
-  - {fileID: 1098861970}
   - {fileID: 1670375166}
   m_Father: {fileID: 1924372246}
   m_RootOrder: 0
@@ -3286,7 +3299,7 @@ RectTransform:
   - {fileID: 803743471}
   - {fileID: 550532464}
   m_Father: {fileID: 730309932}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3597,7 +3610,7 @@ RectTransform:
   m_Children:
   - {fileID: 1923922063}
   m_Father: {fileID: 730309932}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

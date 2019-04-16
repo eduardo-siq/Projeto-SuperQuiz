@@ -31,7 +31,8 @@ public class Avatar{
     public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName){
         skin = newSkin;
         hair = newHair;
-        gender = newGender;
+        // gender = newGender;
+		gender = 0;	// Hardcoded for 1 gender only
         item0 = newItem0;
         item1 = newItem1;
         item2 = newItem2;
@@ -40,7 +41,8 @@ public class Avatar{
     }
 
     public static void RandomAvatar(Avatar randomAvatar){
-        randomAvatar.gender = Random.Range(0, 2);
+        // randomAvatar.gender = Random.Range(0, 2);
+		randomAvatar.gender = 0;	// Hardcoded for 1 gender only
         randomAvatar.skin = Random.Range(1, SessionScript.avatarBase.Count);
         if (randomAvatar.gender == 0) randomAvatar.hair = Random.Range(0, SessionScript.avatarHairFem.Count);
         if (randomAvatar.gender == 1) randomAvatar.hair = Random.Range(0, SessionScript.avatarHairMasc.Count);
@@ -55,4 +57,10 @@ public class Avatar{
 		// newAvatar.skin = -1;
 		// return newAvatar;
 	// }
+	
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

@@ -800,10 +800,11 @@ MonoBehaviour:
   endScene: 0
   avatar: {fileID: 0}
   answerLinesViewport: {fileID: 0}
-  answerLinePrefab: {fileID: 0}
+  answerLinePrefab: {fileID: 1165022999675178, guid: 94e9f9e62ad933847ae72c6fafd0e441,
+    type: 2}
   answerLineScrollbar: {fileID: 0}
-  answerLineTexture1: {fileID: 0}
-  answerLineTexture2: {fileID: 0}
+  answerLineTexture1: {fileID: 21300000, guid: ae5165768d4a09e4db4f4b9d14787e8b, type: 3}
+  answerLineTexture2: {fileID: 21300000, guid: 6ac511be68c641244ba4fd83bcfaa660, type: 3}
   scoreValueText: {fileID: 0}
 --- !u!4 &330678059
 Transform:
@@ -1398,6 +1399,7 @@ MonoBehaviour:
   questionsAskedListCount: 0
   answersListCount: 0
   bncQFileNameEditor: 
+  resetAnswersAutomaticallyEditor: 0
 --- !u!4 &842651022
 Transform:
   m_ObjectHideFlags: 0
@@ -2078,6 +2080,18 @@ Prefab:
       propertyPath: m_Name
       value: LowerMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOnSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fee84146c01e4914cbd2a1ec81fbc4dc,
+        type: 3}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOffSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 63aaedbddae1a1e44a1d75680663c0e6,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 114576213654961120, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
@@ -3162,6 +3176,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -51.1, y: 167.36862}
+  m_AnchoredPosition: {x: -51.100006, y: 167.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}

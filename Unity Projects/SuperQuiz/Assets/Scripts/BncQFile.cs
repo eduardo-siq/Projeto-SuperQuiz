@@ -17,4 +17,9 @@ class BncQFile {
 	public string client;
 	public List<string> uName;
 	public List<string> sName;
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

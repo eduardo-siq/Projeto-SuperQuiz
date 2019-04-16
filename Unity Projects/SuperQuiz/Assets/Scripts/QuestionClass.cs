@@ -92,5 +92,10 @@ public class Question{
     public void Text(string newT){
         text = newT;
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

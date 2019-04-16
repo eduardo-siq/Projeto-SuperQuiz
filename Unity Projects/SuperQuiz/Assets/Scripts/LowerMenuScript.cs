@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LowerMenuScript : MonoBehaviour
-{
+public class LowerMenuScript : MonoBehaviour{
 
     public static LowerMenuScript instance = null;
 
@@ -64,8 +63,8 @@ public class LowerMenuScript : MonoBehaviour
         if (thisScene == "result") resultScript = GameObject.FindWithTag("SceneManager").GetComponent<ResultScript>();
 
         // Textures
-        soundOnSprite = Resources.Load("Textures/LowerMenu/MusicaBotao", typeof(Sprite)) as Sprite;
-        soundOffSprite = Resources.Load("Textures/LowerMenu/MusicaOffBotao", typeof(Sprite)) as Sprite;
+        // soundOnSprite = Resources.Load("Textures/LowerMenu/MusicaBotao", typeof(Sprite)) as Sprite;
+        // soundOffSprite = Resources.Load("Textures/LowerMenu/MusicaOffBotao", typeof(Sprite)) as Sprite;
 
         // Methods
         SetButtonItens();
@@ -119,7 +118,7 @@ public class LowerMenuScript : MonoBehaviour
         //quit = true;
         print("QUIT");
 		AuthenticationScript.SignOut();
-        SelectScene ("exit");	// Exit button logs out the player and moves on to exit scene
+        SelectScene ("login");	// Exit button logs out the player and moves on to exit scene
     }
 	
 	// void AplicationQuit(){
@@ -144,4 +143,9 @@ public class LowerMenuScript : MonoBehaviour
         SessionScript.TurnOnOffSound();
         SetButtonItens();
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

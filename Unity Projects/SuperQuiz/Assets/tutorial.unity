@@ -650,6 +650,18 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOnSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fee84146c01e4914cbd2a1ec81fbc4dc,
+        type: 3}
+    - target: {fileID: 114926220937589894, guid: f9a2badf88b467842bd6160ed8cf5363,
+        type: 2}
+      propertyPath: soundOffSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 63aaedbddae1a1e44a1d75680663c0e6,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 114576213654961120, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f9a2badf88b467842bd6160ed8cf5363, type: 2}
@@ -681,6 +693,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8c3359a71c57d49b4c0713a14d49a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instructionImage0: {fileID: 21300000, guid: 51dc518e7fd614b4d93c0ec92c9616f0, type: 3}
+  instructionImage1: {fileID: 21300000, guid: 019b1848ca556cd4189a735f9c07963b, type: 3}
+  instructionImage2: {fileID: 21300000, guid: 04b3c323984c0714faff260590fb4ed1, type: 3}
+  instructionImage3: {fileID: 21300000, guid: d16cd80abf012b8468b09e9527f14764, type: 3}
+  instructionImage4: {fileID: 21300000, guid: 40d96524b9ffe294ba646f85ee73a081, type: 3}
+  instructionImage5: {fileID: 21300000, guid: 438588ba580b98840ab6b061d5a96980, type: 3}
+  instructionImage6: {fileID: 21300000, guid: 82d40d1a2e50bff41bbea9e466fcf2ac, type: 3}
+  instructionImage7: {fileID: 21300000, guid: 9c293c173b7811e41bb0d10f00f7527a, type: 3}
+  instructionImage8: {fileID: 21300000, guid: 1c7cdb3b8ab9b41419d0fc9e76ae2aca, type: 3}
   tutorialRect: {fileID: 0}
   instructionWindow: {fileID: 0}
   changeInstruction: {fileID: 0}
@@ -1401,6 +1422,7 @@ MonoBehaviour:
   questionsAskedListCount: 0
   answersListCount: 0
   bncQFileNameEditor: 
+  resetAnswersAutomaticallyEditor: 0
 --- !u!4 &842651022
 Transform:
   m_ObjectHideFlags: 0

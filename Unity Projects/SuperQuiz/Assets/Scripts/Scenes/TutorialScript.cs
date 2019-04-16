@@ -20,15 +20,15 @@ public class TutorialScript : MonoBehaviour{
 	// string instructionText9;
 	// string instructionText10;
 	// string instructionText11;
-	Sprite instructionImage0;
-	Sprite instructionImage1;
-	Sprite instructionImage2;
-	Sprite instructionImage3;
-	Sprite instructionImage4;
-	Sprite instructionImage5;
-	Sprite instructionImage6;
-	Sprite instructionImage7;
-	Sprite instructionImage8;
+	public Sprite instructionImage0;
+	public Sprite instructionImage1;
+	public Sprite instructionImage2;
+	public Sprite instructionImage3;
+	public Sprite instructionImage4;
+	public Sprite instructionImage5;
+	public Sprite instructionImage6;
+	public Sprite instructionImage7;
+	public Sprite instructionImage8;
 	// Sprite instructionImage9;
 	// Sprite instructionImage10;
 	// Sprite instructionImage11;
@@ -50,7 +50,35 @@ public class TutorialScript : MonoBehaviour{
 	public GameObject buttonHelp;
 
 	void Start(){
-		StartCoroutine(StartScene());
+		// StartCoroutine(StartScene());
+		tutorialRect = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial").GetComponent<RectTransform>();
+		instruction = 0;
+		instructionText0 = "\n\nBem vindo ao\nDesafio Quiz!\n\n\n\n\n";
+		instructionText1 = "Este é um jogo de perguntas e respostas que permite que você crie e customize seu personagem\n\n\n\n\n\n";
+		instructionText2 = "No menu principal, você pode acessar diferentes áreas do jogo\n\n\n\n\n\n\n";
+		instructionText3 = "\nAqui você inicia uma nova partida\n\n\n\n\n\n\n";
+		instructionText4 = "\nAqui, você cria e edita seu personagem\n\n\n\n\n\n";
+		instructionText5 = "Use as setas para selecionar seus acessórios\n\n\n\n\n\n\n";
+		instructionText6 = "\nAqui você vê o ranking e sua pontuação\n\n\n\n\n\n\n";
+		instructionText7 = "\nVocê também pode verificar as suas respostas\n\n\n\n\n\n";
+		instructionText8 = "\nPronto!\nAgora você já pode jogar o Desafio Quiz!\n\n\n\n\n";
+		// instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
+		// instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
+		// instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
+		// instructionImage3 = Resources.Load("Textures/Tutorial/tutorial_3", typeof(Sprite)) as Sprite;
+		// instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
+		// instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
+		// instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
+		// instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
+		// instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
+		instructionWindow = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/InstructionWindow").gameObject;
+		changeInstruction = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ChangeInstruction").gameObject;
+		toMenu = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenu").gameObject;
+		toMenuEnd = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenuEnd").gameObject;
+		instructionWindowText = instructionWindow.transform.Find("Text").GetComponent<Text>();
+		instructionWindowImage = instructionWindow.transform.Find("Image").GetComponent<Image>();
+		buttonHelp = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/Help").gameObject;
+		Tutorial();
 	}
 
 	void Update(){
@@ -84,15 +112,15 @@ public class TutorialScript : MonoBehaviour{
 		instructionText6 = "\nAqui você vê o ranking e sua pontuação\n\n\n\n\n\n\n";
 		instructionText7 = "\nVocê também pode verificar as suas respostas\n\n\n\n\n\n";
 		instructionText8 = "\nPronto!\nAgora você já pode jogar o Desafio Quiz!\n\n\n\n\n";
-		instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
-		instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
-		instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
-		instructionImage3 = Resources.Load("Textures/Tutorial/tutorial_3", typeof(Sprite)) as Sprite;
-		instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
-		instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
-		instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
-		instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
-		instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
+		// instructionImage0 = Resources.Load("Textures/Tutorial/tutorial_0", typeof(Sprite)) as Sprite;
+		// instructionImage1 = Resources.Load("Textures/Tutorial/tutorial_1", typeof(Sprite)) as Sprite;
+		// instructionImage2 = Resources.Load("Textures/Tutorial/tutorial_2", typeof(Sprite)) as Sprite;
+		// instructionImage3 = Resources.Load("Textures/Tutorial/tutorial_3", typeof(Sprite)) as Sprite;
+		// instructionImage4 = Resources.Load("Textures/Tutorial/tutorial_4", typeof(Sprite)) as Sprite;
+		// instructionImage5 = Resources.Load("Textures/Tutorial/tutorial_5", typeof(Sprite)) as Sprite;
+		// instructionImage6 = Resources.Load("Textures/Tutorial/tutorial_6", typeof(Sprite)) as Sprite;
+		// instructionImage7 = Resources.Load("Textures/Tutorial/tutorial_7", typeof(Sprite)) as Sprite;
+		// instructionImage8 = Resources.Load("Textures/Tutorial/tutorial_8", typeof(Sprite)) as Sprite;
 		instructionWindow = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/InstructionWindow").gameObject;
 		changeInstruction = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ChangeInstruction").gameObject;
 		toMenu = GameObject.Find("Canvas/Scroll View/Viewport/Tutorial/ToMenu").gameObject;
@@ -256,5 +284,10 @@ public class TutorialScript : MonoBehaviour{
 	void EndScene(){	// OBSOLETE?
 		endScene = true;
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

@@ -19,6 +19,10 @@ public class GlowScript : MonoBehaviour  {
 		rect.sizeDelta = new Vector2 (baseSize.x + 5 * Mathf.Cos(angle), baseSize.y + 5 * Mathf.Cos(angle));
 	}
 	
-	
+
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

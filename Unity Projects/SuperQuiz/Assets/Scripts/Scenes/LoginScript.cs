@@ -34,17 +34,25 @@ public class LoginScript : MonoBehaviour{
 	public bool acceptWindowOpen;
 	public float acceptWindowTimer;
 	
+	// Time and Day Restriction
+	public static bool lockGame;
+	
 	// Authentication
 	AuthenticationScript authenticationScript;
 
 	void Start(){
-		StartCoroutine(StartScene());
+		// StartCoroutine(StartScene());
+		loginRect = GameObject.Find("Canvas/Scroll View/Viewport/Login").GetComponent<RectTransform>();
+		SessionScript.PlaySong();
 		userInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/User").GetComponent<InputField>();
 		passwordInputField = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/Password").GetComponent<InputField>();
 		acceptWindow = GameObject.Find("Canvas/Scroll View/Viewport/Accept").gameObject;
 		acceptWindowDocument = acceptWindow.transform.Find("Scroll View/Viewport/Document").GetComponent<RectTransform>();
 		errorWindow = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/ErrorWindow").gameObject;
 		userInputField.ActivateInputField();
+		
+		// Time and Day Restriction
+		lockGame = false;
 		
 		// Authentication
 		authenticationScript = GameObject.Find("Session").GetComponent<AuthenticationScript>();
@@ -58,6 +66,10 @@ public class LoginScript : MonoBehaviour{
 
 
 	void Update(){
+		if (lockGame){
+				SceneManager.LoadScene("restrictedTime", LoadSceneMode.Single);
+			return;
+		}
 		// if (endScene){
 		// 	loginRect.anchoredPosition = new Vector2 (loginRect.anchoredPosition.x, loginRect.anchoredPosition.y - Time.deltaTime * 1200);
 		// 	return;
@@ -215,4 +227,9 @@ public class LoginScript : MonoBehaviour{
 	void Quit(){
 		Application.Quit();
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

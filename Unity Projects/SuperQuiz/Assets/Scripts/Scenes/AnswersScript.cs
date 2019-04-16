@@ -22,8 +22,15 @@ public class AnswersScript : MonoBehaviour{
     string wrong = "errou";
 
     void Start(){
-        StartCoroutine(StartScene());
-        // answerLineScrollbar = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Scrollbar Vertical").GetComponent<Scrollbar>();
+		// StartCoroutine(StartScene());
+		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Answers").GetComponent<RectTransform>();
+		answerLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Viewport/Content").gameObject;
+		// answerLinePrefab = Resources.Load("Prefabs/AnswerLine") as GameObject;
+		// answerLineTexture1 = Resources.Load("Textures/UI/button_answer_list", typeof(Sprite)) as Sprite;
+		// answerLineTexture2 = Resources.Load("Textures/UI/button_answer_list2", typeof(Sprite)) as Sprite;
+
+		AnswersList();
+		// answerLineScrollbar = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Scrollbar Vertical").GetComponent<Scrollbar>();
     }
 
     void Update(){
@@ -40,9 +47,9 @@ public class AnswersScript : MonoBehaviour{
         yield return null;
         resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Answers").GetComponent<RectTransform>();
         answerLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Answers/Scroll View/Viewport/Content").gameObject;
-        answerLinePrefab = Resources.Load("Prefabs/AnswerLine") as GameObject;
-        answerLineTexture1 = Resources.Load("Textures/UI/button_answer_list", typeof(Sprite)) as Sprite;
-        answerLineTexture2 = Resources.Load("Textures/UI/button_answer_list2", typeof(Sprite)) as Sprite;
+        // answerLinePrefab = Resources.Load("Prefabs/AnswerLine") as GameObject;
+        // answerLineTexture1 = Resources.Load("Textures/UI/button_answer_list", typeof(Sprite)) as Sprite;
+        // answerLineTexture2 = Resources.Load("Textures/UI/button_answer_list2", typeof(Sprite)) as Sprite;
 
         AnswersList();
     }
@@ -123,5 +130,10 @@ public class AnswersScript : MonoBehaviour{
     void EndScene(){	// OBSOLETE?
         endScene = true;
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

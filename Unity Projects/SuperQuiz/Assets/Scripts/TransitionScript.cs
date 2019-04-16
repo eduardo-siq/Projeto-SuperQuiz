@@ -39,8 +39,7 @@ public class TransitionScript : MonoBehaviour{
     public void RaffleVariation(){
 		return;
         int random = Random.Range(0, 5);
-        switch (random)
-        {
+        switch (random){
             case 0:
                 rect.anchorMax = new Vector2(0, 0);
                 rect.anchorMin = new Vector2(0, 0);
@@ -88,5 +87,10 @@ public class TransitionScript : MonoBehaviour{
         instance.RaffleVariation();
         instance.transitionAnim.SetTrigger("out");
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

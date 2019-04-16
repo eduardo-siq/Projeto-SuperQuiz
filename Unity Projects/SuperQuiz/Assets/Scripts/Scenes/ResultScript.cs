@@ -27,7 +27,26 @@ public class ResultScript : MonoBehaviour{
 
 
 	void Start(){
-		StartCoroutine(StartScene());
+		// StartCoroutine(StartScene());
+		resultRect = GameObject.Find("Canvas/Scroll View/Viewport/Result").GetComponent<RectTransform>();
+		rankingWindow = GameObject.Find("Canvas/Scroll View/Viewport/Result/RankingWindow").GetComponent<RankingWindow>();
+		avatar = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Avatar").gameObject;
+		// avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
+		// avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+		// avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
+		scoreValueText = GameObject.Find("Canvas/Scroll View/Viewport/Result/ScoreValue").GetComponent<Text>();
+		scoreValue = SessionScript.player.score;
+		scoreValueText.text = scoreValue.ToString();
+		resultLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Content").gameObject;
+		// resultLinePrefab = Resources.Load("Prefabs/ResultLine") as GameObject;
+		// resultLineTexture1 = Resources.Load("Textures/UI/button_result_list", typeof(Sprite)) as Sprite;
+		// resultLineTexture2 = Resources.Load("Textures/UI/button_result_list2", typeof(Sprite)) as Sprite;
+		playerRankingList = new List <Player>();
+		SetPlayerRankingList();
+		SortPlayerListByScore();
+		ResultList();
+		rankingWindow.content.SetActive(false);
+		rankingWindow.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, 0f);	// Objeto começa fora de cena para que seu Start() ocorra, mas fora da visão do player
 	}
 
 	IEnumerator StartScene(){
@@ -42,9 +61,9 @@ public class ResultScript : MonoBehaviour{
 		scoreValue = SessionScript.player.score;
 		scoreValueText.text = scoreValue.ToString();
 		resultLinesViewport = GameObject.Find("Canvas/Scroll View/Viewport/Result/Scroll View/Viewport/Content").gameObject;
-		resultLinePrefab = Resources.Load("Prefabs/ResultLine") as GameObject;
-		resultLineTexture1 = Resources.Load("Textures/UI/button_result_list", typeof(Sprite)) as Sprite;
-		resultLineTexture2 = Resources.Load("Textures/UI/button_result_list2", typeof(Sprite)) as Sprite;
+		// resultLinePrefab = Resources.Load("Prefabs/ResultLine") as GameObject;
+		// resultLineTexture1 = Resources.Load("Textures/UI/button_result_list", typeof(Sprite)) as Sprite;
+		// resultLineTexture2 = Resources.Load("Textures/UI/button_result_list2", typeof(Sprite)) as Sprite;
 		playerRankingList = new List <Player>();
 		SetPlayerRankingList();
 		SortPlayerListByScore();
@@ -122,7 +141,11 @@ public class ResultScript : MonoBehaviour{
 			newResultLine.transform.SetParent(resultLinesViewport.transform, true);
 			newResultLine.GetComponent<ResultLine>().id = playerRankingList[i].id;
 			newResultLine.GetComponent<ResultLine>().rank = (1 + i);
-			newResultLine.transform.Find("Text").GetComponent<Text>().text = (1 + i) + "# " + playerRankingList[i].name + ": " + playerRankingList[i].score + " pontos";
+			string lineNameString = playerRankingList[i].name;
+			if (lineNameString.Length > 23){
+				lineNameString = lineNameString.Substring(0, 23) + "...";
+			}
+			newResultLine.transform.Find("Text").GetComponent<Text>().text = (1 + i) + "# " + lineNameString;	// + ": " + playerRankingList[i].score + " pontos";
 			newResultLine.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, - 20f - 30 * i, 0f);
 			if (variation1){
 				newResultLine.GetComponent<Image>().sprite = resultLineTexture1;
@@ -191,4 +214,10 @@ public class ResultScript : MonoBehaviour{
 	void EndScene(){	// OBSOLETE?
 		endScene = true;
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
+
 }

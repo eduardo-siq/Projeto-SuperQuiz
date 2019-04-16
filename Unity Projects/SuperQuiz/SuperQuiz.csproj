@@ -380,11 +380,8 @@
     <Compile Include="Assets\Scripts\AvatarPortrait.cs" />
     <Compile Include="Assets\Scripts\BackgroundScript.cs" />
     <Compile Include="Assets\Scripts\BncQFile.cs" />
-    <Compile Include="Assets\Scripts\BuiltInCrossword.cs" />
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />
     <Compile Include="Assets\Scripts\ClientListenerHolderScript.cs" />
-    <Compile Include="Assets\Scripts\CrosswordClass.cs" />
-    <Compile Include="Assets\Scripts\CrosswordLine.cs" />
     <Compile Include="Assets\Scripts\GlowScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -400,14 +397,13 @@
     <Compile Include="Assets\Scripts\Scenes\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AvatarScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\ErrorLoginScript.cs" />
-    <Compile Include="Assets\Scripts\Scenes\ExitScript.cs" />
-    <Compile Include="Assets\Scripts\Scenes\GameplayCrosswordScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameplayScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScriptLimited.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginLockedScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\MenuScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\RestrictedTimeScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\ResultScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\TutorialScript.cs" />
     <Compile Include="Assets\Scripts\SessionScript.cs" />
@@ -430,7 +426,6 @@
     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver_v1.2.95.0.txt" />
     <None Include="Assets\Plugins\Android\Firebase\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\Firebase\res\values\google-services.xml" />
-    <None Include="Assets\path.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

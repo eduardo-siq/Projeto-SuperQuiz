@@ -29,14 +29,24 @@ public class Answer {
 		subject = newSubject;
 		time = newTime;
 	}
+
+	public Answer(int newIndex, int newAlternative, bool newRight, bool newTimeout, float newTime){
+		index = newIndex;
+		alternative = newAlternative;
+		right = newRight;
+		timeout = newTimeout;
+		time = newTime;
+	}
 	
 	public Answer(int newIndex, int newAlternative, float newTime){
 		index = newIndex;
 		alternative = newAlternative;
 		if (newAlternative == 0){
-		right = true;
+			right = true;
 		} else right = false;
-		timeout = false;
+		if (newAlternative == 5){
+			timeout = true;
+		} else timeout = false;
 		subject = new List <bool>();
 		time = newTime;
 	}
@@ -44,13 +54,22 @@ public class Answer {
 	public void SetAlternative(int newAlternative){
 		alternative = newAlternative;
 		if (newAlternative == 0){
-		right = true;
+			right = true;
 		} else right = false;
+		if (newAlternative == 5){
+			right = false;
+			timeout = true;
+		}
 	}
 	
 	public void SetTime(float newTime){
 		Debug.Log ("NEW TIME: " + newTime);
 		time = newTime;
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

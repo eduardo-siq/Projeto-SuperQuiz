@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Simple : MonoBehaviour {
+public class Simple {
 
 	public static string SimpleText(string text){
 		string character = "";
         for (int i = 0; i < text.Length; i++){
-            print("index " + i);
+            // Debug.Log("index " + i);
             character = text.Substring(i, 1);
 			// Diacritcs
             if (character == "à"){
@@ -296,7 +295,12 @@ public class Simple : MonoBehaviour {
                 text = text.Insert(i, "y");
             }
         }
-        print(text);
+        // Debug.Log(text);
         return text;
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

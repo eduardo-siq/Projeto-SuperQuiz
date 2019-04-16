@@ -212,4 +212,9 @@ public class BuiltInQuestions {
 		"X"));
 		return questionsPreLoad;
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

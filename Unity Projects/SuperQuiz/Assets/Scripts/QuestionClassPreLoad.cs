@@ -42,6 +42,7 @@ public class QuestionPreLoad{
         userGroupString = newUserGroup;
         subject = newSubject;
         userGroup = new List<bool>();
+		// Debug.Log ("userGroupString( " + index + ") = " + userGroupString);
         if (userGroupString != null && userGroupString != "X"){
             if (userGroupString != ""){
                 string[] questionUserGroups;
@@ -50,9 +51,11 @@ public class QuestionPreLoad{
                 for (int i = 0; i < questionUserGroups.Length; i++){
                     if (questionUserGroups[i] == "T"){
                         userGroup.Add(true);
+						// Debug.Log ("Usergroup[" + i + "] = true");
                     }
                     if (questionUserGroups[i] == "F"){
                         userGroup.Add(false);
+						// Debug.Log ("Usergroup[" + i + "] = false");
                     }
                 }
             }
@@ -69,5 +72,10 @@ public class QuestionPreLoad{
     // answer3 = baseQuestion.answer3;
     // answer4 = baseQuestion.answer4;
     // }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

@@ -4141,6 +4141,7 @@ MonoBehaviour:
   questionsAskedListCount: 0
   answersListCount: 0
   bncQFileNameEditor: 
+  resetAnswersAutomaticallyEditor: 0
 --- !u!4 &842651022
 Transform:
   m_ObjectHideFlags: 0
@@ -8232,8 +8233,8 @@ MonoBehaviour:
   gameplayScript: {fileID: 0}
   menuScript: {fileID: 0}
   resultScript: {fileID: 0}
-  soundOnSprite: {fileID: 0}
-  soundOffSprite: {fileID: 0}
+  soundOnSprite: {fileID: 21300000, guid: fee84146c01e4914cbd2a1ec81fbc4dc, type: 3}
+  soundOffSprite: {fileID: 21300000, guid: 63aaedbddae1a1e44a1d75680663c0e6, type: 3}
 --- !u!222 &1718878617
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -10,18 +10,20 @@ public class MenuScript : MonoBehaviour{
     public RectTransform menuRect;
     public bool endScene;
     public GameObject avatar;
+	public Sprite disabledGameplay;
 
     // Menu variables
     private string nextScene = "";
 
 
     void Start(){
-        StartCoroutine(StartScene());
-    }
-
-    IEnumerator StartScene(){
-        yield return null;
-		if (SessionScript.justStartedSession && SessionScript.firstLogIn) AuthenticationScript.FirstLoginCompleted();
+        // StartCoroutine(StartScene());
+		if (SessionScript.justStartedSession){
+			if(SessionScript.firstLogIn){
+				AuthenticationScript.FirstLoginCompleted();
+			}
+			SessionScript.MinimumRequestedQuestions();
+		}
 		if (SessionScript.resetAnswersAutomatically){
 			AuthenticationScript.ResetAnswers();
 			SessionScript.questionsAskedList = new List<int>();
@@ -47,7 +49,7 @@ public class MenuScript : MonoBehaviour{
         if(SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
             GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay/Text").GetComponent<Text>().text = "";	//"não há mais questões!";
 			// GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Button>().enabled = false;
-			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Image>().sprite = Resources.Load("Textures/UI/PlayDisabled", typeof (Sprite)) as Sprite;
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Image>().sprite = disabledGameplay;	//	Resources.Load("Textures/UI/PlayDisabled", typeof (Sprite)) as Sprite;
         }
 		
 		// Soundtrack
@@ -63,6 +65,62 @@ public class MenuScript : MonoBehaviour{
 		
 		// Just Started Session
 		SessionScript.justStartedSession = false;
+		
+		// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	
+    }
+
+    IEnumerator StartScene(){
+        yield return null;
+		if (SessionScript.justStartedSession){
+			if(SessionScript.firstLogIn){
+				AuthenticationScript.FirstLoginCompleted();
+			}
+			SessionScript.MinimumRequestedQuestions();
+		}
+		if (SessionScript.resetAnswersAutomatically){
+			AuthenticationScript.ResetAnswers();
+			SessionScript.questionsAskedList = new List<int>();
+			SessionScript.answersList = new List<Answer>();
+		}
+		if (SessionScript.getOtherPlayers){
+			AuthenticationScript.GetOtherPlayers();
+			SessionScript.getOtherPlayers = false;
+		}
+        menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
+        avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
+		if (SessionScript.player.avatar.skin == -1){
+			avatar.SetActive(false);
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/NoPortrait").gameObject.SetActive(true);
+		}else{
+			avatar.GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.player.avatar);
+		}
+        // avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
+        // avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
+        // avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
+
+        // Checks if there are avaiable question
+        if(SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
+            GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay/Text").GetComponent<Text>().text = "";	//"não há mais questões!";
+			// GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Button>().enabled = false;
+			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToGameplay").GetComponent<Image>().sprite = disabledGameplay;	//	Resources.Load("Textures/UI/PlayDisabled", typeof (Sprite)) as Sprite;
+        }
+		
+		// Soundtrack
+		if (!SessionScript.songAudio.isPlaying){
+			SessionScript.PlaySong();
+		}
+		Invoke ("CheckSong", 1f);
+		
+		// Easter Egg
+		if (SessionScript.justStartedSession && AuthenticationScript.email == "rocketprogames@gmail.com"){
+			PopUpScript.InstantiatePopUp("Bem-vindo de volta, Mestre. Como posso servi-lo?", ">>");
+		}
+		
+		// Just Started Session
+		SessionScript.justStartedSession = false;
+		
+		// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	
+		
     }
 
 
@@ -75,7 +133,7 @@ public class MenuScript : MonoBehaviour{
 
     public void Select(string option){
 		if (option == "gameplay"){
-			if(SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
+			if(SessionScript.answersList.Count >= SessionScript.numberOfQuestionsDemanded){
 				SessionScript.ButtonAudio(SessionScript.subtle);
 				 PopUpScript.InstantiatePopUp("Todos as questões foram respondidas!", "OK");
 				return;
@@ -124,4 +182,9 @@ public class MenuScript : MonoBehaviour{
 			SessionScript.PlaySong();
 		}
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

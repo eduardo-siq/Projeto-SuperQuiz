@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "798603420703",
+    "firebase_url": "https://projeto-treinamento-b49ec.firebaseio.com",
+    "project_id": "projeto-treinamento-b49ec",
+    "storage_bucket": "projeto-treinamento-b49ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798603420703:android:83d537ce571ee0dc",
+        "android_client_info": {
+          "package_name": "projeto.quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798603420703-4i0pslcdlgbsf49gpqsut7arme79ugvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpZi74I3Rq74YrfAQlkGmNcC-F4CpXyvI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

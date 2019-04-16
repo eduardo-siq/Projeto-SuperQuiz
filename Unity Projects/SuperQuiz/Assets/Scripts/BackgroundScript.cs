@@ -11,4 +11,9 @@ public class BackgroundScript : MonoBehaviour {
 	void Update () {
 		spin.transform.Rotate(Vector3.forward * Time.deltaTime * (- spinSpeed));
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

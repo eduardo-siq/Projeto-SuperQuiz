@@ -54,7 +54,114 @@ public class AvatarScript : MonoBehaviour{
 	public GameObject photographyWindow;
 
     void Start(){
-        StartCoroutine(StartScene());
+        // StartCoroutine(StartScene());
+		selectStageNext = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState/Next").gameObject;
+		selectStagePrevious = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState/Previous").gameObject;
+        avatarRect = GameObject.Find("Canvas/Scroll View/Viewport/Avatar").GetComponent<RectTransform>();
+        portrait = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Portrait").gameObject;
+		portraitBackgroundComplexion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PortraitBackgroundComplexion").gameObject;
+		portraitBackgroundItems = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PortraitBackgroundItems").gameObject;
+        lowerMenu = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/LowerMenu").gameObject;
+        options = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Options").gameObject;
+        baseTexture = portrait.transform.Find("Base").GetComponent<Image>();
+        hairTexture = portrait.transform.Find("Hair").GetComponent<Image>();
+        item0Texture = portrait.transform.Find("Item0").GetComponent<Image>();
+        item1Texture = portrait.transform.Find("Item1").GetComponent<Image>();
+        item2Texture = portrait.transform.Find("Item2").GetComponent<Image>();
+        item3Texture = portrait.transform.Find("Item3").GetComponent<Image>();
+        item0TextureB = portrait.transform.Find("Item0B").GetComponent<Image>();
+        item1TextureB = portrait.transform.Find("Item1B").GetComponent<Image>();
+        item2TextureB = portrait.transform.Find("Item2B").GetComponent<Image>();
+        item3TextureB = portrait.transform.Find("Item3B").GetComponent<Image>();
+        item0Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem0").gameObject;
+        item1Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem1").gameObject;
+        item2Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem2").gameObject;
+        item3Selection = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items/SelectItem3").gameObject;
+        // Creation process
+        gender = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Gender").gameObject;
+        complextion = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Complexion").gameObject;
+        hair = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Hair").gameObject;
+        items = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/Items").gameObject;
+		item_initial_1 = Resources.Load("Textures/Avatar/avatar_initial_0", typeof(Sprite)) as Sprite;
+		item_initial_2 = Resources.Load("Textures/Avatar/avatar_initial_1", typeof(Sprite)) as Sprite;
+		// Photography
+		photographyWindow = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/PhotographyWindow").gameObject;
+		photographyWindow.SetActive(false);
+        if (SessionScript.customizationStage == 2){
+            allStagesCompleted = true;
+        }
+		// if (SessionScript.customizationStage == 0){	// Gender selection disabled
+			// Invoke("CustomizationStage", 0.75f);
+			// portrait.SetActive(false);
+			// gender.SetActive(true);
+			// complextion.SetActive(false);
+			// hair.SetActive(false);
+			// items.SetActive(false);
+			// selectStageNext.SetActive(false);
+			// selectStagePrevious
+			// lowerMenu.SetActive(false);
+			// options.SetActive(false);
+		// }
+		// if (SessionScript.customizationStage != 0){
+			// CustomizationStage();
+		// }
+		if (SessionScript.customizationStage == 1){
+			//allowNext = false;
+			Invoke("InitialPopUp", 0.25f);
+			portrait.SetActive(true);
+			portrait.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, -46f);
+			portraitBackgroundComplexion.SetActive(true);
+			portraitBackgroundItems.SetActive(false);
+			gender.SetActive(false);
+			complextion.SetActive(true);
+			hair.SetActive(true);
+			items.SetActive(false);
+			selectStageNext.SetActive(true);
+			selectStagePrevious.SetActive(false);
+			lowerMenu.SetActive(false);
+			options.SetActive(false);
+			RaffleBlankAvatar();
+		}
+		if (SessionScript.customizationStage != 1){
+			CustomizationStage();
+		}
+
+        if (SessionScript.player.score >= SessionScript.thresholdTier1){
+            SessionScript.currentTier = 1;
+        }
+        if (SessionScript.player.score >= SessionScript.thresholdTier2){
+            SessionScript.currentTier = 2;
+        }
+        if (SessionScript.currentTier == 0){
+            print("TIER 0");
+            item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.x);
+            item1MaxIndex = Mathf.RoundToInt(SessionScript.item1TierIndex.x);
+            item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.x);
+            item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.x);
+        }
+        if (SessionScript.currentTier == 1){
+            print("TIER 1");
+            item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.y);
+            item1MaxIndex = Mathf.RoundToInt(SessionScript.item1TierIndex.y);
+            item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.y);
+            item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.y);
+        }
+        if (SessionScript.currentTier == 2){
+            print("TIER 2");
+            item0MaxIndex = Mathf.RoundToInt(SessionScript.item0TierIndex.z);
+            item1MaxIndex = Mathf.RoundToInt(SessionScript.item1TierIndex.z);
+            item2MaxIndex = Mathf.RoundToInt(SessionScript.item2TierIndex.z);
+            item3MaxIndex = Mathf.RoundToInt(SessionScript.item3TierIndex.z);
+        }
+        // if (SessionScript.firstLogIn)
+        // {
+            // TransitionScript.SkipAnimation();
+            // SessionScript.RaffleInitialAvatar();
+            // SessionScript.firstLogIn = false;
+        // }
+		
+		Portrait();
+        allowNext = false;
     }
 
     IEnumerator StartScene(){
@@ -527,4 +634,9 @@ public class AvatarScript : MonoBehaviour{
     void EndScene(){
         endScene = true;
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

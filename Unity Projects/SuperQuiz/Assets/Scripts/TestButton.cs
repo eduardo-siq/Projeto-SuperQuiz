@@ -16,5 +16,9 @@ public class TestButton : MonoBehaviour  {
         print ("SessionScript.answersList: " + SessionScript.answersList.Count);
         GameObject.Find("Answers").gameObject.GetComponent<AnswersScript>().AnswersList();
     }
-   
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

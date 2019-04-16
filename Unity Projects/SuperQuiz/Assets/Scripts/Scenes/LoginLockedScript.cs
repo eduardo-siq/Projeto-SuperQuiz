@@ -28,8 +28,7 @@ public class LoginLockedScript : MonoBehaviour{
     public static bool soundOn;
     public static float soundVolume;
 
-    void Start()
-    {
+    void Start(){
         // UI
         loginRect = GameObject.Find("Canvas/Scroll View/Viewport/LoginLocked").GetComponent<RectTransform>();
         userInputField = GameObject.Find("Canvas/Scroll View/Viewport/LoginLocked/User").GetComponent<InputField>();
@@ -51,25 +50,19 @@ public class LoginLockedScript : MonoBehaviour{
         soundVolume = 0.5f;
     }
 
-    void Update()
-    {
-        if (quit)
-        {
+    void Update(){
+        if (quit){
             songAudio.volume = songAudio.volume - (Time.deltaTime * 2);
         }
-        if (endScene)
-        {
+        if (endScene){
             loginRect.anchoredPosition = new Vector2(loginRect.anchoredPosition.x, loginRect.anchoredPosition.y - Time.deltaTime * 1200);
             return;
         }
-        if (!songAudio.isPlaying)
-        {
-            if (currentSong == 1)
-            {
+        if (!songAudio.isPlaying){
+            if (currentSong == 1){
                 PlaySong(song2);
             }
-            if (currentSong == 2)
-            {
+            if (currentSong == 2){
                 PlaySong(song1);
             }
             currentSong = currentSong + 1;
@@ -78,21 +71,18 @@ public class LoginLockedScript : MonoBehaviour{
     }
 
 
-    public void LoginButton()
-    {
+    public void LoginButton(){
         PlaySong(negative);
         userInputField.DeactivateInputField();
         passwordInputField.DeactivateInputField();
         Invoke("Warning", 0.5f);
     }
 
-    public void Warning()
-    {
+    public void Warning(){
         errorWindow.SetActive(true);
     }
 
-    public void SelectQuit()
-    {
+    public void SelectQuit(){
         ButtonAudio(SessionScript.neutral);
         quit = true;
         print("QUIT");
@@ -100,23 +90,24 @@ public class LoginLockedScript : MonoBehaviour{
         Invoke("Quit", 1f);
     }
 
-    void EndScene()
-    {
+    void EndScene(){
         endScene = true;
     }
 
-    void Quit()
-    {
+    void Quit(){
         Application.Quit();
     }
 
-    public void PlaySong(AudioClip audio)
-    {
+    public void PlaySong(AudioClip audio){
         songAudio.PlayOneShot(audio, soundVolume);
     }
 
-    public static void ButtonAudio(AudioClip audio)
-    {
+    public static void ButtonAudio(AudioClip audio){
         buttonAudio.PlayOneShot(audio, soundVolume * 2);
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

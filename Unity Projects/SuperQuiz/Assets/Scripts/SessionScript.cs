@@ -26,6 +26,7 @@ public class SessionScript : MonoBehaviour{
     public static List<int> questionsAskedList;
     public static List<Answer> answersList;
     public static int numberOfQuestionsDemanded = 5;
+	public static int numberOfQuestionsExpected = 0;
     //public static int pointsByQuestion = 50;	// maybe redundant
     public static float questionTime = 150f; // locally defined, maybe defined by BncQ later
 	public static float questionTimeShort = 150f; //same
@@ -33,6 +34,8 @@ public class SessionScript : MonoBehaviour{
     public static List<string> subjectName;
     public static List<string> userGroupName;   // maybe unecessary
     public static bool singleRun = true;
+	public static int questionMaxIndex;
+	public static int questionMinIndex;
 
     // Point-and-Click
 	public static List<PointAndClickQuestion> pointAndClickQuestion;
@@ -89,6 +92,7 @@ public class SessionScript : MonoBehaviour{
 	public static AudioClip currentSong;
 	public static AudioClip swipe;
 	public static AudioClip photography;
+	public static AudioClip scoreCounter;
 	public static bool soundOn;
 	public static float soundVolume;
 	public static bool fadeOutSong;
@@ -257,8 +261,10 @@ public class SessionScript : MonoBehaviour{
 		success = Resources.Load("Sound/success_sound", typeof(AudioClip)) as AudioClip;
 		yield return null;
 		photography = Resources.Load("Sound/photography_sound", typeof(AudioClip)) as AudioClip;
-			yield return null;
+		yield return null;
 		swipe = Resources.Load("Sound/swipe_sound", typeof(AudioClip)) as AudioClip;
+		yield return null;
+		scoreCounter = Resources.Load("Sound/scoreCounter", typeof(AudioClip)) as AudioClip;
 		
 		if (error == null) print ("ERROR NOT FOUND");
 		if (error == null) print ("ERROR NOT FOUND");
@@ -367,54 +373,110 @@ public class SessionScript : MonoBehaviour{
     }
 
 	IEnumerator GetQuestionListFromPreLoad(){
-		Sprite missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
-		Sprite texture;
+		print ("GetQuestionListFromPreLoad()");
+		// missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
+		// Sprite texture;
 		if (userGroup != -1){
 			for (int i = 0; i < questionListPreLoad.Count; i++){
 				yield return null;
 				if (questionListPreLoad[i].userGroupString == "X"){   // No specific user
-					questionList.Add(new Question(questionListPreLoad[i]));
-					if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
-						pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
-						print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
-					}
-					if (questionList[i].questionType == 4){	// Question with image
-						print("loading texture");
-						texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-						if (texture != null){
-							questionList[i].questionImage = texture;
-							print("image loaded");
-						}
-						if (texture == null){
-							questionList[i].questionImage = missingTexture;
-							print("image not found");
-						}
-					}
+					print("get question " + i + " (no group)");
+					AddQuestionToQuestionList(questionListPreLoad[i]);
+					// questionList.Add(new Question(questionListPreLoad[i]));
+					// if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
+						// pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
+						// print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
+					// }
+					// if (questionList[i].questionType == 4){	// Question with image
+						// print("loading texture");
+						// texture = Resources.Load("Textures/Questions/" + questionListPreLoad[i].index.ToString(), typeof(Sprite)) as Sprite;
+						// if (texture != null){
+							// questionList[i].questionImage = texture;
+							// print("image loaded");
+						// }
+						// if (texture == null){
+							// questionList[i].questionImage = missingTexture;
+							// print("image not found");
+						// }
+					// }
 				}
 				if (questionListPreLoad[i].userGroupString != "X"){
-					for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++){
-						if (questionListPreLoad[i].userGroup[userGroup] == true){
-							print("get question " + i + "(y = " + y + ")");
-							questionList.Add(new Question(questionListPreLoad[i]));
-							if (questionList[i].questionType == 4){
-								print("loading texture");
-								texture = Resources.Load("Textures/Questions/" + i.ToString(), typeof(Sprite)) as Sprite;
-								if (texture != null){
-									questionList[i].questionImage = texture;
-									print("image loaded");
-								}
-								if (texture == null){
-									questionList[i].questionImage = missingTexture;
-									print("image not found");
-								}
-							}
-							break;
-						}
+					if (questionListPreLoad[i].userGroup[userGroup] == true){
+						print("get question " + i + "(group #" + userGroup + ")");
+						AddQuestionToQuestionList(questionListPreLoad[i]);
 					}
+					// for (int y = 0; y < questionListPreLoad[i].userGroup.Count; y++){	// THIS LOOP MAY BE UNECESSARY
+						// if (questionListPreLoad[i].userGroup[userGroup] == true){
+							// print("get question " + i + "(group #" + y + ")");
+							// AddQuestionToQuestionList(questionListPreLoad[i]);
+							// questionList.Add(new Question(questionListPreLoad[i]));
+							// if (questionList[i].questionType == 2 || questionList[i].questionType == 5){ // Point and click and/or Point and click multiple items
+								// pointAndClickQuestion.Add(new PointAndClickQuestion(questionListPreLoad[i]));
+								// print ("GetQuestionListFromPreLoad() Point&Click (index " + i + ")");
+							// }
+							// if (questionList[i].questionType == 4){
+								// print("loading texture");
+								// texture = Resources.Load("Textures/Questions/" + questionListPreLoad[i].index.ToString(), typeof(Sprite)) as Sprite;
+								// if (texture != null){
+									// questionList[i].questionImage = texture;
+									// print("image loaded");
+								// }
+								// if (texture == null){
+									// questionList[i].questionImage = missingTexture;
+									// print("image not found");
+								// }
+							// }
+							// break;
+						// }
+					// }
 				}
 			}
-			if (numberOfQuestionsDemanded > questionList.Count){
-				numberOfQuestionsDemanded = questionList.Count;
+			// if (numberOfQuestionsDemanded > questionList.Count){	// Will check available questions instead
+				// numberOfQuestionsDemanded = questionList.Count;
+			// }
+		}
+		questionMaxIndex = 0;
+		for (int i = 0; i < questionList.Count; i++){
+			if (questionList[i].index > questionMaxIndex) questionMaxIndex = questionList[i].index;
+		}
+		questionMinIndex = questionMaxIndex;
+		for (int i = 0; i < questionList.Count; i++){
+			if (questionList[i].index < questionMinIndex) questionMinIndex = questionList[i].index;
+		}
+		print ("questionMaxIndex: " + questionMaxIndex + " / questionMinIndex: " + questionMinIndex);
+	}
+	
+	void AddQuestionToQuestionList(QuestionPreLoad questionPreLoad){	
+		questionList.Add(new Question(questionPreLoad));
+		int questionListCurrentIndex = questionList.Count - 1;
+		missingTexture = Resources.Load("Textures/Questions/missing", typeof(Sprite)) as Sprite;
+		Sprite texture;
+		if (questionPreLoad.questionType == 2 || questionPreLoad.questionType == 5){ // Point and click and/or Point and click multiple items
+			pointAndClickQuestion.Add(new PointAndClickQuestion(questionPreLoad));
+			print ("GetQuestionListFromPreLoad() Point&Click (index " + questionPreLoad.index + ")");
+		}
+		if (questionPreLoad.questionType == 4){	// Image
+			print("loading texture");
+			texture = Resources.Load("Textures/Questions/" +  questionPreLoad.index.ToString(), typeof(Sprite)) as Sprite;
+			if (texture != null){
+				questionList[questionListCurrentIndex].questionImage = texture;
+				print("image loaded");
+			}
+			if (texture == null){
+				questionList[questionListCurrentIndex].questionImage = missingTexture;
+				print("image not found");
+			}
+		}
+	}
+	
+	public static void MinimumRequestedQuestions(){
+		print ("MinimumRequestedQuestions()");
+		int missedQuestions = 0;
+		if (answersList.Count < numberOfQuestionsExpected){
+			missedQuestions = numberOfQuestionsExpected - answersList.Count;
+			for (int i = 0; i < missedQuestions; i++){
+				answersList.Add(new Answer(-1, 6, false, true, 0f));
+				print ("You missed a question!");
 			}
 		}
 	}
@@ -670,5 +732,10 @@ public class SessionScript : MonoBehaviour{
         songAudio.volume = soundVolume;
         buttonAudio.volume = soundVolume;
     }
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 
 }

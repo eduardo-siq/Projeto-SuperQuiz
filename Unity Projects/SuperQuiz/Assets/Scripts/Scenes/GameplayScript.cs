@@ -10,38 +10,47 @@ public class GameplayScript : MonoBehaviour{
     public RectTransform gameplayRect;
     public GameObject avatar;
     public Text scoreText;
+	public GameObject scoreAssembly;
+	public RectTransform scoreAssemblyTransform;
     public bool endScene;
     public string nextScene = "";
+	public GameObject animationFeedback;
     public AnimSuccessScript successAnimation;
     public AnimErrorScript errorAnimation;
     public bool lockButton;
     public GameObject lowerMenu;
+	public RectTransform lowerMenuTransform;
+	public GameObject questionCounterAssembly;
     public Text questionCounter;
 
-    // Question UI
-    public GameObject questionMultiple;
-    public GameObject questionWrite;
-    public List<GameObject> answers;
-    public InputField writtenAnswer;
-    public GameObject questionMultipleText;
-    public GameObject questionWriteText;
-    public GameObject questionPoint;
-    public GameObject questionPointText;
-    public GameObject questionPointButton;
-    public GameObject questionPointConfirm;
-    public Image questionPointDetail;
-    public GameObject questionLong;
-    public GameObject questionLongText;
-    public GameObject questionLongAnswer;
-    public List<GameObject> questionLongAnswers;
-    public GameObject questionImage;
-    public Image questionImageTexture;
-    public Image clockImage;
-    public Text clockText;
-    public GameObject nextQuestion;
-    public GameObject toMenuText;
-    public Vector2 questionPointOffset;
-    public GameObject correctAnswer;
+	// Question UI
+	public GameObject questionMultiple;
+	public GameObject questionWrite;
+	public List<GameObject> answers;
+	public InputField writtenAnswer;
+	public GameObject questionMultipleText;
+	public GameObject questionWriteText;
+	public GameObject questionPoint;
+	public GameObject questionPointText;
+	public GameObject questionPointButton;
+	public GameObject questionPointConfirm;
+	public GameObject questionPointMovable;
+	public Image questionPointDetail;
+	public GameObject questionLong;
+	public GameObject questionLongText;
+	public GameObject questionLongAnswer;
+	public List<GameObject> questionLongAnswers;
+	public GameObject questionImage;
+	public Image questionImageTexture;
+	public GameObject clockAssembly;
+	public RectTransform clockAssemblyTransform;
+	public Image clockImage;
+	public Text clockText;
+	public GameObject nextQuestion;
+	public GameObject toMenuText;
+	public Vector2 questionPointOffsetMultiplier;
+	public Vector2 questionPointOffsetLinear;
+	public GameObject correctAnswer;
 	public GameObject itemsCounter;
 	public Text itemsCounterText;
 	public int alternativeA;
@@ -53,8 +62,16 @@ public class GameplayScript : MonoBehaviour{
 	public RectTransform turnSign;
 	public bool turnSignOn;
 	public float turnSignTimer;
-    //public GameObject result;
-
+	//public GameObject result;
+	
+	// Rotate UI
+	public bool uiVertical;
+	public Vector2 questionPointMovableOriginalPos;
+	public Vector2 animationFeedbackOriginalPos;
+	public Vector2 correctAnswerOriginalPos;
+	public Vector2 clockAssemblyOriginalPos;
+	public Vector2 lowerMenuOriginalPos;
+	
     // Question Variables
     public int rightAnswer;
     public Question currentQuestion;
@@ -68,8 +85,18 @@ public class GameplayScript : MonoBehaviour{
     public int clickY;
 	public Vector3 clickedColor; // R G B
     public bool showAnswer;
+	public bool currentIsWrong;
+	public bool currentIsTimeout;
 	// public int numberOfPointItems;
 	// public int numberOfPointItemsAnswered;
+	
+	// Score animation
+	public bool playScoreAnim;
+	public float scoreAnimTimer;
+	public bool playScoreAnimOnTimeOut;
+	public bool playScoreAnimOnWrong;
+	public float baseScore;
+	public float pointsPerSecond;
 	
 	// Debug
 	Text textPosX;
@@ -89,83 +116,119 @@ public class GameplayScript : MonoBehaviour{
         // avatar.transform.Find("Item1").GetComponent<RawImage>().texture = SessionScript.avatarItem1[SessionScript.selectedItem1];
         // avatar.transform.Find("Item2").GetComponent<RawImage>().texture = SessionScript.avatarItem2[SessionScript.selectedItem2];
         // avatar.transform.Find("Item3").GetComponent<RawImage>().texture = SessionScript.avatarItem3[SessionScript.selectedItem3];
-        scoreText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Score").gameObject.GetComponent<Text>();
+		scoreAssembly = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Score").gameObject;
+		scoreAssemblyTransform = scoreAssembly.GetComponent<RectTransform>();
+		scoreText = scoreAssembly.GetComponent<Text>();
         scoreText.text = SessionScript.player.score.ToString() + " pontos!";
         if (SessionScript.player.score <= 1 && SessionScript.player.score >= -1){
             scoreText.text = SessionScript.player.score.ToString() + " ponto!";
         }
+		animationFeedback = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").gameObject;
         successAnimation = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").GetComponent<AnimSuccessScript>();
         errorAnimation = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/AnimationFeedback").GetComponent<AnimErrorScript>();
         lowerMenu = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/LowerMenu").gameObject;
-        questionCounter = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionCounter/Counter").GetComponent<Text>();
-
+		lowerMenuTransform = lowerMenu.GetComponent<RectTransform>();
+        questionCounterAssembly = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionCounter");
+		questionCounter = questionCounterAssembly.transform.Find("Counter").GetComponent<Text>();
+		
         // Question UI
-        questionMultiple = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple").gameObject;
-        questionWrite = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite").gameObject;
-        answers = new List<GameObject>();
-        answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemA").gameObject);
-        answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemB").gameObject);
-        answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemC").gameObject);
-        answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemD").gameObject);
-        answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemE").gameObject);
-        questionMultipleText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/Question").gameObject;
-        writtenAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite/WrittenAnswer").GetComponent<InputField>();
-        questionWriteText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite/Question").gameObject;
-        questionPoint = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint").gameObject;
-        questionPointText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/QuestionPointText").gameObject;
-        questionPointButton = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/QuestionPointButton").gameObject;
-        questionPointConfirm = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/QuestionPointConfirm").gameObject;
-        questionPointDetail = questionPointConfirm.transform.Find("Detail").GetComponent<Image>();
-        questionLong = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong").gameObject;
-        questionLongText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionText").gameObject;
-        questionLongAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers").gameObject;
-        questionLongAnswers = new List<GameObject>();
-        questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemA").gameObject);
-        questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemB").gameObject);
-        questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemC").gameObject);
-        questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemD").gameObject);
-        questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemE").gameObject);
-        questionImage = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionImage").gameObject;
-        questionImageTexture = questionImage.GetComponent<Image>();
-        clockImage = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock/Image").gameObject.GetComponent<Image>();
-        clockImage.fillAmount = 0;
-        clockText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock/Text").gameObject.GetComponent<Text>();
-        clockText.text = "";
-        nextQuestion = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/NextQuestion").gameObject;
-        toMenuText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/ToMenu").gameObject;
-        correctAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/CorrectAnswer").gameObject;
+		questionMultiple = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple").gameObject;
+		questionWrite = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite").gameObject;
+		answers = new List<GameObject>();
+		answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemA").gameObject);
+		answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemB").gameObject);
+		answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemC").gameObject);
+		answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemD").gameObject);
+		answers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/ItemE").gameObject);
+		questionMultipleText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionMultiple/Question").gameObject;
+		writtenAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite/WrittenAnswer").GetComponent<InputField>();
+		questionWriteText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionWrite/Question").gameObject;
+		questionPoint = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint").gameObject;
+		questionPointMovable = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/Movable").gameObject;
+		questionPointText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/Movable/QuestionPointText").gameObject;
+		questionPointButton = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/QuestionPointButton").gameObject;
+		questionPointConfirm = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/Movable/QuestionPointConfirm").gameObject;
+		questionPointDetail = questionPointConfirm.transform.Find("Detail").GetComponent<Image>();
+		questionLong = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong").gameObject;
+		questionLongText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionText").gameObject;
+		questionLongAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers").gameObject;
+		questionLongAnswers = new List<GameObject>();
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemA").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemB").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemC").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemD").gameObject);
+		questionLongAnswers.Add(GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionLong/QuestionAnswers/ItemE").gameObject);
+		questionImage = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionImage").gameObject;
+		questionImageTexture = questionImage.GetComponent<Image>();
+		clockAssembly = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock").gameObject;
+		clockAssemblyTransform = clockAssembly.GetComponent<RectTransform>();
+		clockImage = clockAssembly.transform.Find("Image").GetComponent<Image>();
+		clockImage.fillAmount = 0;
+		clockText = clockAssembly.transform.Find("Text").GetComponent<Text>();
+		clockText.text = "";
+		nextQuestion = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/NextQuestion").gameObject;
+		toMenuText = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/ToMenu").gameObject;
+		correctAnswer = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/CorrectAnswer").gameObject;
 		itemsCounter = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/ItemsCounter").gameObject;
 		itemsCounterText = itemsCounter.GetComponent<Text>();
-        //result = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Result").gameObject;
-        //result.SetActive(false);
-        questionImage.SetActive(false);
-        questionMultiple.SetActive(false);
-        questionPoint.SetActive(false);
-        questionLong.SetActive(false);
-        questionWrite.SetActive(false);
-        nextQuestion.SetActive(false);
-        toMenuText.SetActive(false);
+		//result = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Result").gameObject;
+		//result.SetActive(false);
+		questionImage.SetActive(false);
+		questionMultiple.SetActive(false);
+		questionPoint.SetActive(false);
+		questionLong.SetActive(false);
+		questionWrite.SetActive(false);
+		nextQuestion.SetActive(false);
+		toMenuText.SetActive(false);
 		itemsCounter.SetActive(false);
-        showAnswer = false;
-		pointAndClickTurn = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionPoint/Turn").gameObject;
+		showAnswer = false;
+		pointAndClickTurn = GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/TurnWarning").gameObject;
 		turnSign = pointAndClickTurn.transform.Find("Sign").GetComponent<RectTransform>();
 		turnSignOn = false;
 		turnSignTimer = 0f;
+		currentIsWrong = false;
+		currentIsTimeout = false;
+		
+		// Rotate UI
+		uiVertical = true;
+		// questionPointMovableOriginalPos = questionPointMovable.transform.position;
+		// animationFeedbackOriginalPos = animationFeedback.transform.position;
+		correctAnswerOriginalPos = correctAnswer.transform.position;
+		clockAssemblyOriginalPos = clockAssembly.transform.position;
+		lowerMenuOriginalPos = lowerMenu.transform.position;
+		
+		// Score animation
+		playScoreAnim = false;
+		scoreAnimTimer = 0f;
+		if(SessionScript.timeoutScore < 0) playScoreAnimOnTimeOut = true; else playScoreAnimOnTimeOut = false;
+		if(SessionScript.wrongScore < 0) playScoreAnimOnWrong = true; else playScoreAnimOnWrong = false;
+		baseScore = SessionScript.player.score;
 		
 		//Debug
-		textPosX = questionPoint.transform.Find("DebugWindow/Window/TextX").GetComponent<Text>();
-		textPosY = questionPoint.transform.Find("DebugWindow/Window/TextY").GetComponent<Text>();
-		textName = questionPoint.transform.Find("DebugWindow/Window/TextName").GetComponent<Text>();
+		textPosX = questionPoint.transform.Find("Movable/DebugWindow/Window/TextX").GetComponent<Text>();
+		textPosY = questionPoint.transform.Find("Movable/DebugWindow/Window/TextY").GetComponent<Text>();
+		textName = questionPoint.transform.Find("Movable/DebugWindow/Window/TextName").GetComponent<Text>();
 		if (debugPointPosition) questionPoint.transform.Find("DebugWindow").gameObject.SetActive(true);
        
-        if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
-            float x = 256f / Screen.width;
-            float y = 512f / Screen.height;
-            questionPointOffset = new Vector2(x, y);
-        }
-        else{
-            questionPointOffset = new Vector2(1, 1);
-        }
+		if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
+			// hardcoded resolution: 800x480 (5/3) or (0.6f)
+			float playableXaxis = Screen.height * 0.6f;
+			float questionPointOffsetLinearX = Mathf.Max((Screen.width - playableXaxis) / 2,0f);
+			questionPointOffsetLinear = new Vector2(questionPointOffsetLinearX, 0);
+			float x = 256f / playableXaxis;
+			float y = 512f / Screen.height;
+			questionPointOffsetMultiplier = new Vector2(x, y);
+			print("Screen.width" + Screen.width);
+			print("Screen.height" + Screen.height);
+			print("playableXaxis: " + playableXaxis);
+			print("questionPointOffsetLinearX : " + questionPointOffsetLinearX);
+			print("questionPointOffsetLinear : " + questionPointOffsetLinear);
+			print("questionPointOffsetMultiplier : " + questionPointOffsetMultiplier);
+		}
+		else{
+			questionPointOffsetMultiplier = new Vector2(1, 1);
+			questionPointOffsetLinear = new Vector2(0, 0);
+		}
 		
 		// Soundtrack
 		SessionScript.PlaySong();
@@ -221,6 +284,24 @@ public class GameplayScript : MonoBehaviour{
 				EndTurnSign();
 			}
 		}
+		if (playScoreAnim){
+			scoreAnimTimer = scoreAnimTimer + Time.deltaTime;
+			if (scoreAnimTimer > 0.5f){
+				if (scoreAnimTimer <= 2.5f){
+					baseScore = baseScore + Time.deltaTime * pointsPerSecond;
+					scoreText.text = baseScore.ToString("0.0") + " pontos!";
+				}
+				if (scoreAnimTimer >= 2.5f){
+					playScoreAnim = false;
+					baseScore = SessionScript.player.score;
+					scoreText.text = baseScore.ToString() + " pontos!";
+					if (baseScore <= 1 && baseScore >= -1){
+						scoreText.text = baseScore.ToString() + " ponto!";
+					}
+					playScoreAnim = false;
+				}
+			}
+		}
 	}
 
 	public void StartNewQuestion(){
@@ -228,23 +309,50 @@ public class GameplayScript : MonoBehaviour{
 		lockButton = false;
 		answerPermitted = true;
 		showAnswer = false;
+		currentIsWrong = false;
+		currentIsTimeout = false;
 		currentQuestionTimeSpent = 0f;
 		bool clear;
 		int i = 0;
+		int questionRoll = 0;
+		int questionListIndex = 0;
+		bool questionRollError = false;
 		do{   // Randomly chooses next question and checks if it's repeated
+			print ("question roll!");
 			clear = true;
-			currentQuestion = SessionScript.questionList[Random.Range(0, SessionScript.questionList.Count)];
-			if (SessionScript.questionsAskedList.Count != 0){
-				for (int y = 0; y < SessionScript.questionsAskedList.Count; y++){
-					if (currentQuestion.index == SessionScript.questionsAskedList[y]){
-						clear = false;
+			questionRoll = Random.Range(SessionScript.questionMinIndex, SessionScript.questionMaxIndex + 1);
+			bool indexExists = false;
+			print ("roll: " + questionRoll);
+			for (int y = 0; y < SessionScript.questionList.Count; y++){
+				if (SessionScript.questionList[y].index == questionRoll){
+					indexExists = true;
+					questionListIndex = y;
+					print ("question exists! (" + y + ")");
+					break;
+				}
+			}
+			if (indexExists){
+				if (SessionScript.questionsAskedList.Count != 0){
+					for (int y = 0; y < SessionScript.questionsAskedList.Count; y++){
+						if (questionRoll == SessionScript.questionsAskedList[y]){
+							clear = false;
+							print ("repeated question!");
+						}
 					}
 				}
-				i = i + 1;
-				if (i > 1000) { clear = true; print("ENDLESS LOOP!"); } // Escape valve for an unforeseen endless loop
 			}
+			i = i + 1;
+			if (i > 1000) { clear = true; print("ENDLESS LOOP!"); questionRollError = true;} // Escape valve for an unforeseen endless loop
 		} while (!clear);
-
+		if (questionRollError){
+			correctAnswer.SetActive(false);
+			nextQuestion.SetActive(false);
+			toMenuText.SetActive(false);
+			FinishedQuestions();
+			PopUpScript.InstantiatePopUpChangeScene("Parece que houve um erro. Retorne ao menu e tente reiniciar as questões!", "Ok", "menu");
+			return;
+		}
+		currentQuestion = SessionScript.questionList[questionListIndex];
 		SessionScript.questionsAskedList.Add(currentQuestion.index);
 		correctAnswer.SetActive(false);
 		nextQuestion.SetActive(false);
@@ -269,6 +377,9 @@ public class GameplayScript : MonoBehaviour{
 				questionWriteText.transform.Find("Text").GetComponent<Text>().text = currentQuestion.text;
 				writtenAnswer.GetComponent<Image>().color = new Color(0.975f, 0.975f, 0.975f, 1);
 				writtenAnswer.ActivateInputField();
+				if (!uiVertical){
+					RotateUI();
+				}
 				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 2: // Point-and-click
@@ -291,10 +402,9 @@ public class GameplayScript : MonoBehaviour{
 				} 
 				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
-				pointAndClickTurn.SetActive(true);
-				turnSignOn = true;
-				turnSignTimer = 0;
-				Invoke ("TurnSignAudio", 0.66f);
+				if (uiVertical){
+					RotateUI();
+				}
 				print("StartNewQuestion() point-and-click");
 				print ("currentPointQuestionIndex: " + currentPointQuestionIndex);
 				SessionScript.questionTime = SessionScript.questionTimeLong;
@@ -350,6 +460,9 @@ public class GameplayScript : MonoBehaviour{
 				questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + questionLongAnswers[2].transform.Find("Text").GetComponent<Text>().text;
 				questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + questionLongAnswers[3].transform.Find("Text").GetComponent<Text>().text;
 				questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + questionLongAnswers[4].transform.Find("Text").GetComponent<Text>().text;
+				if (!uiVertical){
+					RotateUI();
+				}
 				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 4: // Image
@@ -403,6 +516,9 @@ public class GameplayScript : MonoBehaviour{
 				answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
 				answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
 				StartCoroutine("DoubleCheckQuestionImage");
+				if (!uiVertical){
+					RotateUI();
+				}
 				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 			case 5:	// Point-and-click multiple items
@@ -428,12 +544,11 @@ public class GameplayScript : MonoBehaviour{
 				itemsCounterText.text = 0 + " / " + SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count;
 				questionPoint.transform.Find("Background").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
 				questionPointButton.transform.Find("Button").GetComponent<Image>().sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].sprite;
-				pointAndClickTurn.SetActive(true);
-				turnSignOn = true;
-				turnSignTimer = 0;
-				Invoke ("TurnSignAudio", 0.66f);
 				print("StartNewQuestion() point-and-click multiple items");
 				print ("currentPointQuestionIndex : " + currentPointQuestionIndex);
+				if (uiVertical){
+					RotateUI();
+				}
 				SessionScript.questionTime = SessionScript.questionTimeLong;
 				break;
 			default:    // Multiple answer
@@ -484,20 +599,12 @@ public class GameplayScript : MonoBehaviour{
 				answers[2].transform.Find("Text").GetComponent<Text>().text = "C) " + answers[2].transform.Find("Text").GetComponent<Text>().text;
 				answers[3].transform.Find("Text").GetComponent<Text>().text = "D) " + answers[3].transform.Find("Text").GetComponent<Text>().text;
 				answers[4].transform.Find("Text").GetComponent<Text>().text = "E) " + answers[4].transform.Find("Text").GetComponent<Text>().text;
+				if (!uiVertical){
+					RotateUI();
+				}
 				SessionScript.questionTime = SessionScript.questionTimeShort;
 				break;
 		}
-	}
-	
-	void EndTurnSign(){
-		turnSignTimer = 0;
-		turnSignOn = false;
-		pointAndClickTurn.SetActive(false);
-		turnSign.rotation = Quaternion.Euler(0, 0, 0);
-	}
-	
-	void TurnSignAudio(){
-		SessionScript.ButtonAudioLoud(SessionScript.swipe);
 	}
 	
 	int GetActualAnswer(int answerGiven){
@@ -519,8 +626,8 @@ public class GameplayScript : MonoBehaviour{
 		switch (currentQuestion.questionType){
 			case 1:     // Fill-the-blank
 				if (!answerPermitted) return;
-					string writtenAnswerSimple = SimpleText(writtenAnswer.text);
-					string rightAnswerSimple = SimpleText(currentQuestion.answer0);
+					string writtenAnswerSimple = Simple.SimpleText(writtenAnswer.text);
+					string rightAnswerSimple = Simple.SimpleText(currentQuestion.answer0);
 					if (writtenAnswerSimple == rightAnswerSimple){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
 					successAnimation.PlayAnimation();
@@ -544,8 +651,8 @@ public class GameplayScript : MonoBehaviour{
 				break;
 			case 2:     // Point-and-click
 				Vector3 mouseInput = Input.mousePosition;
-				clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
-				clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+				clickX = Mathf.RoundToInt((mouseInput.x - questionPointOffsetLinear.x) * questionPointOffsetMultiplier.x);
+                clickY = Mathf.RoundToInt((mouseInput.y - questionPointOffsetLinear.y) * questionPointOffsetMultiplier.y);
 				/* Debug */ textPosX.text = "pos X: " + clickX.ToString();
 				/* Debug */ textPosY.text = "pos Y: " + clickY.ToString();
 				bool black = false;
@@ -615,8 +722,8 @@ public class GameplayScript : MonoBehaviour{
 				if (pointQuestionAnswerIndex.Count < SessionScript.pointAndClickQuestion[currentPointQuestionIndex].rightItemIndex.Count){
 					clickedItemIndex = -1;	// resets last clicked item
 					mouseInput = Input.mousePosition;
-					clickX = Mathf.RoundToInt(mouseInput.x * questionPointOffset.x);
-					clickY = Mathf.RoundToInt(mouseInput.y * questionPointOffset.y);
+					clickX = Mathf.RoundToInt((mouseInput.x - questionPointOffsetLinear.x) * questionPointOffsetMultiplier.x);
+					clickY = Mathf.RoundToInt((mouseInput.y - questionPointOffsetLinear.y) * questionPointOffsetMultiplier.y);
 					/* Debug */ textPosX.text = "pos X: " + clickX.ToString();
 					/* Debug */ textPosY.text = "pos Y: " + clickY.ToString();
 					black = false;
@@ -714,8 +821,8 @@ public class GameplayScript : MonoBehaviour{
 		switch (currentQuestion.questionType){
 			case 1:     // Fill-the-blank
 				if (!answerPermitted) return;
-				string writtenAnswerSimple = SimpleText(writtenAnswer.text);
-				string rightAnswerSimple = SimpleText(currentQuestion.answer0);
+				string writtenAnswerSimple = Simple.SimpleText(writtenAnswer.text);
+				string rightAnswerSimple = Simple.SimpleText(currentQuestion.answer0);
 				if (writtenAnswerSimple == rightAnswerSimple){
 					writtenAnswer.gameObject.GetComponent<Image>().color = Color.green;
 					successAnimation.PlayAnimation();
@@ -908,7 +1015,7 @@ public class GameplayScript : MonoBehaviour{
 		itemsCounter.SetActive(false);
 		if (showAnswer){
 			correctAnswer.SetActive(true);
-			Invoke ("CloseCorrection", 2.5f);
+			// Invoke ("CloseCorrection", 2.5f);	// Now delay is defined by playAnimNow
 			correctAnswer.transform.Find("Frame/Text").GetComponent<Text>().text = "Resposta certa: " + currentQuestion.answer0;
 			if (currentQuestion.questionType != 2){
 				correctAnswer.transform.Find("Image").gameObject.SetActive(false);
@@ -937,35 +1044,108 @@ public class GameplayScript : MonoBehaviour{
 		// if (!SessionScript.singleRun){
 			// menu.SetActive(true);
 		// }
-		if (SessionScript.questionsAskedList.Count < SessionScript.numberOfQuestionsDemanded){
-			nextQuestion.SetActive(true);
+		bool playsAnimNow = false;
+		if (!currentIsTimeout && ! currentIsWrong){
+			playsAnimNow = true;
 		}
-		if (SessionScript.questionsAskedList.Count >= SessionScript.numberOfQuestionsDemanded){
-			nextScene = "menu";
-			toMenuText.SetActive(true);
-			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/QuestionCounter").SetActive(false);
-			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Score").SetActive(false);
-			GameObject.Find("Canvas/Scroll View/Viewport/Gameplay/Clock").SetActive(false);
-			AuthenticationScript.TrackRecord("Finished gameplay");
-			Invoke ("EndScene", 2f);
-			Invoke ("NextScene", 2f);
-			Invoke("StartEndTransition", 0.8f);	// mesma diferença de timming das outras cenas	// OBSOLETO
-			SessionScript.currentSong = SessionScript.song1;
-			SessionScript.fadeOutSong = true;
+		if(currentIsWrong && playScoreAnimOnWrong){
+			playsAnimNow = true;
+		}
+		if (currentIsTimeout && playScoreAnimOnTimeOut){
+			playsAnimNow = true;
+		}
+		if (playsAnimNow){
+			StartScoreAnimation();
+			if (SessionScript.answersList.Count < SessionScript.numberOfQuestionsDemanded){
+				if (showAnswer){
+					Invoke ("CloseCorrection", 5.5f);
+					Invoke ("InterQuestion", 5.5f);
+				} if (!showAnswer){
+					Invoke ("InterQuestion", 2.5f);
+				}
+			}
+			if (SessionScript.answersList.Count >= SessionScript.numberOfQuestionsDemanded){
+				if(!uiVertical){
+					if (showAnswer){
+						Invoke ("FinishedQuestions", 7.5f);
+						Invoke ("CloseCorrection", 7f);
+					}if (!showAnswer){
+						Invoke ("FinishedQuestions", 5.5f);
+					}
+				}
+				if(uiVertical){
+					if (showAnswer){
+						Invoke ("FinishedQuestions", 5.5f);
+						Invoke ("CloseCorrection", 5f);
+					}if (!showAnswer){
+						Invoke ("FinishedQuestions", 3.5f);
+					}
+				}
+			}
+		}
+		if (!playsAnimNow){
+			StartScoreAnimation();
+			if (SessionScript.answersList.Count < SessionScript.numberOfQuestionsDemanded){
+				if (showAnswer){
+					Invoke ("CloseCorrection", 2.5f);
+					Invoke ("InterQuestion", 2.5f);
+				} if (!showAnswer){
+					Invoke ("InterQuestion", 0.5f);
+				}
+			}
+			if (SessionScript.answersList.Count >= SessionScript.numberOfQuestionsDemanded){
+				if(!uiVertical){
+					if (showAnswer){
+						Invoke ("FinishedQuestions", 5.5f);
+						Invoke ("CloseCorrection", 5f);
+					}if (!showAnswer){
+						Invoke ("FinishedQuestions", 2.5f);
+					}
+				}
+				if(uiVertical){
+					if (showAnswer){
+						Invoke ("FinishedQuestions", 2.5f);
+						Invoke ("CloseCorrection", 2f);
+					}if (!showAnswer){
+						Invoke ("FinishedQuestions", 0.5f);
+					}
+				}
+			}
 		}
 		currentQuestionTime = 0;
 		clockImage.fillAmount = 0;
 		clockText.text = "";
-		scoreText.text = SessionScript.player.score.ToString() + " pontos!";
-		if (SessionScript.player.score <= 1 && SessionScript.player.score >= -1){
-			scoreText.text = SessionScript.player.score.ToString() + " ponto!";
-		}
+		// scoreText.text = SessionScript.player.score.ToString() + " pontos!";
+		// if (SessionScript.player.score <= 1 && SessionScript.player.score >= -1){
+			// scoreText.text = SessionScript.player.score.ToString() + " ponto!";
+		// }
 		if (SessionScript.player.score >= SessionScript.thresholdTier1){
 			SessionScript.currentTier = 1;
 		}
 		if (SessionScript.player.score >= SessionScript.thresholdTier2){
 			SessionScript.currentTier = 2;
 		}
+	}
+	
+	void InterQuestion(){
+		nextQuestion.SetActive(true);
+	}
+	
+	void FinishedQuestions(){
+		if (!uiVertical){
+				RotateUI();
+		}
+		nextScene = "menu";
+		toMenuText.SetActive(true);
+		questionCounterAssembly.SetActive(false);
+		scoreAssembly.SetActive(false);
+		clockAssembly.SetActive(false);
+		AuthenticationScript.TrackRecord("Finished gameplay");
+		Invoke ("EndScene", 2f);
+		Invoke ("NextScene", 2f);
+		Invoke("StartEndTransition", 0.8f);	// mesma diferença de timming das outras cenas	// OBSOLETO
+		SessionScript.currentSong = SessionScript.song1;
+		SessionScript.fadeOutSong = true;
 	}
 	
 	void StartEndTransition(){
@@ -1012,301 +1192,301 @@ public class GameplayScript : MonoBehaviour{
 		questionPointDetail.sprite = SessionScript.pointAndClickQuestion[currentPointQuestionIndex].itemSprite[clickedItemIndex];	// Resposta certa, SE ENCONTRADA, SUBSTITUI MISSING TEXTURE
 	}
 
-    public string SimpleText(string text){
-        string character = "";
-        for (int i = 0; i < text.Length; i++){
-            print("index " + i);
-            character = text.Substring(i, 1);
-			// Diacritcs
-            if (character == "à"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "Á"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "á"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "À"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "ä"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "Ä"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "ã"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "Ã"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "â"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "Â"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "è"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "È"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "é"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "É"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "ë"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "Ë"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "ê"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "Ê"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "ì"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "Ì"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "í"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "Í"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "ï"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "Ï"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "î"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "Î"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "ò"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "Ò"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "ó"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "Ó"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "õ"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "Õ"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "ô"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "Ô"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "ö"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "Ö"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "ù"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "Ù"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "ú"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "Ú"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "û"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "Û"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "ü"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "Û"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            // Capital letters
-            if (character == "A"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "a");
-            }
-            if (character == "B"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "b");
-            }
-            if (character == "C"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "c");
-            }
-            if (character == "Ç"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "ç");
-            }
-            if (character == "D"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "d");
-            }
-            if (character == "E"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "e");
-            }
-            if (character == "F"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "f");
-            }
-            if (character == "G"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "g");
-            }
-            if (character == "H"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "h");
-            }
-            if (character == "I"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "i");
-            }
-            if (character == "J"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "j");
-            }
-            if (character == "K"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "");
-            }
-            if (character == "L"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "l");
-            }
-            if (character == "M"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "m");
-            }
-            if (character == "N"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "n");
-            }
-            if (character == "O"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "o");
-            }
-            if (character == "P"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "p");
-            }
-            if (character == "Q"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "q");
-            }
-            if (character == "R"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "r");
-            }
-            if (character == "S"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "s");
-            }
-            if (character == "T"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "t");
-            }
-            if (character == "U"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "u");
-            }
-            if (character == "V"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "v");
-            }
-            if (character == "X"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "x");
-            }
-            if (character == "Z"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "z");
-            }
-            if (character == "W"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "w");
-            }
-            if (character == "Y"){
-                text = text.Remove(i, 1);
-                text = text.Insert(i, "y");
-            }
-        }
-        print(text);
-        return text;
-    }
+    // public string SimpleText(string text){
+        // string character = "";
+        // for (int i = 0; i < text.Length; i++){
+            // print("index " + i);
+            // character = text.Substring(i, 1);
+			// // Diacritcs
+            // if (character == "à"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "Á"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "á"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "À"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "ä"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "Ä"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "ã"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "Ã"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "â"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "Â"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "è"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "È"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "é"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "É"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "ë"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "Ë"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "ê"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "Ê"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "ì"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "Ì"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "í"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "Í"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "ï"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "Ï"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "î"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "Î"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "ò"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "Ò"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "ó"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "Ó"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "õ"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "Õ"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "ô"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "Ô"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "ö"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "Ö"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "ù"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "Ù"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "ú"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "Ú"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "û"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "Û"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "ü"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "Û"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // // Capital letters
+            // if (character == "A"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "a");
+            // }
+            // if (character == "B"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "b");
+            // }
+            // if (character == "C"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "c");
+            // }
+            // if (character == "Ç"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "ç");
+            // }
+            // if (character == "D"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "d");
+            // }
+            // if (character == "E"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "e");
+            // }
+            // if (character == "F"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "f");
+            // }
+            // if (character == "G"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "g");
+            // }
+            // if (character == "H"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "h");
+            // }
+            // if (character == "I"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "i");
+            // }
+            // if (character == "J"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "j");
+            // }
+            // if (character == "K"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "");
+            // }
+            // if (character == "L"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "l");
+            // }
+            // if (character == "M"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "m");
+            // }
+            // if (character == "N"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "n");
+            // }
+            // if (character == "O"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "o");
+            // }
+            // if (character == "P"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "p");
+            // }
+            // if (character == "Q"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "q");
+            // }
+            // if (character == "R"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "r");
+            // }
+            // if (character == "S"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "s");
+            // }
+            // if (character == "T"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "t");
+            // }
+            // if (character == "U"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "u");
+            // }
+            // if (character == "V"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "v");
+            // }
+            // if (character == "X"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "x");
+            // }
+            // if (character == "Z"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "z");
+            // }
+            // if (character == "W"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "w");
+            // }
+            // if (character == "Y"){
+                // text = text.Remove(i, 1);
+                // text = text.Insert(i, "y");
+            // }
+        // }
+        // print(text);
+        // return text;
+    // }
 
     public void SelectNextQuestion(){
         if (lockButton){
@@ -1337,8 +1517,76 @@ public class GameplayScript : MonoBehaviour{
     // }
 
     public void QuestionCounter(){
-        questionCounter.text = SessionScript.questionsAskedList.Count.ToString() + " / " + SessionScript.numberOfQuestionsDemanded.ToString();
+        questionCounter.text = SessionScript.answersList.Count.ToString() + " / " + SessionScript.numberOfQuestionsDemanded.ToString();
     }
+	
+	void RotateUI(){
+		turnSignOn = true;
+		turnSignTimer = 0;
+		Invoke ("TurnSignAudio", 0.66f);
+		pointAndClickTurn.SetActive(true);
+		currentQuestionTime = - 2.5f;
+		if (uiVertical){	// Turns to horizontal
+			animationFeedback.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
+			correctAnswer.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
+			correctAnswer.transform.position = new Vector2 (Screen.width/2 + 60f, Screen.height/2);
+			clockAssembly.transform.position = new Vector2 (80f, clockAssemblyTransform.sizeDelta.x * 1.1f);
+			clockAssemblyTransform.Rotate(Vector3.forward * 90);
+			clockAssembly.SetActive(false);
+			nextQuestion.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
+			lowerMenu.transform.position = new Vector2 (Screen.width - lowerMenuTransform.sizeDelta.y * 1.1f, Screen.height/2);
+			lowerMenuTransform.Rotate(Vector3.forward * 90);
+			turnSign.Rotate(Vector3.forward * 90);
+			questionCounterAssembly.SetActive(false);
+			scoreAssemblyTransform.Rotate(Vector3.forward * 90);
+			scoreAssembly.SetActive(false);
+		}
+		if (!uiVertical){	// Turns to vertical
+			animationFeedback.GetComponent<RectTransform>().Rotate(Vector3.forward * 90 * -1);
+			correctAnswer.GetComponent<RectTransform>().Rotate(Vector3.forward * 90 * -1);
+			correctAnswer.transform.position = correctAnswerOriginalPos;
+			clockAssembly.transform.position = clockAssemblyOriginalPos;
+			clockAssemblyTransform.Rotate(Vector3.forward * 90 * -1);
+			clockAssembly.SetActive(false);
+			nextQuestion.GetComponent<RectTransform>().Rotate(Vector3.forward * 90 * -1);
+			lowerMenuTransform.Rotate(Vector3.forward * 90 * -1);
+			lowerMenu.transform.position = lowerMenuOriginalPos;
+			turnSign.Rotate(Vector3.forward * 90 * -1);
+			scoreAssemblyTransform.Rotate(Vector3.forward * 90 * -1);
+			scoreAssembly.SetActive(false);
+		}
+	}
+	
+	void EndTurnSign(){
+		turnSignTimer = 0;
+		turnSignOn = false;
+		pointAndClickTurn.SetActive(false);
+		clockAssembly.SetActive(true);
+		scoreAssembly.SetActive(true);
+		// if (uiVertical){	// Turns to horizontal
+			
+		// }
+		if (!uiVertical){	// Turns to vertical
+			questionCounterAssembly.SetActive(true);
+		}
+		uiVertical = !uiVertical;
+	}
+	
+	void StartScoreAnimation(){
+		print ("StartScoreAnimation()");
+		pointsPerSecond = (SessionScript.player.score - baseScore) / 2;	// Anim takes 2 seconds
+		scoreAnimTimer = 0f;
+		playScoreAnim = true;
+		Invoke("StartScoreSound", 0.5f);
+	}
+	
+	void StartScoreSound(){
+		SessionScript.ButtonAudioLoud(SessionScript.scoreCounter);
+	}
+	
+	void TurnSignAudio(){
+		SessionScript.ButtonAudioLoud(SessionScript.swipe);
+	}
 
     public void NextScene(){
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
@@ -1370,4 +1618,8 @@ public class GameplayScript : MonoBehaviour{
 		}
 	}
 
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019	
 }

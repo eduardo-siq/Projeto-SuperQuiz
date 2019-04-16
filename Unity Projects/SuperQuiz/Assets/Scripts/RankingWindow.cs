@@ -25,4 +25,9 @@ public class RankingWindow : MonoBehaviour {
 		content.SetActive(false);
 		SessionScript.ButtonAudio(SessionScript.subtle);
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

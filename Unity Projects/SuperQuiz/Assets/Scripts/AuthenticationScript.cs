@@ -420,6 +420,11 @@ public class AuthenticationScript : MonoBehaviour {
 			long longValue = (long) dbClient.Child("numberOfQuestionsDemanded").Value;
 			SessionScript.numberOfQuestionsDemanded = Convert.ToInt32(longValue);
 		} else SessionScript.numberOfQuestionsDemanded = 5;
+		bool questionExpectedExist = ValueExistsAsLong(dbClient, "numberOfQuestionsExpected");
+		if (questionExpectedExist){
+			long longValue = (long) dbClient.Child("numberOfQuestionsExpected").Value;
+			SessionScript.numberOfQuestionsExpected = Convert.ToInt32(longValue);
+		} else SessionScript.numberOfQuestionsDemanded = 0;
 		// bool singleRunExists = ValueExistsAsString (dbClient, "singleRun");
 		// if (singleRunExists){
 			// string newValue = (string) dbClient.Child("singleRun").Value;
@@ -437,6 +442,146 @@ public class AuthenticationScript : MonoBehaviour {
 			long longValue = (long) dbClient.Child("thresholdTier2").Value;
 			SessionScript.thresholdTier2 = Convert.ToInt32(longValue);
 		} else SessionScript.thresholdTier2 = 40;
+		
+		// Check time and day restriction
+		bool checkDayRestriction = false;
+		List<bool> dayRestrictionList = new List<bool>();
+		bool dayRestrictionExists = ValueExistsAsString (dbClient, "dayRestriction");
+		if (dayRestrictionExists){
+			string newValue = (string) dbClient.Child("dayRestriction").Value;
+			if (newValue == "X"){
+				checkDayRestriction = false;
+			} else {
+				string[] space = new string[] { " " };
+				string[] dayRestrictionArrayString = newValue.Split(space, StringSplitOptions.None);
+				if (dayRestrictionArrayString.Length == 7){
+					checkDayRestriction = true;
+					if (dayRestrictionArrayString[0] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[0] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[1] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[1] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[2] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[2] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[3] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[3] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[4] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[4] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[5] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[5] == "F") dayRestrictionList.Add(false);
+					if (dayRestrictionArrayString[6] == "T") dayRestrictionList.Add(true);
+					if (dayRestrictionArrayString[6] == "F") dayRestrictionList.Add(false);
+				}
+			}
+		} else checkDayRestriction = false;
+		bool checkTimeRestriction = false;
+		bool timeRestrictionExists = ValueExistsAsString (dbClient, "timeRestriction");
+		string[] timeRestrictionArrayString = new string[0];
+		if (timeRestrictionExists){
+			string newValue = (string) dbClient.Child("timeRestriction").Value;
+			if (newValue == "X"){
+				checkTimeRestriction = false;
+			} else {
+				string[] space = new string[] { " " };
+				timeRestrictionArrayString = newValue.Split(space, StringSplitOptions.None);
+				if(timeRestrictionArrayString.Length == 4){
+					checkTimeRestriction = true;
+				}
+			}
+		}
+		
+		if (checkDayRestriction){
+			LoginScript.lockGame = CheckDayRestriction(dayRestrictionList);
+		}
+		if (!LoginScript.lockGame && checkTimeRestriction){
+			float minHour = float.Parse(timeRestrictionArrayString[0]);
+			float maxHour = float.Parse(timeRestrictionArrayString[1]);
+			float maxMinute = float.Parse(timeRestrictionArrayString[2]);
+			float minMinute = float.Parse(timeRestrictionArrayString[3]);
+			LoginScript.lockGame = CheckTimeRestriction(minHour, maxHour, maxMinute, minMinute);
+		}
+	}
+	
+	public static bool CheckDayRestriction(List <bool> daysAllowed){
+		bool lockGame = false;
+		
+		// Day of the Week
+		
+		if (daysAllowed.Count < 7){
+			string currentDay = DateTime.Now.ToString("dddd");
+			if (!daysAllowed[0] && !lockGame){ 	// Sunday
+				if (currentDay == "domingo") lockGame = true;
+				if (currentDay == "dom") lockGame = true;
+				if (currentDay == "sunday") lockGame = true;
+				if (currentDay == "sun") lockGame = true;
+			}
+			if (!daysAllowed[1] && !lockGame){ 	// Monday
+				if (currentDay == "segunda-feira") lockGame = true;
+				if (currentDay == "seg") lockGame = true;
+				if (currentDay == "2a feira") lockGame = true;
+				if (currentDay == "2ª feira") lockGame = true;
+				if (currentDay == "monday") lockGame = true;
+				if (currentDay == "mon") lockGame = true;
+			}
+			if (!daysAllowed[2] && !lockGame){	// Tuesda
+				if (currentDay == "treça-feira") lockGame = true;
+				if (currentDay == "ter") lockGame = true;
+				if (currentDay == "3a feira") lockGame = true;
+				if (currentDay == "3ª feira") lockGame = true;
+				if (currentDay == "tuesday") lockGame = true;
+				if (currentDay == "tue") lockGame = true;
+			}
+			if (!daysAllowed[3] && !lockGame){	// Wednesday
+				if (currentDay == "quarta-feira") lockGame = true;
+				if (currentDay == "qua") lockGame = true;
+				if (currentDay == "4a feira") lockGame = true;
+				if (currentDay == "4ª feira") lockGame = true;
+				if (currentDay == "wednesday") lockGame = true;
+				if (currentDay == "wed") lockGame = true;
+			}
+			if (!daysAllowed[4] && !lockGame){	// Thursday
+				if (currentDay == "quinta-feira") lockGame = true;
+				if (currentDay == "qui") lockGame = true;
+				if (currentDay == "5a feira") lockGame = true;
+				if (currentDay == "5ª feira") lockGame = true;
+				if (currentDay == "thuesday") lockGame = true;
+				if (currentDay == "thu") lockGame = true;
+			}
+			if (!daysAllowed[5] && !lockGame){	// Friday
+				if (currentDay == "sexta-feira") lockGame = true;
+				if (currentDay == "sex") lockGame = true;
+				if (currentDay == "6a feira") lockGame = true;
+				if (currentDay == "6ª feira") lockGame = true;
+				if (currentDay == "friday") lockGame = true;
+				if (currentDay == "fri") lockGame = true;
+			}
+			if (!daysAllowed[6] && !lockGame){	// Saturday
+				if (currentDay == "sábado") lockGame = true;
+				if (currentDay == "sab") lockGame = true;
+				if (currentDay == "sabado") lockGame = true;
+				if (currentDay == "saturday") lockGame = true;
+				if (currentDay == "sat") lockGame = true;
+			}
+		}
+		return lockGame;
+	}
+		
+	public static bool CheckTimeRestriction(float minHour, float maxHour, float maxMinute, float minMinute){
+		bool lockGame = false;
+		
+		string currentTime = DateTime.Now.ToString("HH:mm");
+		string[] space = new string[] { ":" };
+		string[] currentTimeArray = currentTime.Split(space, StringSplitOptions.None);
+		float currentHour = float.Parse(currentTimeArray[0]);
+		float currentMinute = float.Parse(currentTimeArray[1]);
+		
+		string currentDay = DateTime.Now.ToString("dddd");
+
+		if (currentHour > maxHour) lockGame = true;
+		if (currentMinute > maxMinute) lockGame = true;
+		if (currentHour < minHour) lockGame = true;
+		if (currentMinute < minMinute) lockGame = true;
+		
+		return lockGame;
 	}
 		
 	public static void GetUserInfo(){
@@ -454,7 +599,9 @@ public class AuthenticationScript : MonoBehaviour {
 		if (userGrpoupExists){
 			long newValue = (long) dbUsers.Child("/client_" + clientString + "/user_" +  userString + "/userGroups").Value;
 			SessionScript.userGroup = Convert.ToInt32(newValue);
+			print ("USER GRUOP EXISTS");
 		} else SessionScript.userGroup = 0;
+		print ("USER GRUOP EXISTS: " + SessionScript.userGroup);
 		// First Login
 		bool firstLoginExists = ValueExistsAsString (dbUsers, "/client_" + clientString + "/user_" +  userString + "/firstLogin");
 		if (firstLoginExists){
@@ -700,6 +847,9 @@ public class AuthenticationScript : MonoBehaviour {
 			}
 			i = i + 1;
 		} while(!doneUser);
+		
+		// Remove listeners after all data is retrieved from database
+		ClearListeners();
 	}
 	
 	public static void TrackRecord(string trackString){
@@ -763,6 +913,12 @@ public class AuthenticationScript : MonoBehaviour {
 		return exists;
 	}
 	
+	public static void ClearListeners(){
+		usersEventHolder = new UserListenerHolderScript();
+		questionsEventHolder = new QuestionListenerHolderScript();
+		clientEventHolder = new ClientListenerHolderScript();
+	}
+	
 	public static bool ValueExistsAsString(DataSnapshot dbRef, string path){
 		// Checks if a value in a node exists and it's not null and returns true or false;
 		bool exists = false;
@@ -798,5 +954,8 @@ public class AuthenticationScript : MonoBehaviour {
 		SignOut();
 	}
 
-
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

@@ -62,4 +62,9 @@ public class PointAndClickQuestion  {
 		float.Parse(stringFloat[2]));
 		return newVector;
 	}
+
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }

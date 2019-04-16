@@ -60,5 +60,10 @@ public class AnimSuccessScript : MonoBehaviour{
 	void ResetShadow(){
 		shadow.SetActive(false);
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 

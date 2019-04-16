@@ -15,7 +15,14 @@ public class AboutScript : MonoBehaviour{
 	public string nextScene;
 
 	void Start(){
-		StartCoroutine(StartScene());
+		// StartCoroutine(StartScene());
+		aboutRect = GameObject.Find("Canvas/Scroll View/Viewport/About").GetComponent<RectTransform>();
+		faqWindow = GameObject.Find("Canvas/Scroll View/Viewport/About/FAQWindow").gameObject;
+		rulesWindow = GameObject.Find("Canvas/Scroll View/Viewport/About/RulesWindow").gameObject;
+		// faqWindow.SetActive(false);
+		// rulesWindow.SetActive(false);
+		// faqWindow.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, 0f);	// Objeto começa fora de cena para que seu Start() ocorra, mas fora da visão do player
+		// rulesWindow.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0f, 0f);	// Objeto começa fora de cena para que seu Start() ocorra, mas fora da visão do player
 	}
 
 	void Update(){
@@ -98,5 +105,10 @@ public class AboutScript : MonoBehaviour{
 	void EndScene(){	// OBSOLETE?
 		endScene = true;
 	}
+	
+//		DESAFIO QUIZ, version alpha 0.6
+//		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
+//		script by Eduardo Siqueira
+//		São Paulo, Brasil, 2019
 }
 
