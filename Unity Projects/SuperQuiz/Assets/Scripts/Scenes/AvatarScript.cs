@@ -52,7 +52,17 @@ public class AvatarScript : MonoBehaviour{
 									
 	// Photography
 	public GameObject photographyWindow;
-
+	public SpriteRenderer solidPortraitBase;
+    public SpriteRenderer solidPortraitItem0Texture;   // óculos
+    public SpriteRenderer solidPortraitItem1Texture;   // camisa
+    public SpriteRenderer solidPortraitItem2Texture;   // calça
+    public SpriteRenderer solidPortraitItem3Texture;   // sapato
+    public SpriteRenderer solidPortraitItem0TextureB;  // óculos_B
+    public SpriteRenderer solidPortraitItem1TextureB;  // camisa_B
+    public SpriteRenderer solidPortraitItem2TextureB;  // calça_B
+    public SpriteRenderer solidPortraitItem3TextureB;  // sapato_B
+	public SpriteRenderer solidPortraitHairTexture;
+	
     void Start(){
         // StartCoroutine(StartScene());
 		selectStageNext = GameObject.Find("Canvas/Scroll View/Viewport/Avatar/ChangeState/Next").gameObject;
@@ -496,9 +506,8 @@ public class AvatarScript : MonoBehaviour{
         item2Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem2[SessionScript.player.avatar.item2];
         item3Selection.transform.Find("Frame/Viewport/Item").GetComponent<Image>().sprite = SessionScript.avatarItem3[SessionScript.player.avatar.item3];
 
-        // AJUSTE MANUAL COTURNO
-        // if coturno + calça ; algo acontece
-
+        // Solid
+		UpdateSolidPortrait();
     }
 
 	public void SelectRaffle(){   // OBSOLETE
@@ -597,22 +606,105 @@ public class AvatarScript : MonoBehaviour{
         CustomizationStage();
     }
 	
+	public void UpdateSolidPortrait(){
+		solidPortraitBase.sprite = SessionScript.avatarBase[SessionScript.player.avatar.skin];
+		solidPortraitItem0Texture.sprite = SessionScript.avatarItem0[SessionScript.player.avatar.item0];
+		solidPortraitItem1Texture.sprite = SessionScript.avatarItem1[SessionScript.player.avatar.item1];
+		solidPortraitItem2Texture.sprite = SessionScript.avatarItem2[SessionScript.player.avatar.item2];
+		solidPortraitItem3Texture.sprite = SessionScript.avatarItem3[SessionScript.player.avatar.item3];
+		solidPortraitItem0TextureB.sprite = SessionScript.avatarItem0b[SessionScript.player.avatar.item0];
+		solidPortraitItem1TextureB.sprite = SessionScript.avatarItem1b[SessionScript.player.avatar.item1];
+		solidPortraitItem2TextureB.sprite = SessionScript.avatarItem2b[SessionScript.player.avatar.item2];
+		solidPortraitItem3TextureB.sprite = SessionScript.avatarItem3b[SessionScript.player.avatar.item3];
+		solidPortraitHairTexture.sprite = SessionScript.avatarHairFem[SessionScript.player.avatar.hair];
+	}
+	
 	public void SelectPhotography(){
 		SessionScript.ButtonAudioLow(SessionScript.neutral);
 		Invoke("OpenPhotographyWindow", 0.5f);
-		Invoke("TakePhotography", 0.55f);
-		Invoke("ClosePhotographyWindow", 1f);
+		// Invoke("TakePhotography", 0.55f);
+		// Invoke("ClosePhotographyWindow", 1f);
+		if (SessionScript.showAvararPictureMessage){
+			SessionScript.showAvararPictureMessage = false;
+			PopUpScript.InstantiatePopUp("Você pode usar a captura de tela de seu celular para fotografar seu avatar!", "OK");
+		}
 	}
 	
 	void OpenPhotographyWindow(){
-		SessionScript.ButtonAudioLoud(SessionScript.photography);
+		// SessionScript.ButtonAudioLoud(SessionScript.photography);
 		photographyWindow.SetActive(true);
 		photographyWindow.transform.Find("Portrait").GetComponent<AvatarPortrait>().SpecificAvatar(SessionScript.player.avatar);
+		
 	}
 	
 	void TakePhotography(){
-		// script for photography here
-		// EzSS_Editor.ScreenshotButton();
+		string fileName = "SuperQuiz_" + System.DateTime.Now.ToString("yyyy-MM-dd") + System.DateTime.Now.ToString("HH-mm-ss") + ".png";
+		if (Application.platform == RuntimePlatform.Android){
+			TakePhotographyAndroid();
+		} else{
+			ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), fileName));
+		}
+	}
+	
+	void TakePhotographyAndroid(){
+		Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+		TextureFormat textureFormat = TextureFormat.RGBA32;
+		RenderTexture renderTexture = new RenderTexture(Screen.width, Screen.height, 24);
+		Texture2D _gameViewTexture = new Texture2D(Screen.width, Screen.height, textureFormat, false);
+		_gameViewTexture = CaptureRenderTexture(camera, renderTexture);
+		System.Byte[] bytes;
+		bytes = _gameViewTexture.EncodeToPNG();
+		// string fileName = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/SuperQuiz_" + System.DateTime.Now.ToString("yyyyMMdd") + System.DateTime.Now.ToString("HHmmss") + "take2.png";
+		string fileName = "SuperQuiz_" + System.DateTime.Now.ToString("yyyy-MM-dd") + System.DateTime.Now.ToString("HH-mm-ss") + ".png";
+		System.IO.File.WriteAllBytes("sdcard/A" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Camera/B" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/camera/C" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/DCIM/D" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/DCIM/Pictures/E" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/DCIM/pictures/F" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/DCIM/Camera/G" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/DCIM/camera/H" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Pictures/I" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/pictures/J" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Images/Q" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/images/R" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/K" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Camera/L" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/camera/M" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Pictures/N" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/pictures/O" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Images/S" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/images/T" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Pictures/P" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/pictures/U" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/media/AA" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/media/images/BB" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Media/CC" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Media/image/DD" + fileName, bytes);
+		System.IO.File.WriteAllBytes("sdcard/Media/Image/EE" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Media/FF" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Media/image/GG" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/Media/Image/HH" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/media/II" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/media/image/JJ" + fileName, bytes);
+		System.IO.File.WriteAllBytes("DCIM/media/Image/KK" + fileName, bytes);
+	}
+	
+	public void SelectClosePhotographyWindow(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		Invoke("ClosePhotographyWindow", 0.25f);
+	}
+	
+	private Texture2D CaptureRenderTexture(Camera cam, RenderTexture renderTexture){
+		// Creates a temp texture
+		TextureFormat textureFormat = TextureFormat.RGBA32;
+		Texture2D _texture = new Texture2D(Screen.width, Screen.height, textureFormat, false);
+		cam.targetTexture = renderTexture;
+		cam.Render();
+		_texture.ReadPixels(new Rect(0, 0, Screen.width,Screen.height), 0, 0);
+		_texture.Apply();
+		cam.targetTexture = null;
+		return _texture;
 	}
 	
 	void ClosePhotographyWindow(){
@@ -635,7 +727,7 @@ public class AvatarScript : MonoBehaviour{
         endScene = true;
     }
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

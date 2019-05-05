@@ -211,7 +211,7 @@ public class GameplayScript : MonoBehaviour{
 		if (debugPointPosition) questionPoint.transform.Find("DebugWindow").gameObject.SetActive(true);
        
 		if (SessionScript.useQuestionPointOffset){   // source: 256 X 512 pixels
-			// hardcoded resolution: 800x480 (5/3) or (0.6f)
+			// hardcoded resolution: 800x480 (5/3) or (0.6f)		// for iPad, change to: 800 x600 (3/4) or (0.75f)
 			float playableXaxis = Screen.height * 0.6f;
 			float questionPointOffsetLinearX = Mathf.Max((Screen.width - playableXaxis) / 2,0f);
 			questionPointOffsetLinear = new Vector2(questionPointOffsetLinearX, 0);
@@ -1517,7 +1517,8 @@ public class GameplayScript : MonoBehaviour{
     // }
 
     public void QuestionCounter(){
-        questionCounter.text = SessionScript.answersList.Count.ToString() + " / " + SessionScript.numberOfQuestionsDemanded.ToString();
+		int currentQuestion = SessionScript.answersList.Count + 1;
+        questionCounter.text = currentQuestion.ToString() + " / " + SessionScript.numberOfQuestionsDemanded.ToString();
     }
 	
 	void RotateUI(){
@@ -1618,7 +1619,7 @@ public class GameplayScript : MonoBehaviour{
 		}
 	}
 
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019	

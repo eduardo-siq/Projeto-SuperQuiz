@@ -25,12 +25,11 @@ public class QuestionListenerHolderScript {
 					getSnapshot = false;
 					AuthenticationScript.GetQuestionsFromSnapshot();
 				}
-				string newString = (string) e2.Snapshot.Value;	// REMOVE LATER
 			}
 		};
 	}
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

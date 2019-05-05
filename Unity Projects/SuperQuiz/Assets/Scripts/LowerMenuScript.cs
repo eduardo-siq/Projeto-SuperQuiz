@@ -118,7 +118,10 @@ public class LowerMenuScript : MonoBehaviour{
         //quit = true;
         print("QUIT");
 		AuthenticationScript.SignOut();
-        SelectScene ("login");	// Exit button logs out the player and moves on to exit scene
+		GameObject sessionObject = GameObject.Find("Session").gameObject;
+		Destroy(SessionScript.instance);
+		Destroy(sessionObject);
+        SelectScene ("exit");	// Exit button logs out the player and moves on to exit scene
     }
 	
 	// void AplicationQuit(){
@@ -144,7 +147,7 @@ public class LowerMenuScript : MonoBehaviour{
         SetButtonItens();
     }
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

@@ -14,6 +14,9 @@ public class MenuScript : MonoBehaviour{
 
     // Menu variables
     private string nextScene = "";
+	public Sprite resize1;
+	public Sprite resize2;
+	public Image resizeButtonImage;
 
 
     void Start(){
@@ -35,6 +38,8 @@ public class MenuScript : MonoBehaviour{
 		}
         menuRect = GameObject.Find("Canvas/Scroll View/Viewport/Menu").GetComponent<RectTransform>();
         avatar = GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/Portrait").gameObject;
+		resizeButtonImage = GameObject.Find("Canvas/Scroll View/Viewport/Menu/Resize").GetComponent<Image>();
+		SetResizeIcon();
 		if (SessionScript.player.avatar.skin == -1){
 			avatar.SetActive(false);
 			GameObject.Find("Canvas/Scroll View/Viewport/Menu/ToAvatar/NoPortrait").gameObject.SetActive(true);
@@ -65,8 +70,7 @@ public class MenuScript : MonoBehaviour{
 		
 		// Just Started Session
 		SessionScript.justStartedSession = false;
-		
-		// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	// Teste	
+
     }
 
     IEnumerator StartScene(){
@@ -141,15 +145,30 @@ public class MenuScript : MonoBehaviour{
 			SessionScript.currentSong = SessionScript.song2;
 			SessionScript.fadeOutSong = true;
 		}
-        nextScene = option;
-        SessionScript.ButtonAudio(SessionScript.neutral);
+		nextScene = option;
+		SessionScript.ButtonAudio(SessionScript.neutral);
 		Invoke("EndScene", 1.2f);
-        Invoke("NextScene", 0.2f);
-        // TransitionScript.PlayAnimation();
-        // TransitionScript.StartAnimation();
-        TransitionScript.EndAnimation();
+		Invoke("NextScene", 0.2f);
+		// TransitionScript.PlayAnimation();
+		// TransitionScript.StartAnimation();
+		TransitionScript.EndAnimation();
 
     }
+	
+	public void SetResizeIcon(){
+		if (!SessionScript.resizeToSmall){
+			resizeButtonImage.sprite = resize1;
+		} else {
+			resizeButtonImage.sprite = resize2;
+		}
+	}
+	
+	public void SelectResize(){
+		SessionScript.ButtonAudio(SessionScript.neutral);
+		SessionScript.resizeToSmall = !SessionScript.resizeToSmall;
+		ResizeUIScript.Resize();
+		SetResizeIcon();
+	}
 
     // public void SelectQuit(){
     // SessionScript.ButtonAudio(SessionScript.neutral);
@@ -183,7 +202,7 @@ public class MenuScript : MonoBehaviour{
 		}
 	}
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

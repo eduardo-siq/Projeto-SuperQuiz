@@ -71,7 +71,7 @@ public class LoadScript : MonoBehaviour{
 			PopUpScript.InstantiatePopUp("O prazo de acesso dessa demo expirou", "OK");
 		}
 	}
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

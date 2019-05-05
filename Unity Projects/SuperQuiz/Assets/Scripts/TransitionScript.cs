@@ -88,7 +88,7 @@ public class TransitionScript : MonoBehaviour{
         instance.transitionAnim.SetTrigger("out");
     }
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

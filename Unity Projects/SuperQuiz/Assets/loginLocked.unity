@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 385033691}
   - component: {fileID: 385033690}
   - component: {fileID: 385033689}
+  - component: {fileID: 385033692}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -710,6 +711,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &385033692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 385033687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f25fa0d605ea5a946a0c9631eebfd6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &401353077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,7 +1249,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 44ca3773bf33f8047a63f4db20dd2041, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6b60aefbef9a6004bb3a5161bb15ede7, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

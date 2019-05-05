@@ -2024,7 +2024,7 @@ Prefab:
         type: 2}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c69e1e40c58a60941bb9f85759fdab44,
+      objectReference: {fileID: 21300000, guid: 6b60aefbef9a6004bb3a5161bb15ede7,
         type: 3}
     - target: {fileID: 224223770685351370, guid: f2ee16797282ea94890d3698dda0ece1,
         type: 2}
@@ -3395,6 +3395,7 @@ GameObject:
   - component: {fileID: 1924372249}
   - component: {fileID: 1924372248}
   - component: {fileID: 1924372247}
+  - component: {fileID: 1924372250}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -3485,6 +3486,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1924372250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1924372245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f25fa0d605ea5a946a0c9631eebfd6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1992007308
 GameObject:
   m_ObjectHideFlags: 0

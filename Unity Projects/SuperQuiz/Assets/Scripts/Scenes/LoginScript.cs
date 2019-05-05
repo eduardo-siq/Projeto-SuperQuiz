@@ -15,6 +15,7 @@ public class LoginScript : MonoBehaviour{
 	public GameObject acceptWindow;
 	public RectTransform acceptWindowDocument;
 	public GameObject errorWindow;
+	public GameObject waiting;
 	private bool quit;
 
 	// Login variables
@@ -49,6 +50,7 @@ public class LoginScript : MonoBehaviour{
 		acceptWindow = GameObject.Find("Canvas/Scroll View/Viewport/Accept").gameObject;
 		acceptWindowDocument = acceptWindow.transform.Find("Scroll View/Viewport/Document").GetComponent<RectTransform>();
 		errorWindow = GameObject.Find("Canvas/Scroll View/Viewport/Login/LoginWindow/ErrorWindow").gameObject;
+		waiting = GameObject.Find("Canvas/Scroll View/Viewport/Login/Waiting").gameObject;
 		userInputField.ActivateInputField();
 		
 		// Time and Day Restriction
@@ -113,6 +115,7 @@ public class LoginScript : MonoBehaviour{
 		SessionScript.ButtonAudio(SessionScript.neutral);
 		AuthenticationScript.email = userInput;
 		authenticationScript.SigninWithEmailAsync(userInput, passwordInput);
+		ToggleWaiting();
 	}
 	
 	void LoginValidated(){
@@ -120,6 +123,7 @@ public class LoginScript : MonoBehaviour{
 		//print("userGroup " + SessionScript.userGroup);	// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
 		//SessionScript.GetQuestionListFromPreLoad();		// REMOVE LATER, SHOULD BE HANDLED BY DATABASE
 		Invoke("ToggleAcceptTerms", 0.25f);
+		Invoke("ToggleWaiting", 0.25f);
 	}
 	
 	public void LoginButtonDummy(){   // DUMMY LOGIN
@@ -152,7 +156,7 @@ public class LoginScript : MonoBehaviour{
 			return;
 		}
 		if (userInput != user || userInput != user2 || passwordInput == password || passwordInput == password2){
-			OpenErrorMessage();
+			Invoke("OpenErrorMessage", 0.25f);
 		}
 		print("userGroup " + SessionScript.userGroup);
 	}
@@ -162,6 +166,7 @@ public class LoginScript : MonoBehaviour{
 		SessionScript.ButtonAudio(SessionScript.negative);
 		errorWindow.SetActive(true);
 		Invoke ("CloseErrorMessage", 2.5f);
+		ToggleWaiting();
 	}
 	
 	void CloseErrorMessage(){
@@ -197,6 +202,10 @@ public class LoginScript : MonoBehaviour{
 		print ("ResetAcceptWindowTime()");
 		acceptWindowTimer = 0;
 	}
+	
+	public void ToggleWaiting(){
+		waiting.SetActive(!waiting.activeSelf);
+	}
 
 	public void NextScene(){
 		if (SessionScript.firstLogIn){   // Dummy first login
@@ -228,7 +237,7 @@ public class LoginScript : MonoBehaviour{
 		Application.Quit();
 	}
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

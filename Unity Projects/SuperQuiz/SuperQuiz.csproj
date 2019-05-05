@@ -383,6 +383,7 @@
     <Compile Include="Assets\Scripts\BuiltInQuestions.cs" />
     <Compile Include="Assets\Scripts\ClientListenerHolderScript.cs" />
     <Compile Include="Assets\Scripts\GlowScript.cs" />
+    <Compile Include="Assets\Scripts\HelpAnimScript.cs" />
     <Compile Include="Assets\Scripts\LowerMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PointAndClickQuestion.cs" />
@@ -392,11 +393,13 @@
     <Compile Include="Assets\Scripts\QuestionListenerHolderScript.cs" />
     <Compile Include="Assets\Scripts\RandomPlayerScript.cs" />
     <Compile Include="Assets\Scripts\RankingWindow.cs" />
+    <Compile Include="Assets\Scripts\ResizeUIScript.cs" />
     <Compile Include="Assets\Scripts\ResultLine.cs" />
     <Compile Include="Assets\Scripts\Scenes\AboutScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AnswersScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\AvatarScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\ErrorLoginScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\ExitScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameplayScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadScriptLimited.cs" />
@@ -406,6 +409,9 @@
     <Compile Include="Assets\Scripts\Scenes\RestrictedTimeScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\ResultScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\TutorialScript.cs" />
+    <Compile Include="Assets\Scripts\Screenshot_plugin\EzSS_AspectHelper.cs" />
+    <Compile Include="Assets\Scripts\Screenshot_plugin\EzSS_Messages.cs" />
+    <Compile Include="Assets\Scripts\Screenshot_plugin\EzSS_TextureScale.cs" />
     <Compile Include="Assets\Scripts\SessionScript.cs" />
     <Compile Include="Assets\Scripts\Simple.cs" />
     <Compile Include="Assets\Scripts\TestButton.cs" />

@@ -110,6 +110,8 @@ public class SessionScript : MonoBehaviour{
 	public static bool resetAnswersAutomatically;
 	public bool resetAnswersAutomaticallyEditor;
 	public static bool justStartedSession;
+	public static bool showAvararPictureMessage;
+	public static bool resizeToSmall;
 
     // Score
     public static int rightScore;
@@ -149,6 +151,8 @@ public class SessionScript : MonoBehaviour{
 		getOtherPlayers = true;
 		if (resetAnswersAutomaticallyEditor) resetAnswersAutomatically = true; else resetAnswersAutomatically = false;
 		justStartedSession = true;
+		showAvararPictureMessage = true;
+		resizeToSmall = false;
 		// InstantiateDummyPlayers(); // Now resolved when entering menu
 		// SortPlayerListByScore();
 
@@ -733,7 +737,7 @@ public class SessionScript : MonoBehaviour{
         buttonAudio.volume = soundVolume;
     }
 	
-//		DESAFIO QUIZ, version alpha 0.6
+//		DESAFIO QUIZ, version alpha 0.7
 //		developed by ROCKET PRO GAMES, rocketprogames@gmail.com
 //		script by Eduardo Siqueira
 //		São Paulo, Brasil, 2019

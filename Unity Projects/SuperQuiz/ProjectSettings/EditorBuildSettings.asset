@@ -48,8 +48,11 @@ EditorBuildSettings:
     path: Assets/tutorial.unity
     guid: fc09281ac031f2c48820e14e31366529
   - enabled: 0
-    path: Assets/exit.unity
+    path: 
     guid: 5207863c53c180c40b32c9fe89a784fe
   - enabled: 1
     path: Assets/restrictedTime.unity
     guid: fe8b60ee947da5249ad71f01d7b3d7e8
+  - enabled: 1
+    path: Assets/exit.unity
+    guid: 3372741b08c23a140ba98ce05537faa9
