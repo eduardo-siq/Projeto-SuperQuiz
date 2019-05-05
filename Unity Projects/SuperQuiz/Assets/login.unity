@@ -3532,7 +3532,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Email ou cpf
+  m_Text: Email
 --- !u!222 &1649012744
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -1531,11 +1531,11 @@ public class GameplayScript : MonoBehaviour{
 			animationFeedback.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
 			correctAnswer.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
 			correctAnswer.transform.position = new Vector2 (Screen.width/2 + 60f, Screen.height/2);
-			clockAssembly.transform.position = new Vector2 (80f, clockAssemblyTransform.sizeDelta.x * 1.1f);
+			clockAssembly.transform.position = new Vector2 (clockAssemblyTransform.sizeDelta.y * 1.5f, clockAssemblyTransform.sizeDelta.y * 1.5f);
 			clockAssemblyTransform.Rotate(Vector3.forward * 90);
 			clockAssembly.SetActive(false);
 			nextQuestion.GetComponent<RectTransform>().Rotate(Vector3.forward * 90);
-			lowerMenu.transform.position = new Vector2 (Screen.width - lowerMenuTransform.sizeDelta.y * 1.1f, Screen.height/2);
+			lowerMenu.transform.position = new Vector2 (Screen.width - lowerMenuTransform.sizeDelta.y * 2f, Screen.height/2);
 			lowerMenuTransform.Rotate(Vector3.forward * 90);
 			turnSign.Rotate(Vector3.forward * 90);
 			questionCounterAssembly.SetActive(false);

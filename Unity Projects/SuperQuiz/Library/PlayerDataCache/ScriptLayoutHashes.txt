@@ -120,6 +120,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
+b9d9513ea6024b80739aa2afda91bba5 Assembly-CSharp.dll:.HelpAnimScript
 322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker
 dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
@@ -129,8 +130,9 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 09c4e7f34322b03b7a3707c454a2edd8 Assembly-CSharp.dll:.LowerMenuScript
 117aef6b0e001743705aba9fc5efb2b7 Assembly-CSharp.dll:.LoadScriptLimited
-a626bc46fa506818ae0449be12207528 Assembly-CSharp.dll:.MenuScript
+82c6483ff300b5c0e5404a48f8e36aa6 Assembly-CSharp.dll:.MenuScript
 d3c830a9de2b441bea5a339fe241cdff Assembly-CSharp.dll:.AnswersScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ResizeUIScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 e765c60703e1d2470ee601d503ef86b2 Assembly-CSharp.dll:.AnimErrorScript
@@ -176,6 +178,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GlowScript
 b2502121ba75cf6cfab0773d6303f09c Assembly-CSharp.dll:.SessionScript
 cdf06b9ef762b06121c725cf09c6afe8 Assembly-CSharp.dll:.LoadScript
-289a7c547b66e2d8be913caa7936c946 Assembly-CSharp.dll:.LoginScript
+5f01de7f88b3ae6fe0f61790bfee0b09 Assembly-CSharp.dll:.LoginScript
 da040dcf419d94291a11b94c9745e4d3 Assembly-CSharp.dll:.ResultScript
 41cc74ff68fbeef5112809fae6bff2a1 Assembly-CSharp.dll:.TransitionScript
