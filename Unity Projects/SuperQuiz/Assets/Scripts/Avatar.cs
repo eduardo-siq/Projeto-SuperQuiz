@@ -28,17 +28,29 @@ public class Avatar{
 		
 	}
 
-    public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName){
-        skin = newSkin;
-        hair = newHair;
-        // gender = newGender;
+	public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3, string newName){
+		skin = newSkin;
+		hair = newHair;
+		// gender = newGender;
 		gender = 0;	// Hardcoded for 1 gender only
-        item0 = newItem0;
-        item1 = newItem1;
-        item2 = newItem2;
-        item3 = newItem3;
-        name = newName;
-    }
+		item0 = newItem0;
+		item1 = newItem1;
+		item2 = newItem2;
+		item3 = newItem3;
+		name = newName;
+	}
+	
+	public Avatar(int newSkin, int newHair, int newGender, int newItem0, int newItem1, int newItem2, int newItem3){
+		skin = newSkin;
+		hair = newHair;
+		// gender = newGender;
+		gender = 0;	// Hardcoded for 1 gender only
+		item0 = newItem0;
+		item1 = newItem1;
+		item2 = newItem2;
+		item3 = newItem3;
+		name = "";
+	}
 
     public static void RandomAvatar(Avatar randomAvatar){
         // randomAvatar.gender = Random.Range(0, 2);
